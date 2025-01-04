@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import { NO_INDEX_PAGE } from "@/constants/seo.constants";
+import { HELP_DESK_EMAIL, NO_INDEX_PAGE } from "@/constants/seo.constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export default function Error404() {
       <p>Запрошенная страница не может быть найдена, но возможно снова станет доступна в будущем.</p>
       <footer className="fixed bottom-2 justify-center items-center">
         <p>
-          Служба поддержки <a className="underline" href="mailto:helpdesk@psuti.ru">helpdesk@psuti.ru</a>
+          Служба поддержки <a className="underline" href={`mailto:${HELP_DESK_EMAIL}`}>helpdesk@psuti.ru</a>
         </p>
       </footer>
     </div>

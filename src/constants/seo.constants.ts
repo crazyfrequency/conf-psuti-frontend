@@ -17,3 +17,7 @@ export const NO_INDEX_PAGE: Metadata = {
 
 export const SITE_DOMAIN_API = process.env.NEXT_PUBLIC_DOMAIN_API ?? 'http://localhost:8000';
 export const SITE_DOMAIN_API_LOCAL = process.env.LOCAL_DOMAIN_API ?? 'http://localhost:8000';
+
+export const HELP_DESK_EMAIL = 'helpdesk@psuti.ru'
+export const MAIL = 'nio@psuti.ru'
+export const PHONE = '+7 (846) 339-11-09'
