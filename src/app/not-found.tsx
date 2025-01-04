@@ -1,7 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { NO_INDEX_PAGE } from "@/constants/seo.constants";
 import { Metadata } from "next";
-import { setStaticParamsLocale } from "next-international/server";
 
 export const metadata: Metadata = {
   title: "404",
@@ -10,7 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function Error404() {
-  setStaticParamsLocale('ru');
   return (
     <div className="bg-background gap-3 h-dvh flex flex-col justify-center items-center font-sans">
       <div className="flex justify-center items-center gap-6">
