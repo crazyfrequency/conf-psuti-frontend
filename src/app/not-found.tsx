@@ -1,5 +1,6 @@
 import { Separator } from "@/components/ui/separator";
-import { HELP_DESK_EMAIL, NO_INDEX_PAGE } from "@/constants/seo.constants";
+import { HELP_DESK_EMAIL } from "@/constants/app.constants";
+import { NO_INDEX_PAGE } from "@/constants/seo.constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function Error404() {
   return (
-    <div className="bg-background gap-3 h-dvh flex flex-col justify-center items-center font-sans">
+    <div className="bg-background gap-3 h-dvh flex flex-col justify-center items-center font-sans text-center">
       <div className="flex justify-center items-center gap-6">
         <h1 className="text-2xl my-2">404</h1>
         <Separator orientation="vertical" />
