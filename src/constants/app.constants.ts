@@ -24,7 +24,7 @@ export const HELP_DESK_EMAIL = process.env.NEXT_PUBLIC_HELP_DESK_EMAIL || 'helpd
 /**
  * Почта отображаемая на сайте
  */
-export const MAIL = process.env.NEXT_PUBLIC_MAIL || 'nio@psuti.ru';
+export const EMAIL = process.env.NEXT_PUBLIC_EMAIL || 'nio@psuti.ru';
 
 /**
  * Телефон отображаемый на сайте
