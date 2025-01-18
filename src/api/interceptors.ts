@@ -1,3 +1,6 @@
+'use client'
+import 'client-only'
+
 import { SITE_DOMAIN_API } from '@/constants/app.constants'
 import { getAuthToken, removeAuthToken } from '@/services/auth-token.service'
 import { getNewToken } from '@/services/auth.service'
@@ -7,6 +10,9 @@ import { errorCatch } from './error'
 // конфиг axios
 const options: CreateAxiosDefaults = {
   baseURL: SITE_DOMAIN_API,
+  headers: {
+    data: 'true'
+  },
   withCredentials: true
 }
 
