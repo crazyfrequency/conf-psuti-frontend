@@ -9,10 +9,12 @@ import { AUTH_PAGES } from "@/constants/pages.constants";
 import { useScopedI18n } from "@/locales/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function Login() {
+  const params = useSearchParams();
   const i18n = useScopedI18n('login');
   const zod_i18n = useScopedI18n('zod_errors.auth');
 
@@ -89,7 +91,7 @@ export default function Login() {
       <CardFooter className="flex justify-center text-sm">
         <span>
           {i18n('no_account.title')}{" "}
-          <Link href={AUTH_PAGES.REGISTRATION} className="underline">{i18n('no_account.link')}</Link> 
+          <Link href={AUTH_PAGES.REGISTRATION(params.get('next'))} className="underline">{i18n('no_account.link')}</Link> 
         </span>
       </CardFooter>
     </Card>

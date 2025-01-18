@@ -26,6 +26,7 @@ export async function getConfsList(year?: number) {
   let response: Response|null = null;
   try {
     response = await fetch(`${base_url}/years/${year??"current"}`, {
+      cache: CACHE_MODE,
       next: {
         revalidate: 60*60*24*14,
         tags: [`conf_year_${year??"current"}`, "confs", "all"]
@@ -41,6 +42,7 @@ export async function getConf(slug: string) {
   let response: Response|null = null;
   try {
     response = await fetch(`${base_url}/${slug}`, {
+      cache: CACHE_MODE,
       next: {
         revalidate: 60*60*24*7,
         tags: ["confs", "all"]

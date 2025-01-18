@@ -11,10 +11,12 @@ import { useScopedI18n } from "@/locales/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function SignUp() {
+  const params = useSearchParams();
   const i18n = useScopedI18n('signup');
   const zod_i18n = useScopedI18n('zod_errors.auth');
 
@@ -160,7 +162,7 @@ export default function SignUp() {
       <CardFooter className="flex justify-center text-sm">
         <span>
           {i18n('have_account.title')}{" "}
-          <Link href={AUTH_PAGES.LOGIN} className="underline">{i18n('have_account.link')}</Link>
+          <Link href={AUTH_PAGES.LOGIN(params.get('next'))} className="underline">{i18n('have_account.link')}</Link>
         </span>
       </CardFooter>
     </Card>
