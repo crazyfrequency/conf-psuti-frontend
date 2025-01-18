@@ -133,7 +133,7 @@ export type TResponseError = {
 export type TResponseResult<T> = TResponseSuccess<T> | TResponseError
 
 /**
- * функция проверки ошибок в запросах на стороне сервера
+ * функция проверки ошибок в запросах на стороне клиента
  * @param response результат axios запроса
  * @returns объект содержащий результат запроса
  */
