@@ -1,6 +1,7 @@
 export default {
   title: {
-    default: 'Сайт конференций ПГУТИ'
+    default: 'Сайт конференций ПГУТИ',
+    admin: 'Панель администратора'
   },
   main_header: {
     themes: {

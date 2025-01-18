@@ -1,6 +1,7 @@
 export default {
   title: {
-    default: 'PSUTI Conference Website'
+    default: 'PSUTI Conference Website',
+    admin: 'Admin panel'
   },
   main_header: {
     themes: {
