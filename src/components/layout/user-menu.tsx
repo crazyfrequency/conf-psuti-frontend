@@ -2,16 +2,20 @@
 
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { AUTH_PAGES } from '@/constants/pages.constants';
 import { useScopedI18n } from '@/locales/client';
 import { CircleUser } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function UserMenu() {
-  const i18n = useScopedI18n('main_header.user_menu');
+  const t = useScopedI18n('main_header.user_menu');
+  const pathname = usePathname();
+
   return (
     <Button variant="outline" className='gap-2 ml-1 bg-transparent' asChild>
-      <Link href="/login">
-        <CircleUser />{i18n('login')}
+      <Link href={AUTH_PAGES.LOGIN(pathname)}>
+        <CircleUser />{t('login')}
       </Link>
     </Button>
   )

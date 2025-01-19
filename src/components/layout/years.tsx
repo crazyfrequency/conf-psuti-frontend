@@ -19,7 +19,7 @@ export default function Years({
   const { year: current_year } = useParams();
   const locale = useCurrentLocale();
   const router = useRouter();
-  const i18n = useI18n();
+  const t = useI18n();
 
   const scrollArea = useRef<HTMLElement|null>(null);
   const left_button = useRef<HTMLDivElement|null>(null);
@@ -27,10 +27,10 @@ export default function Years({
 
   useEffect(() => {
     if (response.status !== 'success')
-      toast.error(i18n('errors.fetch'), {
+      toast.error(t('errors.fetch'), {
         description: response.message[locale],
         action: {
-          label: i18n('errors.actions.reload'),
+          label: t('errors.actions.reload'),
           onClick: () => {
             router.refresh();
           }
@@ -73,7 +73,7 @@ export default function Years({
   
   if (response.status !== 'success') return (
     <Error>
-      {i18n('errors.fetch')}
+      {t('errors.fetch')}
     </Error>
   )
 

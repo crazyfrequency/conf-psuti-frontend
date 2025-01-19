@@ -1,4 +1,4 @@
-import I18nProvider from "@/components/layout/I18nProvider";
+import I18nProvider from "@/components/layout/providers/i18n-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";

@@ -15,15 +15,15 @@ export default function Confs({
 }: Readonly<{
   response: TResponseResult<TConf[]>
 }>) {
-  const i18n = useI18n();
+  const t = useI18n();
   const locale = useCurrentLocale();
 
   useEffect(()=>{
     if (response.status !== 'success')
-      toast.error(i18n('errors.fetch'), {
+      toast.error(t('errors.fetch'), {
         description: response.message[locale],
         action: {
-          label: i18n('errors.actions.reload'),
+          label: t('errors.actions.reload'),
           onClick: () => {
             window.location.reload();
           }

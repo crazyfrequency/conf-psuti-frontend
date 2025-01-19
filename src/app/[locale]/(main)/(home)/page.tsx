@@ -1,15 +1,15 @@
 'use server'
 
 import { getScopedI18n } from "@/locales/server";
-import { getConfsList } from "@/services/confs.server.service";
+import { getConfsListByYear } from "@/services/confs.server.service";
 import { Metadata } from "next";
 import Confs from "./confs/[year]/confs";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const i18n = await getScopedI18n('confs_list');
+  const t = await getScopedI18n('confs_list');
   return {
-    title: i18n('title'),
-    description: i18n('description'),
+    title: t('title'),
+    description: t('description'),
     alternates: {
       canonical: '/',
       languages: {
@@ -21,6 +21,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomeSsr() {
-  const data = await getConfsList();
+  const data = await getConfsListByYear();
   return <Confs response={data}/>
 }

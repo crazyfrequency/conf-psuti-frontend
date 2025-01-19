@@ -15,19 +15,19 @@ import { z } from "zod";
 
 export default function Login() {
   const params = useSearchParams();
-  const i18n = useScopedI18n('login');
-  const zod_i18n = useScopedI18n('zod_errors.auth');
+  const t = useScopedI18n('login');
+  const zod_t = useScopedI18n('zod_errors.auth');
 
   z.setErrorMap((issue, ctx) => {
     if (issue.path[0]==='email')
       return { 
         message: ctx.data === '' ?
-          zod_i18n('email.required') :
-          zod_i18n('email.invalid')
+          zod_t('email.required') :
+          zod_t('email.invalid')
       }
 
     if (issue.path[0]==='password')
-      return { message: zod_i18n('password.required') }
+      return { message: zod_t('password.required') }
 
     return {
       message: ctx.defaultError
@@ -45,16 +45,16 @@ export default function Login() {
   return (
     <Card>
       <CardHeader className="text-center">
-        <CardTitle className="text-xl">{i18n('title')}</CardTitle>
-        <CardDescription>{i18n('description')}</CardDescription>
+        <CardTitle className="text-xl">{t('title')}</CardTitle>
+        <CardDescription>{t('description')}</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
         <Button variant="outline" className="w-full">
-          {i18n('login_with_psuti')}
+          {t('login_with_psuti')}
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">
-            {i18n('or')}
+            {t('or')}
           </span>
         </div>
         <Form {...form}>
@@ -64,7 +64,7 @@ export default function Login() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="email">{i18n('email')}</FormLabel>
+                  <FormLabel htmlFor="email">{t('email')}</FormLabel>
                   <Input id="email" type="email" placeholder="me@example.com" {...field} />
                   <FormMessage />
                 </FormItem>
@@ -76,22 +76,22 @@ export default function Login() {
               render={({ field }) => (
                 <FormItem>
                   <div className="flex justify-between">
-                    <FormLabel htmlFor="password">{i18n('password')}</FormLabel>
-                    <Link href={AUTH_PAGES.FORGOT_PASSWORD} className="text-sm underline">{i18n('forgot')}</Link>
+                    <FormLabel htmlFor="password">{t('password')}</FormLabel>
+                    <Link href={AUTH_PAGES.FORGOT_PASSWORD} className="text-sm underline">{t('forgot')}</Link>
                   </div>
                   <Input id="password" type="password" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">{i18n('login')}</Button>
+            <Button className="w-full" type="submit">{t('login')}</Button>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex justify-center text-sm">
         <span>
-          {i18n('no_account.title')}{" "}
-          <Link href={AUTH_PAGES.REGISTRATION(params.get('next'))} className="underline">{i18n('no_account.link')}</Link> 
+          {t('no_account.title')}{" "}
+          <Link href={AUTH_PAGES.REGISTRATION(params.get('next'))} className="underline">{t('no_account.link')}</Link> 
         </span>
       </CardFooter>
     </Card>

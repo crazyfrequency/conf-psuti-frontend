@@ -1,7 +1,7 @@
 'use server'
 
 import { getScopedI18n } from "@/locales/server";
-import { getConfsList } from "@/services/confs.server.service";
+import { getConfsListByYear } from "@/services/confs.server.service";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Confs from "./confs";
@@ -11,11 +11,11 @@ export async function generateMetadata({
 }: Readonly<{
   params: Promise<{ year: string }>
 }>): Promise<Metadata> {
-  const i18n = await getScopedI18n('confs_list');
+  const t = await getScopedI18n('confs_list');
   const { year } = await params;
   return {
-    title: i18n('title_with_year', { year: year }),
-    description: i18n('description_with_year', { year: year }),
+    title: t('title_with_year', { year: year }),
+    description: t('description_with_year', { year: year }),
     alternates: {
       canonical: `/confs/${year}`,
       languages: {
@@ -32,7 +32,7 @@ export default async function ConfsSsr({
   params: Promise<{ year: string }>
 }>) {
   const { year } = await params;
-  const data = await getConfsList(+year);
+  const data = await getConfsListByYear(+year);
   if(data.status !== 'success') notFound();
   return <Confs response={data}/>
 }

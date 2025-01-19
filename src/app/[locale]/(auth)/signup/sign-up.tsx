@@ -17,8 +17,8 @@ import { z } from "zod";
 
 export default function SignUp() {
   const params = useSearchParams();
-  const i18n = useScopedI18n('signup');
-  const zod_i18n = useScopedI18n('zod_errors.auth');
+  const t = useScopedI18n('signup');
+  const zod_t = useScopedI18n('zod_errors.auth');
 
   z.setErrorMap((issue, ctx) => {
     const path = issue.path[0];
@@ -26,28 +26,28 @@ export default function SignUp() {
     if (path === 'email')
       return { 
         message: ctx.data === '' ?
-          zod_i18n('email.required') :
-          zod_i18n('email.invalid')
+          zod_t('email.required') :
+          zod_t('email.invalid')
       }
 
     if (path === 'password') {
       if (ctx.data === '')
-        return { message: zod_i18n('password.required') }
+        return { message: zod_t('password.required') }
       if (issue.code === 'too_small')
-        return { message: zod_i18n('password.min') }
+        return { message: zod_t('password.min') }
       if (issue.code === 'too_big')
-        return { message: zod_i18n('password.max') }
+        return { message: zod_t('password.max') }
     }
 
     if (path === 'confirm')
-      return { message: zod_i18n('confirm') }
+      return { message: zod_t('confirm') }
 
     if (path === 'last_name') {
-      return { message: zod_i18n('last_name') }
+      return { message: zod_t('last_name') }
     }
 
     if (path === 'first_name') {
-      return { message: zod_i18n('first_name') }
+      return { message: zod_t('first_name') }
     }
 
     return { message: ctx.defaultError }
@@ -68,8 +68,8 @@ export default function SignUp() {
   return (
     <Card>
       <CardHeader className="text-center">
-        <CardTitle className="text-xl">{i18n('title')}</CardTitle>
-        <CardDescription>{i18n('description')}</CardDescription>
+        <CardTitle className="text-xl">{t('title')}</CardTitle>
+        <CardDescription>{t('description')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <Form {...form}>
@@ -79,8 +79,8 @@ export default function SignUp() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="email">{i18n('email')}</FormLabel>
-                  <Input id="email" type="email" placeholder={i18n('email')} {...field} />
+                  <FormLabel htmlFor="email">{t('email')}</FormLabel>
+                  <Input id="email" type="email" placeholder={t('email')} {...field} />
                   <FormMessage />
                 </FormItem>
               )}
@@ -91,8 +91,8 @@ export default function SignUp() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="password">{i18n('password')}</FormLabel>
-                  <Input id="password" type="password" placeholder={i18n('password')} {...field} />
+                  <FormLabel htmlFor="password">{t('password')}</FormLabel>
+                  <Input id="password" type="password" placeholder={t('password')} {...field} />
                   <FormMessage />
                 </FormItem>
               )}
@@ -103,8 +103,8 @@ export default function SignUp() {
               name="confirm"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="confirm">{i18n('confirm')}</FormLabel>
-                  <Input id="confirm" type="password" placeholder={i18n('confirm')} {...field} />
+                  <FormLabel htmlFor="confirm">{t('confirm')}</FormLabel>
+                  <Input id="confirm" type="password" placeholder={t('confirm')} {...field} />
                   <FormMessage />
                 </FormItem>
               )}
@@ -115,9 +115,9 @@ export default function SignUp() {
               name="last_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="last_name">{i18n('last_name.title')}</FormLabel>
+                  <FormLabel htmlFor="last_name">{t('last_name.title')}</FormLabel>
                   <Input id="last_name" type="text" placeholder="Иванов" {...field} />
-                  <FormDescription>{i18n('last_name.description')}</FormDescription>
+                  <FormDescription>{t('last_name.description')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -128,9 +128,9 @@ export default function SignUp() {
               name="first_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="first_name">{i18n('first_name.title')}</FormLabel>
+                  <FormLabel htmlFor="first_name">{t('first_name.title')}</FormLabel>
                   <Input id="first_name" type="text" placeholder="Иван" {...field} />
-                  <FormDescription>{i18n('first_name.description')}</FormDescription>
+                  <FormDescription>{t('first_name.description')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -141,9 +141,9 @@ export default function SignUp() {
               name="middle_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="middle_name">{i18n('middle_name.title')}</FormLabel>
+                  <FormLabel htmlFor="middle_name">{t('middle_name.title')}</FormLabel>
                   <Input id="middle_name" type="text" placeholder="Иванович" {...field} />
-                  <FormDescription>{i18n('middle_name.description')}</FormDescription>
+                  <FormDescription>{t('middle_name.description')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -151,18 +151,18 @@ export default function SignUp() {
 
             <Alert>
               <Info />
-              <AlertTitle>{i18n('caution.title')}</AlertTitle>
-              <AlertDescription>{i18n('caution.description')}</AlertDescription>
+              <AlertTitle>{t('caution.title')}</AlertTitle>
+              <AlertDescription>{t('caution.description')}</AlertDescription>
             </Alert>
 
-            <Button type="submit">{i18n('signup')}</Button>
+            <Button type="submit">{t('signup')}</Button>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex justify-center text-sm">
         <span>
-          {i18n('have_account.title')}{" "}
-          <Link href={AUTH_PAGES.LOGIN(params.get('next'))} className="underline">{i18n('have_account.link')}</Link>
+          {t('have_account.title')}{" "}
+          <Link href={AUTH_PAGES.LOGIN(params.get('next'))} className="underline">{t('have_account.link')}</Link>
         </span>
       </CardFooter>
     </Card>

@@ -11,7 +11,7 @@ export default function LocalePicker({
   ...props
 }: ButtonProps) {
   const currentLocale = useCurrentLocale();
-  const i18n = useScopedI18n('main_header');
+  const t = useScopedI18n('main_header');
   const changeLocale = useChangeLocale({
     preserveSearchParams: true
   });
@@ -27,7 +27,7 @@ export default function LocalePicker({
             </TooltipTrigger>
           </DropdownMenuTrigger>
           <TooltipContent>
-            {i18n('locale_hint')}
+            {t('locale_hint')}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

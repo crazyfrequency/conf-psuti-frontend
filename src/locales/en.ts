@@ -33,8 +33,14 @@ export default {
     }
   },
   confs: {
-    home: 'Home',
-    info: 'General information'
+    main: {
+      home: 'Home',
+      info: 'General information'
+    },
+    create: {
+      title: 'Create conference',
+      description: 'Create a new conference'
+    }
   },
   login: {
     title: 'Login',

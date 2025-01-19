@@ -49,7 +49,7 @@ export default function LeftMenu({
             variant={ !sub_path || sub_path === 'info' ? 'default' : 'ghost'}
             asChild
           >
-            <Link href={`/${slug}/info`}>
+            <Link href={`/${slug}`}>
               Общая информация
             </Link>
           </Button>

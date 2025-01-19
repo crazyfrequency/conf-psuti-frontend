@@ -1,6 +1,8 @@
 'use server'
 
-import { getConf } from "@/services/confs.server.service";
+import { NO_INDEX_PAGE } from "@/constants/seo.constants";
+import { getCurrentLocale } from "@/locales/server";
+import { getConfBySlug } from "@/services/confs.server.service";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Conf from "./[sub_path]/conf";
@@ -11,9 +13,21 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }>): Promise<Metadata> {
   const { slug } = await params;
-  let response = await getConf(slug);
+  const locale = await getCurrentLocale();
+  const conf_response = await getConfBySlug(slug);
+
+  if (conf_response.status === 'error') return notFound();
+
+  if (conf_response.status !== 'success') return {
+    ...NO_INDEX_PAGE
+  };
+
+  const title = conf_response.data.include_en && locale === 'en'
+    ? conf_response.data.title_en
+    : conf_response.data.title_ru;
+
   return {
-    title: "info",
+    title: title,
     alternates: {
       canonical: `/confs/${slug}`,
       languages: {
@@ -26,7 +40,7 @@ export async function generateMetadata({
 
 export default async function ConfSsr({ params }: {params: Promise<{ slug: string }>}) {
   const { slug } = await params;
-  let data = await getConf(slug);
-  if(data.status === 'error') return notFound();
-  return <Conf response={data}/>
+  let response = await getConfBySlug(slug);
+  if(response.status === 'error') return notFound();
+  return <Conf response={response}/>
 }

@@ -12,7 +12,7 @@ export default function Path({
   React.HTMLAttributes<HTMLDivElement>
 >) {
   const { slug, sub_path } = useParams();
-  const i18n = useScopedI18n('confs');
+  const t = useScopedI18n('confs');
   const locale = useCurrentLocale();
   const { data, isLoading } = useConfContext()
 
@@ -49,14 +49,14 @@ export default function Path({
     ? locale === 'en' && path_data.title_en
       ? path_data.title_en
       : path_data.title_ru
-    : i18n('info');
+    : t('info');
 
   return (
     <Breadcrumb className='m-5 mt-2'>
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href='/'>{i18n('home')}</Link>
+            <Link href='/'>{t('home')}</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
