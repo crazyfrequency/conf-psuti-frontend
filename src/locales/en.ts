@@ -78,8 +78,12 @@ export default {
       link: 'Login'
     }
   },
+  editor: {
+    placeholder: 'Start typing...'
+  },
   errors: {
     fetch: 'An error occurred while fetching data',
+    editor: 'An error occurred in the editor: {error}',
     actions: {
       reload: 'reload',
     }

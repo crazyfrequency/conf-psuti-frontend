@@ -78,8 +78,12 @@ export default {
       link: 'Вход'
     }
   },
+  editor: {
+    placeholder: 'Начните писать...'
+  },
   errors: {
     fetch: 'Произошла ошибка при получении данных',
+    editor: 'Произошла ошибка \"{error}\" в редакторе',
     actions: {
       reload: 'повтор',
     }
