@@ -1,7 +1,6 @@
 'use client'
 
 import { TResponseResult } from "@/api/error";
-import Editor from "@/components/editor";
 import { useCurrentLocale } from "@/locales/client";
 import { TConf } from "@/types/conf.types";
 import { useTheme } from "next-themes";
@@ -17,5 +16,9 @@ export default function Conf({
   const { resolvedTheme } = useTheme();
   const locale = useCurrentLocale();
 
-  return <Editor />;
+  return (
+    <div>
+      
+    </div>
+  );
 }
