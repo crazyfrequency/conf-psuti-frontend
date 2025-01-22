@@ -10,9 +10,6 @@ import { errorCatch } from './error'
 // конфиг axios
 const options: CreateAxiosDefaults = {
   baseURL: SITE_DOMAIN_API,
-  headers: {
-    data: 'true'
-  },
   withCredentials: true
 }
 

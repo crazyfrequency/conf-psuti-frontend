@@ -12,7 +12,7 @@ export default function Footer({
   year: number|string,
   className?: string,
 }> & Readonly<React.HTMLAttributes<HTMLDivElement>>) {
-  const i18n = useScopedI18n('footer');
+  const t = useScopedI18n('footer');
 
   return (
     <footer
@@ -20,16 +20,16 @@ export default function Footer({
       {...props}
       >
       <p>
-        {i18n('message', { year })}
+        {t('message', { year })}
       </p>
       <p>
-        {i18n('administrations')}{" "}
-        {i18n('email')}{" "}
+        {t('administrations')}{" "}
+        {t('email')}{" "}
         <a className="underline" href={`mailto:${EMAIL}`}>
           {EMAIL}
         </a>
         {" "}
-        {i18n('phone')}{" "}
+        {t('phone')}{" "}
         <a className="underline" href={`tel:${PHONE}`}>
           {PHONE}
         </a>

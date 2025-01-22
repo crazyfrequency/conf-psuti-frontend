@@ -5,10 +5,10 @@ import { Metadata } from "next";
 import SignUp from "./sign-up";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const i18n = await getScopedI18n("signup");
+  const t = await getScopedI18n("signup");
   return {
-    title: i18n("title"),
-    description: i18n("description"),
+    title: t("title"),
+    description: t("description"),
     alternates: {
       canonical: '/signup',
       languages: {

@@ -1,4 +1,6 @@
-import I18nProvider from "@/components/layout/I18nProvider";
+import { AuthProvider } from "@/components/layout/providers/auth-provider";
+import I18nProvider from "@/components/layout/providers/i18n-provider";
+import LoaderProvider from "@/components/layout/providers/loader-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
@@ -10,16 +12,20 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning>
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
         >
-          <I18nProvider>
-            <Toaster duration={5000} pauseWhenPageIsHidden closeButton richColors />
-            {children}
-          </I18nProvider>
+          <LoaderProvider>
+            <AuthProvider>
+              <I18nProvider>
+                <Toaster duration={5000} pauseWhenPageIsHidden closeButton richColors />
+                {children}
+              </I18nProvider>
+            </AuthProvider>
+          </LoaderProvider>
         </ThemeProvider>
       </body>
     </html>

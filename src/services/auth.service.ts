@@ -1,20 +1,20 @@
 import { checkErrorsClient, TResponseResult } from '@/api/error';
-import { axiosStandard } from '@/api/interceptors';
-import { IAuthForm, IAuthResponse } from '@/types/auth.types';
+import { axiosStandard, axiosWithAuth } from '@/api/interceptors';
+import { IAuthResponse, IUser, TUserForm } from '@/types/auth.types';
 import { removeAuthToken, setAuthToken } from './auth-token.service';
 
 /**
  * Авторизация пользователя.
- * @param login Логин пользователя.
+ * @param email Логин пользователя.
  * @param password Пароль пользователя.
  * @returns Обработанный ответ сервера.
  */
-export async function login(login: string, password: string): Promise<TResponseResult<IAuthResponse>> {
+export async function login(email: string, password: string): Promise<TResponseResult<IAuthResponse>> {
   const response = checkErrorsClient(
-    await axiosStandard.post<IAuthResponse>('/auth/login', {
-      login,
+    await axiosStandard.post<IAuthResponse>('/auth/sign-in', {
+      email,
       password
-    }).catch(() => null)
+    })
   );
 
   if (response.status !== 'success') return response
@@ -28,18 +28,17 @@ export async function login(login: string, password: string): Promise<TResponseR
  * Регистрация нового пользователя.
  * @param data Данные формы регистрации.
  * @returns Ответ сервера с токеном авторизации.
- * @throws Ошибка, если запрос не удался.
  */
-export async function register(data: IAuthForm): Promise<TResponseResult<boolean>> {
+export async function register(data: TUserForm): Promise<TResponseResult<String>> {
   const response = checkErrorsClient(
-    await axiosStandard.post<boolean>('/auth/register', data)
+    await axiosStandard.post<String>('/auth/sign-up', data)
   )
   
   return response
 }
 
 export async function getNewToken() {
-  const response = await axiosStandard.get<IAuthResponse>('/auth/refresh')
+  const response = await axiosStandard.post<IAuthResponse>('/auth/refresh')
   
   if (response.data?.accessToken) setAuthToken(response.data.accessToken)
   
@@ -50,6 +49,14 @@ export async function logout() {
   const response = await axiosStandard.post<boolean>('/auth/logout')
   
   if (response.data) removeAuthToken()
+  
+  return response
+}
+
+export async function getMe() {
+  const response = checkErrorsClient(
+    await axiosWithAuth.get<IUser>('/users/me')
+  )
   
   return response
 }

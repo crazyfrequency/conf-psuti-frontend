@@ -2,21 +2,21 @@
  * Структура конференции
  */
 export type TConf = {
-  title_ru: string;
+  conferenceNameRu: string;
   type: string;
-  status_ru?: string;
+  statusRu?: string;
   slug: string;
-  start: string|number;
-  end?: string|number;
+  startDate: string|number;
+  endDate?: string|number;
   paths: IPath[];
   url: string;
 } & (
   {
-    include_en?: true
-    title_en: string
-    status_en?: string
+    includeEn?: true
+    conferenceNameEn: string
+    statusEn?: string
   } | {
-    include_en?: false
+    includeEn?: false
   }
 )
 
@@ -24,7 +24,7 @@ export type TConf = {
  * Структура путей в конференции
  */
 export interface IPath {
-  title_ru: string;
-  title_en?: string;
+  titleRu: string;
+  titleEn?: string;
   url: string;
 }

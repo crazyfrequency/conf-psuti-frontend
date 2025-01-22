@@ -15,15 +15,15 @@ export default function Confs({
 }: Readonly<{
   response: TResponseResult<TConf[]>
 }>) {
-  const i18n = useI18n();
+  const t = useI18n();
   const locale = useCurrentLocale();
 
   useEffect(()=>{
     if (response.status !== 'success')
-      toast.error(i18n('errors.fetch'), {
+      toast.error(t('errors.fetch'), {
         description: response.message[locale],
         action: {
-          label: i18n('errors.actions.reload'),
+          label: t('errors.actions.reload'),
           onClick: () => {
             window.location.reload();
           }
@@ -35,10 +35,10 @@ export default function Confs({
     return <Error>Не удалось загрузить конференции</Error>
 
   const elements = response.data.map(conf => {
-    const start = new Date(conf.start);
-    const end = conf.end != undefined ? new Date(conf.end) : null;
-    const title = conf.include_en && locale === 'en' ? conf.title_en : conf.title_ru;
-    const status = conf.include_en && locale === 'en' ? conf.status_en : conf.status_ru;
+    const start = new Date(conf.startDate);
+    const end = conf.endDate != undefined ? new Date(conf.endDate) : null;
+    const title = conf.includeEn && locale === 'en' ? conf.conferenceNameEn : conf.conferenceNameRu;
+    const status = conf.includeEn && locale === 'en' ? conf.statusEn : conf.statusRu;
 
     return (
       <Link href={MAIN_PAGES.CONF(conf.slug)} className="rounded-lg" key={"conf_"+conf.slug} prefetch={false}>

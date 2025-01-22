@@ -12,7 +12,7 @@ export default function ThemePicker({
   ...props
 }: ButtonProps) {
   const { theme, setTheme } = useTheme();
-  const i18n = useScopedI18n('main_header.themes');
+  const t = useScopedI18n('main_header.themes');
   return (
     <DropdownMenu>
       <TooltipProvider>
@@ -30,20 +30,20 @@ export default function ThemePicker({
             </DropdownMenuTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            {i18n('hint')}
+            {t('hint')}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
       <DropdownMenuContent>
         <DropdownMenuRadioGroup value={theme}>
           <DropdownMenuRadioItem value="light" onClick={() => setTheme("light")}>
-            {i18n('light')}
+            {t('light')}
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="dark" onClick={() => setTheme("dark")}>
-            {i18n('dark')}
+            {t('dark')}
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="system" onClick={() => setTheme("system")}>
-            {i18n('system')}
+            {t('system')}
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
