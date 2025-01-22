@@ -38,25 +38,25 @@ export default function Path({
     </Breadcrumb>
   );
 
-  const year = new Date(data.start).getFullYear();
+  const year = new Date(data.startDate).getFullYear();
 
-  const title = data.include_en && locale === 'en'
-    ? data.title_en
-    : data.title_ru;
+  const title = data.includeEn && locale === 'en'
+    ? data.conferenceNameEn
+    : data.conferenceNameRu;
 
   const path_data = data.paths?.find(v=>v.url===sub_path)
   const path_title = path_data
-    ? locale === 'en' && path_data.title_en
-      ? path_data.title_en
-      : path_data.title_ru
-    : t('info');
+    ? locale === 'en' && path_data.titleEn
+      ? path_data.titleEn
+      : path_data.titleRu
+    : t('pages.info');
 
   return (
     <Breadcrumb className='m-5 mt-2'>
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href='/'>{t('home')}</Link>
+            <Link href='/'>{t('pages.home')}</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />

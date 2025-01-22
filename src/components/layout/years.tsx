@@ -6,8 +6,9 @@ import Error from "@/components/ui/error";
 import { MAIN_PAGES } from "@/constants/pages.constants";
 import { useCurrentLocale, useI18n } from "@/locales/client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next-nprogress-bar";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { useCurrentLocale } from "@/locales/client";
+import { useCurrentLocale, useScopedI18n } from "@/locales/client";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { HTMLAttributes } from "react";
@@ -18,11 +18,12 @@ export default function LeftMenu({
 >) {
   const { slug, sub_path } = useParams();
   const { data, isLoading } = useConfContext();
+  const t = useScopedI18n('confs');
   const locale = useCurrentLocale();
 
   if (data === "forbidden") return null;
 
-  const elements = data?.paths.map((v) => (
+  const elements = data?.paths?.map((v) => (
       <li key={`nav_${v.url}`}>
         <Button
           className="justify-start w-full whitespace-pre-wrap h-auto"
@@ -30,15 +31,15 @@ export default function LeftMenu({
           asChild
         >
           <Link href={`/${slug}/${v.url}`}>
-            {v.title_ru}
+            {v.titleRu}
           </Link>
         </Button>
       </li>
-    )) ?? Array.from({ length: 5 }).map((_, i) => (
+    )) ?? isLoading ? Array.from({ length: 5 }).map((_, i) => (
       <li key={`nav_skeleton_${i}`}>
         <Skeleton className="w-full h-8" />
       </li>
-    ))
+    )) : null
 
   return (
     <nav className={cn("py-2 h-fit lg:max-w-52", className)} {...props}>
@@ -50,7 +51,7 @@ export default function LeftMenu({
             asChild
           >
             <Link href={`/${slug}`}>
-              Общая информация
+              {t('pages.info')}
             </Link>
           </Button>
         </li>

@@ -4,7 +4,7 @@ import { checkErrorsServer } from "@/api/error";
 import { CACHE_MODE, SITE_DOMAIN_API_LOCAL } from "@/constants/app.constants";
 import { TConf } from "@/types/conf.types";
 
-const base_url = `${SITE_DOMAIN_API_LOCAL}/confs`
+const base_url = `${SITE_DOMAIN_API_LOCAL}/conferences`
 
 export async function getYearsList() {
   let response: Response|null = null;
@@ -41,7 +41,7 @@ export async function getConfsListByYear(year?: number) {
 export async function getConfBySlug(slug: string) {
   let response: Response|null = null;
   try {
-    response = await fetch(`${base_url}/${slug}`, {
+    response = await fetch(`${base_url}/slug/${slug}`, {
       cache: CACHE_MODE,
       next: {
         revalidate: 60*60*24*7,

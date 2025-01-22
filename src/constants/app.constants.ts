@@ -2,13 +2,13 @@
  * Домен для API запросов с клиента
  * При нахождении на одном домене указывать пустое значение
  */
-export const SITE_DOMAIN_API = process.env.NEXT_PUBLIC_DOMAIN_API || 'http://localhost:8000';
+export const SITE_DOMAIN_API = process.env.NEXT_PUBLIC_DOMAIN_API || 'http://localhost:8000/api';
 
 /**
  * Домен для API запросов с сервера
  * Указать имя контейнера или хост, где расположен API
  */
-export const SITE_DOMAIN_API_LOCAL = process.env.LOCAL_DOMAIN_API || 'http://localhost:8000';
+export const SITE_DOMAIN_API_LOCAL = process.env.LOCAL_DOMAIN_API || 'http://localhost:8000/api';
 
 /**
  * Куки для хранения токена

@@ -22,9 +22,9 @@ export async function generateMetadata({
     ...NO_INDEX_PAGE
   };
 
-  const title = response.data.include_en && locale === 'en'
-    ? response.data.title_en
-    : response.data.title_ru;
+  const title = response.data.includeEn && locale === 'en'
+    ? response.data.conferenceNameEn
+    : response.data.conferenceNameRu;
 
   return {
     title: title,

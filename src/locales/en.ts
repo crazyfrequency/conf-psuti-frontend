@@ -33,13 +33,13 @@ export default {
     }
   },
   confs: {
-    main: {
+    pages: {
       home: 'Home',
       info: 'General information'
     },
     create: {
       title: 'Create conference',
-      description: 'Create a new conference'
+      description: 'Fill in the form to create a new conference',
     }
   },
   login: {
@@ -56,21 +56,26 @@ export default {
       link: 'Sign up'
     }
   },
+  confirm_email: {
+    title: 'Email confirmation',
+    message: 'A confirmation email has been sent to your email.',
+    message_description: 'Confirm your email to access your account. If you don\'t confirm your email, your account will be deleted within 12-24 hours.'
+  },
   signup: {
     title: 'Sign up',
     description: 'Create an account with your email',
     email: 'Email',
     password: 'Password',
     confirm: 'Confirm password',
-    last_name: {
+    lastname: {
       title: 'Last name (RU)',
       description: 'Last name in Russian'
     },
-    first_name: {
+    firstname: {
       title: 'First name (RU)',
       description: 'First name in Russian'
     },
-    middle_name: {
+    middlename: {
       title: 'Middle name (RU)',
       description: 'Middle name in Russian (if applicable)'
     },
@@ -85,9 +90,17 @@ export default {
     }
   },
   errors: {
-    fetch: 'An error occurred while fetching data',
+    fetch: 'An error occurred while executing the request',
+    fetches: {
+      email_in_use: {
+        title: 'Email is already in use',
+        description: 'You may already be registered'
+      },
+    },
+    login: 'Invalid email or password',
     actions: {
       reload: 'reload',
+      help: 'Help'
     }
   },
   zod_errors: {
@@ -102,8 +115,8 @@ export default {
         max: 'Password must be at most 32 characters'
       },
       confirm: 'Passwords do not match',
-      last_name: 'Last name is required',
-      first_name: 'First name is required'
+      lastname: 'Last name is required',
+      firstname: 'First name is required'
     },
   }
 } as const;
