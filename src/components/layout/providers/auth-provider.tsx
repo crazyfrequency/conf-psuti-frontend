@@ -1,11 +1,13 @@
 'use client'
 
-import { getMe } from '@/services/auth.service'
+import { getUserFromLocalStorage } from '@/services/auth-token.service'
+import { getMe, logout } from '@/services/auth.service'
 import { IUser } from '@/types/auth.types'
 import React, { useCallback, useEffect, useMemo } from 'react'
 
 type TAuthContext = {
   reloadAuth: () => void
+  logout: () => void
   user: IUser | "unauthorized"
 }
 
@@ -19,10 +21,34 @@ export function AuthProvider({
   const [user, setUser] = React.useState<IUser|undefined>(undefined)
 
   const reloadAuth = useCallback(async () => {
+    const user = getUserFromLocalStorage();
+
+    if (user) return setUser(user);
+
     const response = await getMe()
     if (response.status !== 'success') return
     setUser(response.data)
-  }, [user])
+  }, [setUser])
+
+  const logoutAuth = useCallback(async () => {
+    const response = await logout();
+    if (response.status !== 'success') return
+    localStorage.removeItem('user');
+    setUser(undefined);
+  }, [setUser])
+
+  useEffect(() => {
+    const getUser = async (event: StorageEvent) => {
+      console.log(event)
+      if (event.key === 'user') {
+        const user = event.newValue ? JSON.parse(event.newValue) : null;
+        setUser(user)
+      }
+    }
+
+    window.addEventListener('storage', getUser)
+    return () => window.removeEventListener('storage', getUser)
+  }, [setUser])
 
   useEffect(() => {
     reloadAuth()
@@ -31,6 +57,7 @@ export function AuthProvider({
   const context = useMemo(() => {
     return {
       reloadAuth,
+      logout: logoutAuth,
       user: user ?? "unauthorized" as "unauthorized"
     }
   }, [user, reloadAuth])

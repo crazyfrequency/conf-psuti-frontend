@@ -95,7 +95,7 @@ export default function Years({
       </div>
       <nav
         ref={scrollArea}
-        className="flex gap-2 px-1 w-full overflow-scroll scrollbar-hide py-2"
+        className="flex gap-2 px-1 w-full overflow-x-auto scrollbar-hide py-2"
         onScroll={computeSize}
       >
         {

@@ -5,7 +5,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { AUTH_PAGES, MAIN_PAGES } from '@/constants/pages.constants';
 import { useKeyBind } from '@/hooks/keybind-hook';
 import { useCurrentLocale, useScopedI18n } from '@/locales/client';
-import { logout } from '@/services/auth.service';
 import { CircleUser, User } from 'lucide-react';
 import { useRouter } from 'next-nprogress-bar';
 import Link from 'next/link';
@@ -16,10 +15,15 @@ export default function UserMenu() {
   const t = useScopedI18n('main_header.user_menu');
   const router = useRouter();
   const locale = useCurrentLocale();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
 
-  useKeyBind({ keyBind: 'Ctrl+KeyP', callback: () => router.push(MAIN_PAGES.PROFILE) })
+  useKeyBind({
+    keyBind: 'Ctrl+KeyP',
+    callback: () => user !== "unauthorized" && !pathname.match(/(\/en|)\/profile/)
+      ? router.push(MAIN_PAGES.PROFILE)
+      : null
+  })
   useKeyBind({ keyBind: 'Ctrl+Shift+KeyQ', callback: logout })
 
   if (user === "unauthorized")
