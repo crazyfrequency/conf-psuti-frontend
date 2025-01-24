@@ -59,7 +59,7 @@ export default function UserMenu() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-border" />
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem className="cursor-pointer" asChild>
             <Link href={MAIN_PAGES.PROFILE}>
               {t('profile')}
               <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
@@ -67,7 +67,7 @@ export default function UserMenu() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-border" />
-        <DropdownMenuItem onClick={logout}>
+        <DropdownMenuItem className="cursor-pointer" onClick={logout}>
           {t('logout')}
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
