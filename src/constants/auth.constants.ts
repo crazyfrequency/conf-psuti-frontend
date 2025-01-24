@@ -13,6 +13,5 @@ export const form_signup_schema = z.object({
   lastname: z.string().nonempty().max(100),
   middlename: z.string().max(50),
 }).refine(value => value.password === value.confirm, {
-  message: 'not_matches',
   path: ['confirm']
 })

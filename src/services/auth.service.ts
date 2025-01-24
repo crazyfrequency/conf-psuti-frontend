@@ -17,7 +17,10 @@ export async function login(email: string, password: string): Promise<TResponseR
     })
   );
 
-  if (response.status !== 'success') return response
+  if (response.status !== 'success') {
+    removeAuthToken()
+    return response
+  }
 
   if (response.data?.accessToken) setAuthToken(response.data.accessToken)
   
@@ -29,16 +32,27 @@ export async function login(email: string, password: string): Promise<TResponseR
  * @param data Данные формы регистрации.
  * @returns Ответ сервера с токеном авторизации.
  */
-export async function register(data: TUserForm): Promise<TResponseResult<String>> {
+export async function register(data: TUserForm, lang: string): Promise<TResponseResult<String>> {
   const response = checkErrorsClient(
-    await axiosStandard.post<String>('/auth/sign-up', data)
+    await axiosStandard.post<String>('/auth/sign-up', data, {
+      params: {
+        lang
+      }
+    })
   )
   
   return response
 }
 
 export async function getNewToken() {
-  const response = await axiosStandard.post<IAuthResponse>('/auth/refresh')
+  const response = checkErrorsClient(
+    await axiosStandard.post<IAuthResponse>('/auth/refresh')
+  );
+
+  if (response.status !== 'success') {
+    removeAuthToken()
+    return response
+  }
   
   if (response.data?.accessToken) setAuthToken(response.data.accessToken)
   
@@ -46,9 +60,11 @@ export async function getNewToken() {
 }
 
 export async function logout() {
-  const response = await axiosStandard.post<boolean>('/auth/logout')
+  const response = checkErrorsClient(
+    await axiosStandard.post<boolean>('/auth/sign-out')
+  )
   
-  if (response.data) removeAuthToken()
+  if (response.status === 'success') removeAuthToken()
   
   return response
 }
@@ -56,6 +72,22 @@ export async function logout() {
 export async function getMe() {
   const response = checkErrorsClient(
     await axiosWithAuth.get<IUser>('/users/me')
+  )
+  
+  return response
+}
+
+export async function getNewEmailConfirmation(email: string) {
+  const response = checkErrorsClient(
+    await axiosWithAuth.get<string>('/auth/confirm-email?email='+email)
+  )
+  
+  return response
+}
+
+export async function confirmEmail(token: string) {
+  const response = checkErrorsClient(
+    await axiosStandard.post<string>('/auth/confirm-email?code='+token)
   )
   
   return response

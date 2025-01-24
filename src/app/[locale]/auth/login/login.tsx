@@ -56,7 +56,10 @@ export default function Login() {
       return router.replace(params.get('next') ?? MAIN_PAGES.PROFILE)
     }
 
-    if(response.status === 'error')
+    if (response.status === 'forbidden')
+      return router.replace(AUTH_PAGES.CONFIRM_EMAIL(data.email))
+
+    if(response.status === 'unauthorized')
       return toast.error(t('errors.fetch'), {
         description: response.message[locale]
       });

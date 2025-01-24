@@ -37,15 +37,19 @@ export default function Confs({
   const elements = response.data.map(conf => {
     const start = new Date(conf.startDate);
     const end = conf.endDate != undefined ? new Date(conf.endDate) : null;
-    const title = conf.includeEn && locale === 'en' ? conf.conferenceNameEn : conf.conferenceNameRu;
-    const status = conf.includeEn && locale === 'en' ? conf.statusEn : conf.statusRu;
+    const title = locale === 'en' && conf.isEnglishEnable
+      ? conf.conferenceNameEn ?? conf.conferenceNameRu
+      : conf.conferenceNameRu;
+    const status = locale === 'en' && conf.isEnglishEnable
+      ? conf.statusEn ?? conf.statusRu
+      : conf.statusRu ?? conf.statusEn;
 
     return (
       <Link href={MAIN_PAGES.CONF(conf.slug)} className="rounded-lg" key={"conf_"+conf.slug} prefetch={false}>
         <Card className="md:grid grid-cols-[1fr_auto] w-full hover:bg-accent/70">
           <CardHeader>
             <CardTitle className="text-xl">{title}</CardTitle>
-            <CardDescription>{status}</CardDescription>
+            {status && <CardDescription>{status}</CardDescription>}
           </CardHeader>
           <div className="flex p-6 items-center gap-2 max-md:pt-0 max-md:text-sm text-muted-foreground">
             <time dateTime={start.toISOString()}>{start.toLocaleDateString("ru")}</time>

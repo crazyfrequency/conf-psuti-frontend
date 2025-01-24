@@ -101,7 +101,7 @@ export default function Years({
         {
           <Button key={`year_current`} variant={!current_year ? "default" : "ghost"} asChild>
             <Link href={MAIN_PAGES.HOME}>
-              Активные
+              {t('confs_list.current')}
             </Link>
           </Button>
         }

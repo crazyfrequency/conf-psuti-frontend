@@ -6,7 +6,6 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 
 type TAuthContext = {
   reloadAuth: () => void
-  logout: () => void
   user: IUser | "unauthorized"
 }
 
@@ -32,7 +31,6 @@ export function AuthProvider({
   const context = useMemo(() => {
     return {
       reloadAuth,
-      logout: () => {},
       user: user ?? "unauthorized" as "unauthorized"
     }
   }, [user, reloadAuth])

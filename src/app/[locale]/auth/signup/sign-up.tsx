@@ -28,7 +28,7 @@ export default function SignUp() {
     const path = issue.path[0];
 
     if (path === 'email')
-      return { 
+      return {
         message: ctx.data === '' ?
           t('zod_errors.auth.email.required') :
           t('zod_errors.auth.email.invalid')
@@ -76,10 +76,10 @@ export default function SignUp() {
       lastnameRu: data.lastname,
       firstnameRu: data.firstname,
       middlenameRu: data.middlename
-    });
+    }, locale);
 
     if (response.status === 'success')
-      router.replace(AUTH_PAGES.CONFIRM_EMAIL)
+      router.replace(AUTH_PAGES.CONFIRM_EMAIL(data.email, +Date.now()));
     if (response.status === 'error')
       if (response.code === 409) {
         form.setError('email', { message: t('errors.fetches.email_in_use.title') });

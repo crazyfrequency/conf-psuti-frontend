@@ -6,6 +6,7 @@ export interface IAuthForm {
 export interface IUser {
   id: number
   email: string
+  role: "USER" | "ADMIN"
   lastnameRu?: string
   lastnameEn?: string
   firstnameRu: string
@@ -24,4 +25,4 @@ export interface IAuthResponse {
   accessToken: string
 }
 
-export type TUserForm = Omit<IUser, 'id'|'firstnameEn'|'middlenameEn'|'lastnameEn'> & { password: string }
+export type TUserForm = Omit<IUser, 'id'|'firstnameEn'|'middlenameEn'|'lastnameEn'|'role'> & { password: string }

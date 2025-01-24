@@ -40,7 +40,7 @@ export default function Path({
 
   const year = new Date(data.startDate).getFullYear();
 
-  const title = data.includeEn && locale === 'en'
+  const title = data.isEnglishEnable && locale === 'en'
     ? data.conferenceNameEn
     : data.conferenceNameRu;
 

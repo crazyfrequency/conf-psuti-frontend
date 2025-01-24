@@ -10,13 +10,13 @@ export type TConf = {
   endDate?: string|number;
   paths: IPath[];
   url: string;
+  statusEn?: string
 } & (
   {
-    includeEn?: true
+    isEnglishEnable?: true
     conferenceNameEn: string
-    statusEn?: string
   } | {
-    includeEn?: false
+    isEnglishEnable?: false
   }
 )
 
