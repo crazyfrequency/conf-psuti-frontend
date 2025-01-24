@@ -12,7 +12,9 @@ export default {
     },
     locale_hint: 'Language settings',
     user_menu: {
-      login: 'Login'
+      login: 'Login',
+      logout: 'Logout',
+      profile: 'Profile'
     }
   },
   footer: {
@@ -20,6 +22,11 @@ export default {
     administrations: 'Contacts of administration:',
     email: 'Email:',
     phone: 'Phone:',
+  },
+  cookies: {
+    title: 'We use cookies 🍪',
+    description: 'By continuing to use our site, you agree to the use of cookies',
+    accept: 'Accept'
   },
   confs_list: {
     current: 'Current',
@@ -59,7 +66,13 @@ export default {
   confirm_email: {
     title: 'Email confirmation',
     message: 'A confirmation email has been sent to your email.',
-    message_description: 'Confirm your email to access your account. If you don\'t confirm your email, your account will be deleted within 12-24 hours.'
+    message_description: 'Confirm your email to access your account. If you don\'t confirm your email, your account will be deleted within 12-24 hours.',
+    button: 'Resend email',
+    fetch_timeout: 'You recently sent a confirmation email',
+    success: {
+      title: 'Email confirmed',
+      description: 'Your email has been confirmed. You can now log in.'
+    }
   },
   signup: {
     title: 'Sign up',

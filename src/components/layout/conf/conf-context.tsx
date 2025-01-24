@@ -2,16 +2,14 @@
 
 import { TResponseResult } from '@/api/error';
 import { Separator } from '@/components/ui/separator';
-import { AUTH_PAGES } from '@/constants/pages.constants';
+import useConfHook from '@/hooks/conf-context-hook';
 import { cn } from '@/lib/utils';
-import { useCurrentLocale } from '@/locales/client';
-import { getConf } from '@/services/confs.client.service';
 import { TConf } from '@/types/conf.types';
-import { useRouter } from 'next-nprogress-bar';
-import { notFound, usePathname } from 'next/navigation';
-import React, { createContext, useEffect } from 'react';
+import { notFound } from 'next/navigation';
+import React, { createContext } from 'react';
 import LeftMenu from './left-menu';
 import Path from './path';
+import TopMenu from './top-menu';
 
 export type TConfContext = {
   isLoading: false;
@@ -42,37 +40,10 @@ export default function ConfContext({
   response: TResponseResult<TConf>,
   children: React.ReactNode
 }>) {
-  const locale = useCurrentLocale();
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const [context, setContext] = React.useState<TConfContext>(() => {
-    if (response.status === 'success')
-      return { isLoading: false, data: response.data, reload: () => {}, clientLoading: false };
-    return { isLoading: true, data: null, reload: () => {}, clientLoading: true };
-  });
-
-  const fetchConf = async () => {
-    const response = await getConf(slug);
-    if (response.status === 'unauthorized')
-      return router.replace(AUTH_PAGES.LOGIN(pathname));
-    if (response.status !== 'success')
-      return setContext({ isLoading: true, data: "forbidden", reload: fetchConf, clientLoading: false });
-    setContext({ isLoading: false, data: response.data, reload: fetchConf, clientLoading: false });
-  };
-
-  useEffect(()=>{
-    console.log(response);
-    if(response.status !== 'success')
-      fetchConf();
-  }, [response, slug])
+  const { context, fetchConf } = useConfHook({ slug, response });
 
   if (context.data === "forbidden")
     return notFound();
-
-  const title = "123"
-
-  const status = "123"
 
   return (
     <DataContext.Provider value={{
@@ -90,8 +61,7 @@ export default function ConfContext({
         />
         <Separator className="max-lg:hidden" orientation="vertical" />
         <main>
-          <h1 className="text-center text-2xl">{title}</h1>
-          <h2 className="text-center text-lg text-muted-foreground">{status}</h2>
+          <TopMenu />
           <Separator className="my-4" />
           {children}
         </main>

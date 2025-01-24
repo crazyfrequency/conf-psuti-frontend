@@ -14,7 +14,7 @@ const LoaderProvider = ({ children }: { children: React.ReactNode }) => {
         targetPreprocessor={url => {
           const current_url = new URL(window.location.href)
           
-          if (current_url.pathname==="/en" || url.pathname.startsWith("/en/")) {
+          if (current_url.pathname==="/en" || current_url.pathname.startsWith("/en/")) {
             url.pathname = "/en" + url.pathname;
             if (url.pathname.endsWith("/"))
               url.pathname = url.pathname.slice(0, -1);
