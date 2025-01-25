@@ -29,7 +29,7 @@ export default function EditorMain({
           }
           ErrorBoundary={LexicalErrorBoundary}
         />
-        <HistoryPlugin />
+        <HistoryPlugin  />
         <AutoFocusPlugin />
       </div>
     </>

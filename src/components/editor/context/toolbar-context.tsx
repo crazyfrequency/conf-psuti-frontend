@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
 import { ElementFormatType } from 'lexical';
 import {
   createContext,
@@ -23,6 +31,7 @@ export const blockTypeToBlockName = {
   bullet: 'Bulleted List',
   check: 'Check List',
   code: 'Code Block',
+  h3: 'Heading 3',
   h4: 'Heading 4',
   h5: 'Heading 5',
   h6: 'Heading 6',

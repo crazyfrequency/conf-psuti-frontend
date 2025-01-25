@@ -4,10 +4,10 @@ import { InitialConfigType, InitialEditorStateType, LexicalComposer } from '@lex
 
 import { useI18n } from '@/locales/client';
 import { toast } from 'sonner';
+import { ToolbarContext } from './context/toolbar-context';
 import EditorMain from './editor';
 import { theme } from './editor-theme';
 import './editor.css';
-import { ToolbarContext } from './toolbar-context';
 
 export default function Editor({
   namespace,
