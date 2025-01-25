@@ -56,7 +56,7 @@ export default function ConfContext({
           className={cn(
             "max-lg:overflow-y-auto max-lg:max-h-72 max-lg:p-4",
             "max-lg:border max-lg:rounded-lg max-lg:bg-card",
-            "max-lg:w-full max-lg:shadow-sm"
+            "max-lg:w-full max-lg:shadow-xs"
           )}
         />
         <Separator className="max-lg:hidden" orientation="vertical" />

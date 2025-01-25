@@ -83,7 +83,7 @@ export default function Years({
 
   return (
     <div className="flex gap-1 relative w-full from-background to-transparent from-50%">
-      <div ref={left_button} className="invisible pointer-events-none absolute py-2 left-0 pr-12 bg-gradient-to-r">
+      <div ref={left_button} className="invisible pointer-events-none absolute py-2 left-0 pr-12 bg-linear-to-r">
         <Button className="pointer-events-auto" variant="outline" size="icon" onClick={()=>{
           scrollArea.current?.scroll({
             left: scrollArea.current?.scrollLeft - scrollArea.current?.clientWidth/2,
@@ -119,7 +119,7 @@ export default function Years({
           ))
         }
       </nav>
-      <div ref={right_button} className="invisible pointer-events-none absolute py-2 right-0 pl-12 bg-gradient-to-l">
+      <div ref={right_button} className="invisible pointer-events-none absolute py-2 right-0 pl-12 bg-linear-to-l">
         <Button className="pointer-events-auto" variant="outline" size="icon" onClick={()=>{
           scrollArea.current?.scroll({
             left: scrollArea.current?.scrollLeft + scrollArea.current?.clientWidth/2,
