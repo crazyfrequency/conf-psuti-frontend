@@ -49,6 +49,9 @@ export default {
     create: {
       title: 'Create conference',
       description: 'Fill in the form to create a new conference',
+    },
+    new: {
+      title: 'New conferences'
     }
   },
   login: {

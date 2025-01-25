@@ -1,10 +1,10 @@
 'use server'
 
+import Confs from "@/components/confs/confs";
 import { getScopedI18n } from "@/locales/server";
 import { getConfsListByYear } from "@/services/confs.server.service";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Confs from "./confs";
 
 export async function generateMetadata({
   params

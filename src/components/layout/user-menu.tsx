@@ -24,6 +24,18 @@ export default function UserMenu() {
       ? router.push(MAIN_PAGES.PROFILE)
       : null
   })
+  useKeyBind({
+    keyBind: 'Alt+KeyC',
+    callback: () => user !== "unauthorized" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/confs\/new/)
+      ? router.push(ADMIN_PAGES.NEW_CONFS)
+      : null
+  })
+  useKeyBind({
+    keyBind: 'Alt+KeyU',
+    callback: () => user !== "unauthorized" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/users/)
+      ? router.push(ADMIN_PAGES.USERS)
+      : null
+  })
   useKeyBind({ keyBind: 'Ctrl+Shift+KeyQ', callback: logout })
 
   if (user === "unauthorized")
@@ -48,11 +60,13 @@ export default function UserMenu() {
         <DropdownMenuItem className="cursor-pointer" asChild>
           <Link href={ADMIN_PAGES.NEW_CONFS}>
             {t('new_confs')}
+            <DropdownMenuShortcut>ALT+C</DropdownMenuShortcut>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer" asChild>
           <Link href={ADMIN_PAGES.USERS}>
             {t('users')}
+            <DropdownMenuShortcut>ALT+U</DropdownMenuShortcut>
           </Link>
         </DropdownMenuItem>
       </>
@@ -76,7 +90,7 @@ export default function UserMenu() {
           <DropdownMenuItem className="cursor-pointer" asChild>
             <Link href={MAIN_PAGES.PROFILE}>
               {t('profile')}
-              <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
+              <DropdownMenuShortcut>Ctrl+P</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -84,7 +98,7 @@ export default function UserMenu() {
         <DropdownMenuSeparator className="bg-border" />
         <DropdownMenuItem className="cursor-pointer" onClick={logout}>
           {t('logout')}
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+          <DropdownMenuShortcut>Ctrl+Shift+Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
