@@ -14,7 +14,9 @@ export default {
     user_menu: {
       login: 'Войти',
       logout: 'Выход',
-      profile: 'Профиль'
+      profile: 'Профиль',
+      new_confs: 'Новые конференции',
+      users: 'Пользователи'
     }
   },
   footer: {

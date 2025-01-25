@@ -24,3 +24,13 @@ class AuthPages {
 }
 
 export const AUTH_PAGES = new AuthPages()
+
+class AdminPages {
+  private root = "/admin";
+
+  NEW_CONFS = `${this.root}/confs/new`
+  CREATE_CONF = `${this.root}/confs/create`
+  USERS = `${this.root}/users`
+}
+
+export const ADMIN_PAGES = new AdminPages()

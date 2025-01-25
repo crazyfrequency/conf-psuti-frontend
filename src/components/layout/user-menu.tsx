@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { AUTH_PAGES, MAIN_PAGES } from '@/constants/pages.constants';
+import { ADMIN_PAGES, AUTH_PAGES, MAIN_PAGES } from '@/constants/pages.constants';
 import { useKeyBind } from '@/hooks/keybind-hook';
 import { useCurrentLocale, useScopedI18n } from '@/locales/client';
 import { CircleUser, User } from 'lucide-react';
@@ -42,7 +42,21 @@ export default function UserMenu() {
   const last_name = locale === 'en'
     ? user?.lastnameEn ?? user?.lastnameRu
     : user?.lastnameRu;
-  
+
+  const admin_pages = user?.role === 'ADMIN' ? (
+      <>
+        <DropdownMenuItem className="cursor-pointer" asChild>
+          <Link href={ADMIN_PAGES.NEW_CONFS}>
+            {t('new_confs')}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" asChild>
+          <Link href={ADMIN_PAGES.USERS}>
+            {t('users')}
+          </Link>
+        </DropdownMenuItem>
+      </>
+    ) : null;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -66,6 +80,7 @@ export default function UserMenu() {
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
+        {admin_pages}
         <DropdownMenuSeparator className="bg-border" />
         <DropdownMenuItem className="cursor-pointer" onClick={logout}>
           {t('logout')}
