@@ -1,5 +1,5 @@
 import { getCurrentLocale } from '@/locales/server'
-import { getConfBySlug } from '@/services/confs.server.service'
+import { getConfsListByYear } from '@/services/confs.server.service'
 import { readFile } from 'fs/promises'
 import { notFound } from 'next/navigation'
 import { ImageResponse } from 'next/og'
@@ -13,17 +13,21 @@ export const size = {
 export const contentType = 'image/png'
  
 // Image generation
-export default async function Image({ params: { slug } }: Readonly<{ params: { slug: string } }>) {
+export default async function Image() {
   const locale = await getCurrentLocale();
-  const response = await getConfBySlug(slug);
+  const response = await getConfsListByYear();
 
   if (response.status !== 'success') return notFound();
 
   const image = "data:image/png;base64," + (await readFile(join(process.cwd(), 'public', 'logo_pguti_color.png'))).toString('base64');
 
-  const title = locale === 'en' && response.data.isEnglishEnable
-    ? response.data.conferenceNameEn ?? response.data.conferenceNameRu
-    : response.data.conferenceNameRu
+  const title = locale === 'en'
+      ? "Current conferences"
+      : "Текущие конференции"
+
+  const count = locale === 'en'
+    ? `Number of conferences: ${response.data.length}`
+    : `Количество конференций: ${response.data.length}`
 
   return new ImageResponse(
     (
@@ -66,6 +70,19 @@ export default async function Image({ params: { slug } }: Readonly<{ params: { s
           }}
         >
           {title}
+        </div>
+        <div
+          style={{
+            fontSize: 30,
+            fontStyle: 'normal',
+            letterSpacing: '-0.025em',
+            color: 'black',
+            padding: '0 1rem',
+            lineHeight: 1.4,
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          {count}
         </div>
       </div>
     ),
