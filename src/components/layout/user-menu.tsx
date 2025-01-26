@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ADMIN_PAGES, AUTH_PAGES, MAIN_PAGES } from '@/constants/pages.constants';
 import { useKeyBind } from '@/hooks/keybind-hook';
 import { useCurrentLocale, useScopedI18n } from '@/locales/client';
@@ -73,11 +74,20 @@ export default function UserMenu() {
     ) : null;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-            <User />
-        </Button>
-      </DropdownMenuTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <DropdownMenuTrigger asChild>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon">
+                  <User />
+              </Button>
+            </TooltipTrigger>
+          </DropdownMenuTrigger>
+            <TooltipContent>
+              {t('profile')}
+            </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">

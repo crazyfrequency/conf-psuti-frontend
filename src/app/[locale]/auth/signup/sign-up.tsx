@@ -189,7 +189,7 @@ export default function SignUp() {
               <AlertDescription>{t('signup.caution.description')}</AlertDescription>
             </Alert>
 
-            <Button type="submit">{t('signup.signup')}</Button>
+            <Button className="cursor-pointer" type="submit">{t('signup.signup')}</Button>
           </form>
         </Form>
       </CardContent>

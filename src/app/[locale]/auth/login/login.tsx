@@ -74,7 +74,7 @@ export default function Login() {
         <CardDescription>{t('login.description')}</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full cursor-pointer">
           {t('login.login_with_psuti')}
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
@@ -109,7 +109,7 @@ export default function Login() {
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">{t('login.login')}</Button>
+            <Button className="w-full cursor-pointer" type="submit">{t('login.login')}</Button>
           </form>
         </Form>
       </CardContent>
