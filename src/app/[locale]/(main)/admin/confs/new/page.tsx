@@ -2,6 +2,7 @@
 
 import { getScopedI18n } from "@/locales/server";
 import { Metadata } from "next";
+import NewConfs from "./new";
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = (await getScopedI18n('confs.new'))('title');
@@ -14,8 +15,6 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function NewConfsSsr() {
-  return (
-    <div>page</div>
-  )
+export default async function NewConfsSsr() {
+  return <NewConfs />
 }
