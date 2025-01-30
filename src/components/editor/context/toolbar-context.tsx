@@ -31,25 +31,36 @@ export const blockTypeToBlockName = {
   bullet: 'Bulleted List',
   check: 'Check List',
   code: 'Code Block',
-  h3: 'Heading 3',
-  h4: 'Heading 4',
-  h5: 'Heading 5',
-  h6: 'Heading 6',
+  h3: 'Heading 1',
+  h4: 'Heading 2',
+  h5: 'Heading 3',
   number: 'Numbered List',
   paragraph: 'Normal',
   quote: 'Quote',
-};
+} as const;
+
+export const blockTypeToBlockNameRu = {
+  bullet: 'Ненумерованный список',
+  check: 'Чек-лист',
+  code: 'Блок кода',
+  h3: 'Заголовок 1',
+  h4: 'Заголовок 2',
+  h5: 'Заголовок 3',
+  number: 'Нумерованный список',
+  paragraph: 'Обычный',
+  quote: 'Цитата',
+} as const;
 
 //disable eslint sorting rule for quick reference to toolbar state
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 const INITIAL_TOOLBAR_STATE = {
-  bgColor: '#fff',
+  bgColor: 'inherit',
   blockType: 'paragraph' as keyof typeof blockTypeToBlockName,
   canRedo: false,
   canUndo: false,
   codeLanguage: '',
   elementFormat: 'left' as ElementFormatType,
-  fontColor: '#000',
+  fontColor: 'inherit',
   fontFamily: 'Arial',
   // Current font size in px
   fontSize: `${DEFAULT_FONT_SIZE}px`,

@@ -1,3 +1,7 @@
 .editor-input {
   tab-size: 1;
 }
+
+.editor-text ul, .editor-text ol {
+  list-style: revert;
+}

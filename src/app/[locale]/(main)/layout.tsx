@@ -33,7 +33,7 @@ export default async function MainLayout({
       )}>
         <HeaderMain />
       </header>
-      <div className="w-dvw mx-auto px-2 sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-[85rem] mt-2 overflow-x-hidden">
+      <div className="w-dvw mx-auto px-2 pt-2.5 sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-[85rem] mt-2">
         {children}
         <Separator className="my-4" />
         <Footer year={new Date().getFullYear()} />

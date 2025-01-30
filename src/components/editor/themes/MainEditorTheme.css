@@ -1,0 +1,523 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ *
+ */
+.MainEditorTheme__ltr {
+  text-align: left;
+}
+.MainEditorTheme__rtl {
+  text-align: right;
+}
+.MainEditorTheme__paragraph {
+  @apply relative [&:not(:first-child)]:leading-7 [&:not(:first-child)]:mt-6;
+}
+.MainEditorTheme__quote {
+  @apply m-0 mt-4 border-l-2 pl-6 italic;
+}
+.MainEditorTheme__h3 {
+  @apply [&:not(:first-child)]:mt-10 text-4xl font-extrabold tracking-tight uppercase;
+}
+.MainEditorTheme__h4 {
+  @apply [&:not(:first-child)]:mt-8 text-3xl font-semibold tracking-tight uppercase;
+}
+.MainEditorTheme__h5 {
+  @apply [&:not(:first-child)]:mt-6 text-2xl font-semibold tracking-tight;
+}
+.MainEditorTheme__indent {
+  --lexical-indent-base-value: 40px;
+}
+.MainEditorTheme__textBold {
+  font-weight: bold;
+}
+.MainEditorTheme__textItalic {
+  font-style: italic;
+}
+.MainEditorTheme__textUnderline {
+  text-decoration: underline;
+}
+
+.MainEditorTheme__textStrikethrough {
+  text-decoration: line-through;
+}
+
+.MainEditorTheme__textUnderlineStrikethrough {
+  text-decoration: underline line-through;
+}
+
+.MainEditorTheme__tabNode {
+  position: relative;
+  text-decoration: none;
+}
+
+.MainEditorTheme__tabNode.MainEditorTheme__textUnderline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.15em;
+  border-bottom: 0.1em solid currentColor;
+}
+
+.MainEditorTheme__tabNode.MainEditorTheme__textStrikethrough::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.69em;
+  border-top: 0.1em solid currentColor;
+}
+
+.MainEditorTheme__tabNode.MainEditorTheme__textUnderlineStrikethrough::before,
+.MainEditorTheme__tabNode.MainEditorTheme__textUnderlineStrikethrough::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.MainEditorTheme__tabNode.MainEditorTheme__textUnderlineStrikethrough::before {
+  top: 0.69em;
+  border-top: 0.1em solid currentColor;
+}
+
+.MainEditorTheme__tabNode.MainEditorTheme__textUnderlineStrikethrough::after {
+  bottom: 0.05em;
+  border-bottom: 0.1em solid currentColor;
+}
+
+.MainEditorTheme__textSubscript {
+  font-size: 0.8em;
+  vertical-align: sub !important;
+}
+.MainEditorTheme__textSuperscript {
+  font-size: 0.8em;
+  vertical-align: super;
+}
+.MainEditorTheme__textCode {
+  background-color: rgb(240, 242, 245);
+  padding: 1px 0.25rem;
+  font-family: Menlo, Consolas, Monaco, monospace;
+  font-size: 94%;
+}
+.MainEditorTheme__textLowercase {
+  text-transform: lowercase;
+}
+.MainEditorTheme__textUppercase {
+  text-transform: uppercase;
+}
+.MainEditorTheme__textCapitalize {
+  text-transform: capitalize;
+}
+.MainEditorTheme__hashtag {
+  background-color: rgba(88, 144, 255, 0.15);
+  border-bottom: 1px solid rgba(88, 144, 255, 0.3);
+}
+.MainEditorTheme__link {
+  color: rgb(33, 111, 219);
+  text-decoration: none;
+}
+.MainEditorTheme__link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.MainEditorTheme__blockCursor {
+  display: block;
+  pointer-events: none;
+  position: absolute;
+}
+.MainEditorTheme__blockCursor:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -2px;
+  width: 20px;
+  border-top: 1px solid black;
+  animation: CursorBlink 1.1s steps(2, start) infinite;
+}
+@keyframes CursorBlink {
+  to {
+    visibility: hidden;
+  }
+}
+.MainEditorTheme__code {
+  background-color: rgb(240, 242, 245);
+  font-family: Menlo, Consolas, Monaco, monospace;
+  display: block;
+  padding: 8px 8px 8px 52px;
+  line-height: 1.53;
+  font-size: 13px;
+  margin: 0;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  position: relative;
+  tab-size: 2;
+}
+.MainEditorTheme__code:before {
+  content: attr(data-gutter);
+  position: absolute;
+  background-color: #eee;
+  left: 0;
+  top: 0;
+  border-right: 1px solid #ccc;
+  padding: 8px;
+  color: #777;
+  white-space: pre-wrap;
+  text-align: right;
+  min-width: 25px;
+}
+.MainEditorTheme__tableScrollableWrapper {
+  overflow-x: auto;
+  margin: 0px 25px 30px 0px;
+}
+.MainEditorTheme__tableScrollableWrapper > .MainEditorTheme__table {
+  /* Remove the table's vertical margin and put it on the wrapper */
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.MainEditorTheme__tableAlignmentCenter {
+  margin-left: auto;
+  margin-right: auto;
+}
+.MainEditorTheme__tableAlignmentRight {
+  margin-left: auto;
+}
+.MainEditorTheme__table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  table-layout: fixed;
+  width: fit-content;
+  margin-top: 25px;
+  margin-bottom: 30px;
+}
+.MainEditorTheme__tableRowStriping tr:nth-child(even) {
+  background-color: #f2f5fb;
+}
+.MainEditorTheme__tableSelection *::selection {
+  background-color: transparent;
+}
+.MainEditorTheme__tableSelected {
+  outline: 2px solid rgb(60, 132, 244);
+}
+.MainEditorTheme__tableCell {
+  border: 1px solid #bbb;
+  width: 75px;
+  vertical-align: top;
+  text-align: start;
+  padding: 6px 8px;
+  position: relative;
+  outline: none;
+  overflow: auto;
+}
+/*
+  A firefox workaround to allow scrolling of overflowing table cell
+  ref: https://bugzilla.mozilla.org/show_bug.cgi?id=1904159
+*/
+.MainEditorTheme__tableCell > * {
+  overflow: inherit;
+}
+.MainEditorTheme__tableCellResizer {
+  position: absolute;
+  right: -4px;
+  height: 100%;
+  width: 8px;
+  cursor: ew-resize;
+  z-index: 10;
+  top: 0;
+}
+.MainEditorTheme__tableCellHeader {
+  background-color: #f2f3f5;
+  text-align: start;
+}
+.MainEditorTheme__tableCellSelected {
+  caret-color: transparent;
+}
+.MainEditorTheme__tableCellSelected::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: highlight;
+  mix-blend-mode: multiply;
+  content: '';
+  pointer-events: none;
+}
+.MainEditorTheme__tableAddColumns {
+  position: absolute;
+  background-color: #eee;
+  height: 100%;
+  animation: table-controls 0.2s ease;
+  border: 0;
+  cursor: pointer;
+}
+/* .MainEditorTheme__tableAddColumns:after {
+  background-image: url(../images/icons/plus.svg);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: block;
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+} */
+.MainEditorTheme__tableAddColumns:hover,
+.MainEditorTheme__tableAddRows:hover {
+  background-color: #c9dbf0;
+}
+.MainEditorTheme__tableAddRows {
+  position: absolute;
+  width: calc(100% - 25px);
+  background-color: #eee;
+  animation: table-controls 0.2s ease;
+  border: 0;
+  cursor: pointer;
+}
+/* .MainEditorTheme__tableAddRows:after {
+  background-image: url(../images/icons/plus.svg);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: block;
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+} */
+@keyframes table-controls {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.MainEditorTheme__tableCellResizeRuler {
+  display: block;
+  position: absolute;
+  width: 1px;
+  background-color: rgb(60, 132, 244);
+  height: 100%;
+  top: 0;
+}
+.MainEditorTheme__tableCellActionButtonContainer {
+  display: block;
+  right: 5px;
+  top: 6px;
+  position: absolute;
+  z-index: 4;
+  width: 20px;
+  height: 20px;
+}
+.MainEditorTheme__tableCellActionButton {
+  background-color: #eee;
+  display: block;
+  border: 0;
+  border-radius: 20px;
+  width: 20px;
+  height: 20px;
+  color: #222;
+  cursor: pointer;
+}
+.MainEditorTheme__tableCellActionButton:hover {
+  background-color: #ddd;
+}
+.MainEditorTheme__characterLimit {
+  display: inline;
+  background-color: #ffbbbb !important;
+}
+.MainEditorTheme__ol1 {
+  padding: 0;
+  margin: 0;
+  list-style-position: outside;
+}
+.MainEditorTheme__ol2 {
+  padding: 0;
+  margin: 0;
+  list-style-type: upper-alpha;
+  list-style-position: outside;
+}
+.MainEditorTheme__ol3 {
+  padding: 0;
+  margin: 0;
+  list-style-type: lower-alpha;
+  list-style-position: outside;
+}
+.MainEditorTheme__ol4 {
+  padding: 0;
+  margin: 0;
+  list-style-type: upper-roman;
+  list-style-position: outside;
+}
+.MainEditorTheme__ol5 {
+  padding: 0;
+  margin: 0;
+  list-style-type: lower-roman;
+  list-style-position: outside;
+}
+.MainEditorTheme__ul {
+  padding: 0;
+  margin: 0;
+  list-style-position: outside;
+}
+.MainEditorTheme__listItem {
+  margin: 0 32px;
+}
+.MainEditorTheme__listItemChecked,
+.MainEditorTheme__listItemUnchecked {
+  position: relative;
+  margin-left: 8px;
+  margin-right: 8px;
+  padding-left: 24px;
+  padding-right: 24px;
+  list-style-type: none;
+  outline: none;
+}
+.MainEditorTheme__listItemChecked {
+  text-decoration: line-through;
+}
+.MainEditorTheme__listItemUnchecked:before,
+.MainEditorTheme__listItemChecked:before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  top: 2px;
+  left: 0;
+  cursor: pointer;
+  display: block;
+  background-size: cover;
+  position: absolute;
+}
+.MainEditorTheme__listItemUnchecked[dir='rtl']:before,
+.MainEditorTheme__listItemChecked[dir='rtl']:before {
+  left: auto;
+  right: 0;
+}
+.MainEditorTheme__listItemUnchecked:focus:before,
+.MainEditorTheme__listItemChecked:focus:before {
+  box-shadow: 0 0 0 2px #a6cdfe;
+  border-radius: 2px;
+}
+.MainEditorTheme__listItemUnchecked:before {
+  border: 1px solid #999;
+  border-radius: 2px;
+}
+.MainEditorTheme__listItemChecked:before {
+  border: 1px solid rgb(61, 135, 245);
+  border-radius: 2px;
+  background-color: #3d87f5;
+  background-repeat: no-repeat;
+}
+.MainEditorTheme__listItemChecked:after {
+  content: '';
+  cursor: pointer;
+  border-color: #fff;
+  border-style: solid;
+  position: absolute;
+  display: block;
+  top: 6px;
+  width: 3px;
+  left: 7px;
+  right: 7px;
+  height: 6px;
+  transform: rotate(45deg);
+  border-width: 0 2px 2px 0;
+}
+.MainEditorTheme__nestedListItem {
+  list-style-type: none;
+}
+.MainEditorTheme__nestedListItem:before,
+.MainEditorTheme__nestedListItem:after {
+  display: none;
+}
+.MainEditorTheme__tokenComment {
+  color: slategray;
+}
+.MainEditorTheme__tokenPunctuation {
+  color: #999;
+}
+.MainEditorTheme__tokenProperty {
+  color: #905;
+}
+.MainEditorTheme__tokenSelector {
+  color: #690;
+}
+.MainEditorTheme__tokenOperator {
+  color: #9a6e3a;
+}
+.MainEditorTheme__tokenAttr {
+  color: #07a;
+}
+.MainEditorTheme__tokenVariable {
+  color: #e90;
+}
+.MainEditorTheme__tokenFunction {
+  color: #dd4a68;
+}
+.MainEditorTheme__mark {
+  background: rgba(255, 212, 0, 0.14);
+  border-bottom: 2px solid rgba(255, 212, 0, 0.3);
+  padding-bottom: 2px;
+}
+.MainEditorTheme__markOverlap {
+  background: rgba(255, 212, 0, 0.3);
+  border-bottom: 2px solid rgba(255, 212, 0, 0.7);
+}
+.MainEditorTheme__mark.selected {
+  background: rgba(255, 212, 0, 0.5);
+  border-bottom: 2px solid rgba(255, 212, 0, 1);
+}
+.MainEditorTheme__markOverlap.selected {
+  background: rgba(255, 212, 0, 0.7);
+  border-bottom: 2px solid rgba(255, 212, 0, 0.7);
+}
+.MainEditorTheme__embedBlock {
+  user-select: none;
+}
+.MainEditorTheme__embedBlockFocus {
+  outline: 2px solid rgb(60, 132, 244);
+}
+.MainEditorTheme__layoutContainer {
+  display: grid;
+  gap: 10px;
+  margin: 10px 0;
+}
+.MainEditorTheme__layoutItem {
+  border: 1px dashed #ddd;
+  padding: 8px 16px;
+}
+.MainEditorTheme__hr {
+  padding: 2px 2px;
+  border: none;
+  margin: 1em 0;
+  cursor: pointer;
+}
+.MainEditorTheme__hr:after {
+  content: '';
+  display: block;
+  height: 2px;
+  background-color: #ccc;
+  line-height: 2px;
+}
+.MainEditorTheme__hr.selected {
+  outline: 2px solid rgb(60, 132, 244);
+  user-select: none;
+}
+
+.MainEditorTheme__specialText {
+  background-color: yellow;
+  font-weight: bold;
+}

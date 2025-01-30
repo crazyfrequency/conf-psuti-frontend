@@ -6,8 +6,9 @@ import { useI18n } from '@/locales/client';
 import { toast } from 'sonner';
 import { ToolbarContext } from './context/toolbar-context';
 import EditorMain from './editor';
-import { theme } from './editor-theme';
 import './editor.css';
+import AllNodes from './nodes/AllNodes';
+import theme from './themes/MainEditorTheme';
 
 export default function Editor({
   namespace,
@@ -24,6 +25,7 @@ export default function Editor({
     namespace: namespace ?? "text_editor",
     editorState: editorState,
     theme: theme,
+    nodes: AllNodes,
     onError: (error) => {
       toast.error(i18n('errors.editor', { error: error.name }), {
         description: error.message
