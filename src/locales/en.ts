@@ -14,7 +14,9 @@ export default {
     user_menu: {
       login: 'Login',
       logout: 'Logout',
-      profile: 'Profile'
+      profile: 'Profile',
+      new_confs: 'New conferences',
+      users: 'Users'
     }
   },
   footer: {
@@ -47,6 +49,9 @@ export default {
     create: {
       title: 'Create conference',
       description: 'Fill in the form to create a new conference',
+    },
+    new: {
+      title: 'New conferences'
     }
   },
   login: {

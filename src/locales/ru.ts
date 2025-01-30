@@ -14,7 +14,9 @@ export default {
     user_menu: {
       login: 'Войти',
       logout: 'Выход',
-      profile: 'Профиль'
+      profile: 'Профиль',
+      new_confs: 'Новые конференции',
+      users: 'Пользователи'
     }
   },
   footer: {
@@ -47,6 +49,9 @@ export default {
     create: {
       title: 'Создание конференции',
       description: 'Заполните форму для создания новой конференции',
+    },
+    new: {
+      title: 'Новые конференции',
     }
   },
   login: {

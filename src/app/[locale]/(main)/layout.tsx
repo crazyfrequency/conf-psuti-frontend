@@ -28,8 +28,8 @@ export default async function MainLayout({
       <header className={cn(
         "sticky flex items-center h-14 w-dvw top-0 mx-auto",
         "z-50 rounded-b-lg border-solid border border-t-0",
-        "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/25",
-        "sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl"
+        "bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/25",
+        "sm:max-w-(--breakpoint-sm) md:max-w-(--breakpoint-md) lg:max-w-(--breakpoint-lg) xl:max-w-(--breakpoint-xl) 2xl:max-w-(--breakpoint-2xl)"
       )}>
         <HeaderMain />
       </header>

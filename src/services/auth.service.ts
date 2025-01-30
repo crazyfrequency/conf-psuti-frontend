@@ -73,6 +73,12 @@ export async function getMe() {
   const response = checkErrorsClient(
     await axiosWithAuth.get<IUser>('/users/me')
   )
+
+  if (response.status === 'success') localStorage.setItem('user', JSON.stringify({
+    ...response.data,
+    iat: +Date.now()
+  }))
+  else localStorage.removeItem('user')
   
   return response
 }

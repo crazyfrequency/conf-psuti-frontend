@@ -1,9 +1,9 @@
 'use server'
 
+import Confs from "@/components/confs/confs";
 import { getScopedI18n } from "@/locales/server";
 import { getConfsListByYear } from "@/services/confs.server.service";
 import { Metadata } from "next";
-import Confs from "./confs/[year]/confs";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getScopedI18n('confs_list');

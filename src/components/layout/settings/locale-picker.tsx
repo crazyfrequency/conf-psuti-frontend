@@ -33,10 +33,10 @@ export default function LocalePicker({
       </TooltipProvider>
       <DropdownMenuContent>
         <DropdownMenuRadioGroup value={currentLocale}>
-          <DropdownMenuRadioItem value="ru" onClick={() => changeLocale('ru')}>
+          <DropdownMenuRadioItem className="cursor-pointer" value="ru" onClick={() => changeLocale('ru')}>
             Русский
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="en" onClick={() => changeLocale('en')}>
+          <DropdownMenuRadioItem className="cursor-pointer" value="en" onClick={() => changeLocale('en')}>
             English
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>

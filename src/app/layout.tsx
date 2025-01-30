@@ -3,8 +3,19 @@ import { AuthProvider } from "@/components/layout/providers/auth-provider";
 import I18nProvider from "@/components/layout/providers/i18n-provider";
 import LoaderProvider from "@/components/layout/providers/loader-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { SITE_DOMAIN_FRONT } from "@/constants/app.constants";
+import { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_DOMAIN_FRONT),
+  openGraph: {
+    locale: "ru",
+    alternateLocale: "en",
+    countryName: "Russia"
+  }
+}
 
 export default function RootLayout({
   children

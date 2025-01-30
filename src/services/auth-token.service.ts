@@ -1,5 +1,5 @@
 import { COOKIES_ACCESS_TOKEN } from '@/constants/app.constants'
-import { TUserTokenData } from '@/types/auth.types'
+import { IUser, TUserTokenData } from '@/types/auth.types'
 import { deleteCookie, getCookie, setCookie } from 'cookies-next/client'
 
 export const getAuthToken = () => {
@@ -29,3 +29,15 @@ export const setAuthToken = (token: string, expires?: Date) => {
 export const removeAuthToken = () => {
   deleteCookie(COOKIES_ACCESS_TOKEN)
 }
+
+export function getUserFromLocalStorage(): IUser|null {
+  const user_data = localStorage.getItem('user');
+
+  const user = user_data ? JSON.parse(user_data) as IUser & { iat: number } : null;
+
+  if (!user) return null;
+
+  if (Date.now() < (user.iat + 1000 * 15)) return user;
+
+  return null;
+} 

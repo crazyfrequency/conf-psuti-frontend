@@ -1,6 +1,6 @@
 /**
  * Домен для API запросов с клиента
- * При нахождении на одном домене указывать пустое значение
+ * При нахождении на одном домене указывать /api
  */
 export const SITE_DOMAIN_API = process.env.NEXT_PUBLIC_DOMAIN_API || 'http://localhost:8000/api';
 
@@ -11,10 +11,15 @@ export const SITE_DOMAIN_API = process.env.NEXT_PUBLIC_DOMAIN_API || 'http://loc
 export const SITE_DOMAIN_API_LOCAL = process.env.LOCAL_DOMAIN_API || 'http://localhost:8000/api';
 
 /**
+ * Домен для, где расположен фронтенд
+ */
+export const SITE_DOMAIN_FRONT = process.env.NEXT_PUBLIC_DOMAIN_FRONT || 'http://localhost:3000';
+
+/**
  * Куки для хранения токена
  * Указать имя параметра, в котором будет хранится куки
  */
-export const COOKIES_ACCESS_TOKEN = process.env.NEXT_PUBLIC_COOKIES_ACCESS_TOKEN || 'access_token';
+export const COOKIES_ACCESS_TOKEN = 'access_token';
 
 /**
  * Почта службы поддержки
@@ -37,6 +42,6 @@ const cacheModeValue = process.env.NEXT_PUBLIC_CACHE_MODE || "";
  * Режим кеширования
  */
 export const CACHE_MODE: RequestCache =
-  ['no-cache', 'reload', 'force-cache', 'only-if-cached'].includes(cacheModeValue)
+  ['default', 'no-cache', 'no-store', 'reload', 'force-cache', 'only-if-cached'].includes(cacheModeValue)
     ? cacheModeValue as RequestCache
     : 'force-cache';

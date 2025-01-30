@@ -2,10 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { AUTH_PAGES, MAIN_PAGES } from '@/constants/pages.constants';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { ADMIN_PAGES, AUTH_PAGES, MAIN_PAGES } from '@/constants/pages.constants';
 import { useKeyBind } from '@/hooks/keybind-hook';
 import { useCurrentLocale, useScopedI18n } from '@/locales/client';
-import { logout } from '@/services/auth.service';
 import { CircleUser, User } from 'lucide-react';
 import { useRouter } from 'next-nprogress-bar';
 import Link from 'next/link';
@@ -16,10 +16,27 @@ export default function UserMenu() {
   const t = useScopedI18n('main_header.user_menu');
   const router = useRouter();
   const locale = useCurrentLocale();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
 
-  useKeyBind({ keyBind: 'Ctrl+KeyP', callback: () => router.push(MAIN_PAGES.PROFILE) })
+  useKeyBind({
+    keyBind: 'Ctrl+KeyP',
+    callback: () => user !== "unauthorized" && !pathname.match(/(\/en|)\/profile/)
+      ? router.push(MAIN_PAGES.PROFILE)
+      : null
+  })
+  useKeyBind({
+    keyBind: 'Alt+KeyC',
+    callback: () => user !== "unauthorized" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/confs\/new/)
+      ? router.push(ADMIN_PAGES.NEW_CONFS)
+      : null
+  })
+  useKeyBind({
+    keyBind: 'Alt+KeyU',
+    callback: () => user !== "unauthorized" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/users/)
+      ? router.push(ADMIN_PAGES.USERS)
+      : null
+  })
   useKeyBind({ keyBind: 'Ctrl+Shift+KeyQ', callback: logout })
 
   if (user === "unauthorized")
@@ -38,14 +55,39 @@ export default function UserMenu() {
   const last_name = locale === 'en'
     ? user?.lastnameEn ?? user?.lastnameRu
     : user?.lastnameRu;
-  
+
+  const admin_pages = user?.role === 'ADMIN' ? (
+      <>
+        <DropdownMenuItem className="cursor-pointer" asChild>
+          <Link href={ADMIN_PAGES.NEW_CONFS}>
+            {t('new_confs')}
+            <DropdownMenuShortcut>ALT+C</DropdownMenuShortcut>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" asChild>
+          <Link href={ADMIN_PAGES.USERS}>
+            {t('users')}
+            <DropdownMenuShortcut>ALT+U</DropdownMenuShortcut>
+          </Link>
+        </DropdownMenuItem>
+      </>
+    ) : null;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-            <User />
-        </Button>
-      </DropdownMenuTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <DropdownMenuTrigger asChild>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon">
+                  <User />
+              </Button>
+            </TooltipTrigger>
+          </DropdownMenuTrigger>
+            <TooltipContent>
+              {t('profile')}
+            </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
@@ -55,17 +97,18 @@ export default function UserMenu() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-border" />
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem className="cursor-pointer" asChild>
             <Link href={MAIN_PAGES.PROFILE}>
               {t('profile')}
-              <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
+              <DropdownMenuShortcut>Ctrl+P</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
+        {admin_pages}
         <DropdownMenuSeparator className="bg-border" />
-        <DropdownMenuItem onClick={logout}>
+        <DropdownMenuItem className="cursor-pointer" onClick={logout}>
           {t('logout')}
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+          <DropdownMenuShortcut>Ctrl+Shift+Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
