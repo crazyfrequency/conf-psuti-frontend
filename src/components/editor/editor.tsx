@@ -6,6 +6,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { HorizontalRulePlugin } from '@lexical/react/LexicalHorizontalRulePlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { useLexicalEditable } from '@lexical/react/useLexicalEditable';
@@ -15,6 +16,8 @@ import { useCurrentLocale } from '@/locales/client';
 import { CAN_USE_DOM } from '@lexical/utils';
 import { toast } from 'sonner';
 import { useSharedHistoryContext } from './context/history-context';
+import LexicalAutoLinkPlugin from './plugins/auto-link-plugin';
+import LinkPlugin from './plugins/link-plugin';
 import EditorToolbar from "./plugins/toolbar";
 
 
@@ -75,9 +78,12 @@ export default function EditorMain({
         <ListPlugin />
         <CheckListPlugin />
         <ClearEditorPlugin onClear={() => toast.info(locale ? 'Успешно очищено' : 'Successfully cleared')} />
-        <ClickableLinkPlugin />
+        <ClickableLinkPlugin disabled={isEditable} />
         <HistoryPlugin externalHistoryState={historyState} />
         <AutoFocusPlugin />
+        <HorizontalRulePlugin />
+        <LexicalAutoLinkPlugin />
+        <LinkPlugin />
       </div>
     </>
   )

@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { useCurrentLocale } from '@/locales/client';
 import { DropdownMenu } from '@radix-ui/react-dropdown-menu';
 import { LexicalEditor } from 'lexical';
-import { Code, Heading1, Heading2, Heading3, LetterText, List, ListOrdered, ListTodo, MessageSquareQuote } from 'lucide-react';
+import { Code, Heading1, Heading2, Heading3, LetterText, List, ListOrdered, ListTodo, Quote } from 'lucide-react';
 import { blockTypeToBlockName, blockTypeToBlockNameRu, useToolbarState } from '../../context/toolbar-context';
 import { SHORTCUTS } from '../shortcuts-plugin/shortcuts';
 import { formatBulletList, formatCheckList, formatCode, formatHeading, formatNumberedList, formatParagraph, formatQuote } from './utils';
@@ -24,7 +24,7 @@ function BlockIcon({
     return <ListOrdered />
 
   if (blockType === 'quote')
-    return <MessageSquareQuote />
+    return <Quote />
 
   if (blockType === 'code')
     return <Code />
@@ -175,7 +175,7 @@ export default function BlockFormatDropdown({
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Separator className="mx-2" orientation="vertical" />
+      <Separator orientation="vertical" />
     </>
   )
 }

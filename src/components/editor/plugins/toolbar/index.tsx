@@ -1,37 +1,27 @@
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+import { Toggle } from "@/components/ui/toggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useCurrentLocale } from "@/locales/client";
 import { editor_headers } from "@/locales/editor";
-import { $isCodeNode, CODE_LANGUAGE_FRIENDLY_NAME_MAP, CODE_LANGUAGE_MAP, getLanguageFriendlyName } from "@lexical/code";
-import { $isLinkNode } from '@lexical/link';
+import { $isCodeNode, CODE_LANGUAGE_MAP } from "@lexical/code";
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { $isListNode, ListNode } from "@lexical/list";
 import { $isHeadingNode } from "@lexical/rich-text";
-import { $getSelectionStyleValueForProperty, $isParentElementRTL, $patchStyleText } from "@lexical/selection";
+import { $getSelectionStyleValueForProperty, $isParentElementRTL } from "@lexical/selection";
 import { $isTableNode, $isTableSelection } from "@lexical/table";
 import { $findMatchingParent, $getNearestNodeOfType, $isEditorIsNestedEditor, mergeRegister } from "@lexical/utils";
-import { $getNodeByKey, $getSelection, $isElementNode, $isRangeSelection, $isRootOrShadowRoot, CAN_REDO_COMMAND, CAN_UNDO_COMMAND, COMMAND_PRIORITY_CRITICAL, LexicalEditor, NodeKey, REDO_COMMAND, SELECTION_CHANGE_COMMAND, UNDO_COMMAND } from "lexical";
-import { Redo, Undo } from "lucide-react";
+import { $getSelection, $isElementNode, $isRangeSelection, $isRootOrShadowRoot, CAN_REDO_COMMAND, CAN_UNDO_COMMAND, COMMAND_PRIORITY_CRITICAL, FORMAT_TEXT_COMMAND, LexicalEditor, NodeKey, REDO_COMMAND, SELECTION_CHANGE_COMMAND, UNDO_COMMAND } from "lexical";
+import { Bold, Code, Italic, Link, Redo, Underline, Undo } from "lucide-react";
 import { Dispatch, useCallback, useEffect, useState } from "react";
 import { blockTypeToBlockName, useToolbarState } from "../../context/toolbar-context";
 import { getSelectedNode } from "../../utils/getSelectedNode";
+import { sanitizeUrl } from "../../utils/url";
 import { SHORTCUTS } from "../shortcuts-plugin/shortcuts";
 import BlockFormatDropdown from "./block-format";
-
-function getCodeLanguageOptions(): [string, string][] {
-  const options: [string, string][] = [];
-
-  for (const [lang, friendlyName] of Object.entries(
-    CODE_LANGUAGE_FRIENDLY_NAME_MAP,
-  )) {
-    options.push([lang, friendlyName]);
-  }
-
-  return options;
-}
-
-const CODE_LANGUAGE_OPTIONS = getCodeLanguageOptions();
+import CodeLangPicker from "./code-lang-picker";
+import FontPicker from "./font-picker";
+import FontSize from "./font-size";
 
 export default function EditorToolbar({
   editor,
@@ -236,40 +226,24 @@ export default function EditorToolbar({
     );
   }, [$updateToolbar, activeEditor, editor, updateToolbarState]);
 
-  const applyStyleText = useCallback(
-    (styles: Record<string, string>, skipHistoryStack?: boolean) => {
-      activeEditor.update(
-        () => {
-          const selection = $getSelection();
-          if (selection !== null) {
-            $patchStyleText(selection, styles);
-          }
-        },
-        skipHistoryStack ? {tag: 'historic'} : {},
+  const insertLink = useCallback(() => {
+    if (!toolbarState.isLink) {
+      setIsLinkEditMode(true);
+      activeEditor.dispatchCommand(
+        TOGGLE_LINK_COMMAND,
+        sanitizeUrl('https://'),
       );
-    },
-    [activeEditor],
-  );
-
-  const onCodeLanguageSelect = useCallback(
-    (value: string) => {
-      activeEditor.update(() => {
-        if (selectedElementKey !== null) {
-          const node = $getNodeByKey(selectedElementKey);
-          if ($isCodeNode(node)) {
-            node.setLanguage(value);
-          }
-        }
-      });
-    },
-    [activeEditor, selectedElementKey],
-  );
+    } else {
+      setIsLinkEditMode(false);
+      activeEditor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+    }
+  }, [activeEditor, setIsLinkEditMode, toolbarState.isLink]);
 
   const canViewerSeeInsertDropdown = !toolbarState.isImageCaption;
   const canViewerSeeInsertCodeButton = !toolbarState.isImageCaption;
 
   return (
-    <div className="sticky flex h-[3.125rem] top-14 border bg-background rounded-t-lg p-1 align-middle border-solid z-10 overflow-auto overflow-y-hidden">
+    <div className="sticky flex h-[3.125rem] gap-1 top-14 border bg-background rounded-t-lg p-1 align-middle border-solid z-10 overflow-auto overflow-y-hidden">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -308,36 +282,122 @@ export default function EditorToolbar({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <Separator className="mx-2" orientation="vertical" />
+      <Separator orientation="vertical" />
       <BlockFormatDropdown
         activeEditor={activeEditor}
         editor={editor}
         disabled={!isEditable}
       />
       {toolbarState.blockType === 'code' ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" disabled={!isEditable}>
-              {getLanguageFriendlyName(toolbarState.codeLanguage) ?? locale === 'ru' ? 'Выбрать язык' : 'Select language'}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent forceMount>
-            <DropdownMenuContent>
-              {CODE_LANGUAGE_OPTIONS.map(([value, name]) => (
-                <DropdownMenuItem
-                  key={value}
-                  className={value === toolbarState.codeLanguage ? 'bg-accent/65' : ''}
-                  onClick={() => onCodeLanguageSelect(value)}
+        <CodeLangPicker
+          activeEditor={activeEditor}
+          disabled={!isEditable}
+          selectedElementKey={selectedElementKey}
+        />
+      ) : (
+        <>
+          <FontPicker
+            editor={editor}
+            value={toolbarState.fontFamily}
+            disabled={!isEditable}
+          />
+          <Separator orientation="vertical" />
+          <FontSize
+            editor={editor}
+            selectionFontSize={toolbarState.fontSize.slice(0, -2)}
+            disabled={!isEditable}
+          />
+          <Separator orientation="vertical" />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Toggle
+                  disabled={!isEditable}
+                  pressed={toolbarState.isBold}
+                  onClick={() => {
+                    activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
+                  }}
                 >
-                  {name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : (<>
-
-      </>)}
+                  <Bold />
+                </Toggle>
+              </TooltipTrigger>
+              <TooltipContent>
+                {header_locale.hints.bold}{` (${SHORTCUTS.BOLD})`}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Toggle
+                  disabled={!isEditable}
+                  pressed={toolbarState.isItalic}
+                  onClick={() => {
+                    activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
+                  }}
+                >
+                  <Italic />
+                </Toggle>
+              </TooltipTrigger>
+              <TooltipContent>
+                {header_locale.hints.italic}{` (${SHORTCUTS.ITALIC})`}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Toggle
+                  disabled={!isEditable}
+                  pressed={toolbarState.isUnderline}
+                  onClick={() => {
+                    activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
+                  }}
+                >
+                  <Underline />
+                </Toggle>
+              </TooltipTrigger>
+              <TooltipContent>
+                {header_locale.hints.underline}{` (${SHORTCUTS.UNDERLINE})`}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Toggle
+                  disabled={!isEditable}
+                  pressed={toolbarState.isCode}
+                  onClick={() => {
+                    activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
+                  }}
+                >
+                  <Code />
+                </Toggle>
+              </TooltipTrigger>
+              <TooltipContent>
+                {header_locale.hints.code_block}{` (${SHORTCUTS.CODE_BLOCK})`}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Toggle
+                  disabled={!isEditable}
+                  pressed={toolbarState.isLink}
+                  onClick={insertLink}
+                >
+                  <Link />
+                </Toggle>
+              </TooltipTrigger>
+              <TooltipContent>
+                {header_locale.hints.link}{` (${SHORTCUTS.INSERT_LINK})`}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </>
+      )}
     </div>
   )
 }

@@ -1,3 +1,4 @@
+@import 'tailwindcss';
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -13,19 +14,19 @@
   text-align: right;
 }
 .MainEditorTheme__paragraph {
-  @apply relative [&:not(:first-child)]:leading-7 [&:not(:first-child)]:mt-6;
+  @apply relative [&:not(:first-child)]:leading-7 [&:not(:first-child)]:mt-4;
 }
 .MainEditorTheme__quote {
   @apply m-0 mt-4 border-l-2 pl-6 italic;
 }
 .MainEditorTheme__h3 {
-  @apply [&:not(:first-child)]:mt-10 text-4xl font-extrabold tracking-tight uppercase;
+  @apply [&:not(:first-child)]:mt-10 text-3xl font-extrabold tracking-tight uppercase;
 }
 .MainEditorTheme__h4 {
-  @apply [&:not(:first-child)]:mt-8 text-3xl font-semibold tracking-tight uppercase;
+  @apply [&:not(:first-child)]:mt-8 text-2xl font-semibold tracking-tight uppercase;
 }
 .MainEditorTheme__h5 {
-  @apply [&:not(:first-child)]:mt-6 text-2xl font-semibold tracking-tight;
+  @apply [&:not(:first-child)]:mt-6 text-xl font-semibold tracking-tight;
 }
 .MainEditorTheme__indent {
   --lexical-indent-base-value: 40px;
@@ -255,7 +256,6 @@
   height: 100%;
   animation: table-controls 0.2s ease;
   border: 0;
-  cursor: pointer;
 }
 /* .MainEditorTheme__tableAddColumns:after {
   background-image: url(../images/icons/plus.svg);
@@ -281,7 +281,6 @@
   background-color: #eee;
   animation: table-controls 0.2s ease;
   border: 0;
-  cursor: pointer;
 }
 /* .MainEditorTheme__tableAddRows:after {
   background-image: url(../images/icons/plus.svg);
@@ -330,7 +329,6 @@
   width: 20px;
   height: 20px;
   color: #222;
-  cursor: pointer;
 }
 .MainEditorTheme__tableCellActionButton:hover {
   background-color: #ddd;
@@ -340,38 +338,26 @@
   background-color: #ffbbbb !important;
 }
 .MainEditorTheme__ol1 {
-  padding: 0;
-  margin: 0;
-  list-style-position: outside;
+  @apply [&:not(:first-child)]:mt-4 m-0 p-0 list-outside;
 }
 .MainEditorTheme__ol2 {
-  padding: 0;
-  margin: 0;
+  @apply [&:not(:first-child)]:mt-4 m-0 p-0 list-outside;
   list-style-type: upper-alpha;
-  list-style-position: outside;
 }
 .MainEditorTheme__ol3 {
-  padding: 0;
-  margin: 0;
+  @apply [&:not(:first-child)]:mt-4 m-0 p-0 list-outside;
   list-style-type: lower-alpha;
-  list-style-position: outside;
 }
 .MainEditorTheme__ol4 {
-  padding: 0;
-  margin: 0;
+  @apply [&:not(:first-child)]:mt-4 m-0 p-0 list-outside;
   list-style-type: upper-roman;
-  list-style-position: outside;
 }
 .MainEditorTheme__ol5 {
-  padding: 0;
-  margin: 0;
+  @apply [&:not(:first-child)]:mt-4 m-0 p-0 list-outside;
   list-style-type: lower-roman;
-  list-style-position: outside;
 }
 .MainEditorTheme__ul {
-  padding: 0;
-  margin: 0;
-  list-style-position: outside;
+  @apply [&:not(:first-child)]:mt-4 m-0 p-0 list-outside;
 }
 .MainEditorTheme__listItem {
   margin: 0 32px;
@@ -396,7 +382,6 @@
   height: 16px;
   top: 2px;
   left: 0;
-  cursor: pointer;
   display: block;
   background-size: cover;
   position: absolute;
@@ -423,8 +408,6 @@
 }
 .MainEditorTheme__listItemChecked:after {
   content: '';
-  cursor: pointer;
-  border-color: #fff;
   border-style: solid;
   position: absolute;
   display: block;
