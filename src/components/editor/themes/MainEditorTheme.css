@@ -19,6 +19,10 @@
 .MainEditorTheme__paragraph {
   @apply relative [&:not(:first-child)]:mt-4;
 }
+.MainEditorTheme__paragraph sup,
+.MainEditorTheme__paragraph sub {
+  @apply top-auto;
+}
 .MainEditorTheme__quote {
   @apply m-0 mt-4 border-l-2 pl-6 italic;
 }
@@ -141,14 +145,11 @@
   }
 }
 .MainEditorTheme__code {
-  @apply block relative bg-muted m-0 my-3 font-mono p-2 pl-14 text-sm leading-6 overflow-x-auto rounded-sm;
-  /* padding: 8px 8px 8px 52px; */
-  /* line-height: 1.53; */
-  /* font-size: 13px; */
+  @apply block relative bg-muted m-0 my-3 font-mono p-2 pl-[52px] text-sm leading-6 overflow-x-auto rounded-sm;
   tab-size: 2;
 }
 .MainEditorTheme__code:before {
-  @apply absolute top-0 left-0 p-2 bg-primary/40 border-r border-primary whitespace-pre-wrap text-right min-w-6;
+  @apply absolute top-0 left-0 p-2 bg-primary/40 border-r border-primary whitespace-pre-wrap text-right min-w-[25px];
   content: attr(data-gutter);
 }
 .MainEditorTheme__tableScrollableWrapper {

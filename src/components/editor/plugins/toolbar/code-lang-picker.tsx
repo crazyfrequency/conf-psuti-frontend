@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 import { useCurrentLocale } from '@/locales/client';
 import { $isCodeNode, CODE_LANGUAGE_FRIENDLY_NAME_MAP, getLanguageFriendlyName } from '@lexical/code';
 import { $getNodeByKey, LexicalEditor, NodeKey } from 'lexical';
@@ -46,6 +47,8 @@ export default function CodeLangPicker({
     [activeEditor, selectedElementKey],
   );
 
+  const half = Math.ceil(CODE_LANGUAGE_OPTIONS.length / 3);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -55,17 +58,43 @@ export default function CodeLangPicker({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuGroup>
-          {CODE_LANGUAGE_OPTIONS.map(([value, name]) => (
-            <DropdownMenuItem
-              key={value}
-              className={value === codeLanguage ? 'bg-accent/65' : ''}
-              onClick={() => onCodeLanguageSelect(value)}
-            >
-              {name}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuGroup>
+        <div className="grid grid-cols-[repeat(5,auto)] **:justify-center gap-1">
+          <DropdownMenuGroup>
+            {CODE_LANGUAGE_OPTIONS.slice(0, half).map(([value, name]) => (
+              <DropdownMenuItem
+                key={value}
+                className={value === codeLanguage ? 'bg-accent/65' : ''}
+                onClick={() => onCodeLanguageSelect(value)}
+              >
+                {name}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuGroup>
+          <Separator orientation="vertical" />
+          <DropdownMenuGroup>
+            {CODE_LANGUAGE_OPTIONS.slice(half, half * 2).map(([value, name]) => (
+              <DropdownMenuItem
+                key={value}
+                className={value === codeLanguage ? 'bg-accent/65' : ''}
+                onClick={() => onCodeLanguageSelect(value)}
+              >
+                {name}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuGroup>
+          <Separator orientation="vertical" />
+          <DropdownMenuGroup>
+            {CODE_LANGUAGE_OPTIONS.slice(half * 2).map(([value, name]) => (
+              <DropdownMenuItem
+                key={value}
+                className={value === codeLanguage ? 'bg-accent/65' : ''}
+                onClick={() => onCodeLanguageSelect(value)}
+              >
+                {name}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuGroup>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   )

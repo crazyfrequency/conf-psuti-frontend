@@ -51,6 +51,7 @@ export default function FontPicker({
             ([option, text]) => (
               <DropdownMenuItem
                 className={option === value ? 'bg-muted' : ''}
+                style={{ fontFamily: option }}
                 onClick={() => handleClick(option)}
                 key={option}
               >

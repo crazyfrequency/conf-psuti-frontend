@@ -16,7 +16,7 @@ export function setFloatingElemPosition(
   verticalGap: number = VERTICAL_GAP,
   horizontalOffset: number = HORIZONTAL_OFFSET,
 ): void {
-  const scrollerElem = anchorElem.parentElement;
+  const scrollerElem = anchorElem;
 
   if (targetRect === null || !scrollerElem) {
     floatingElem.style.opacity = '0';
@@ -36,7 +36,7 @@ export function setFloatingElemPosition(
     top +=
       floatingElemRect.height +
       targetRect.height +
-      verticalGap * (isLink ? 9 : 2);
+      verticalGap * (isLink ? 8 : 2);
   }
 
   if (left + floatingElemRect.width > editorScrollerRect.right) {

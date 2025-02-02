@@ -51,7 +51,9 @@ export default function EditorMain({
   useEffect(() => {
     const updateViewPortWidth = () => {
       const isNextSmallWidthViewport =
-        CAN_USE_DOM && window.matchMedia('(max-width: 1025px)').matches;
+        CAN_USE_DOM && window.matchMedia('(max-width: 640px)').matches;
+      
+        console.log(isNextSmallWidthViewport)
 
       if (isNextSmallWidthViewport !== isSmallWidthViewport) {
         setIsSmallWidthViewport(isNextSmallWidthViewport);
@@ -78,15 +80,20 @@ export default function EditorMain({
       <div className="border border-t-0 rounded-b-lg relative bg-background editor-text" ref={onRef}>
         <RichTextPlugin
           contentEditable={
-            <ContentEditable
+            <div
               className="relative min-h-36 resize-y text-base editor-input outline-none outline-0 py-4 px-3 caret-secondary-foreground"
-              aria-placeholder={placeholder}
-              placeholder={
-                <div className="absolute inline-block top-4 left-3 select-none pointer-events-none text-ellipsis">
-                  {placeholder}
-                </div>
-              }
-            />
+              ref={onRef}
+            >
+              <ContentEditable
+                className="outline-none outline-0"
+                aria-placeholder={placeholder}
+                placeholder={
+                  <div className="absolute inline-block top-4 left-3 select-none pointer-events-none text-ellipsis">
+                    {placeholder}
+                  </div>
+                }
+              />
+            </div>
           }
           ErrorBoundary={LexicalErrorBoundary}
         />
@@ -99,15 +106,19 @@ export default function EditorMain({
         <CodeHighlightPlugin />
         <HorizontalRulePlugin />
         <LexicalAutoLinkPlugin />
-        <FloatingLinkEditorPlugin
-          anchorElem={floatingAnchorElem ?? undefined}
-          isLinkEditMode={isLinkEditMode}
-          setIsLinkEditMode={setIsLinkEditMode}
-        />
-        <FloatingTextFormatToolbarPlugin
-          anchorElem={floatingAnchorElem ?? undefined}
-          setIsLinkEditMode={setIsLinkEditMode}
-        />
+        {floatingAnchorElem && !isSmallWidthViewport && (
+          <>
+            <FloatingLinkEditorPlugin
+              anchorElem={floatingAnchorElem ?? undefined}
+              isLinkEditMode={isLinkEditMode}
+              setIsLinkEditMode={setIsLinkEditMode}
+            />
+            <FloatingTextFormatToolbarPlugin
+              anchorElem={floatingAnchorElem ?? undefined}
+              setIsLinkEditMode={setIsLinkEditMode}
+            />
+          </>
+        )}
         <LinkPlugin hasLinkAttributes />
         <MarkdownShortcutPlugin />
         <ShortcutsPlugin editor={editor} setIsLinkEditMode={setIsLinkEditMode} />
