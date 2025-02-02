@@ -163,7 +163,7 @@ export default function ColorPicker({
         ))}
       </div>
       <MoveWrapper
-        className="relative w-full mt-3 border border-white h-[112px] select-none bg-[linear-gradient(transparent,black),linear-gradient(to_right,white,transparent)]"
+        className="relative w-full mt-3 border border-foreground h-[112px] select-none bg-[linear-gradient(transparent,black),linear-gradient(to_right,white,transparent)]"
         style={{backgroundColor: `hsl(${selfColor.hsv.h}, 100%, 50%)`}}
         onChange={onMoveSaturation}>
         <div
@@ -180,7 +180,10 @@ export default function ColorPicker({
       </MoveWrapper>
       <MoveWrapper className="relative w-full mt-3 h-3 select-none rounded-full bg-[linear-gradient(to_right,#ff0000,#ffff00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000)]" onChange={onMoveHue}>
         <div
-          className="absolute size-5 rounded-full border-2 border-primary shadow box-border -translate-x-2.5 -translate-y-1"
+          className={cn(
+            "absolute size-5 rounded-full border-2 border-primary shadow box-border -translate-x-2.5 -translate-y-1",
+            selfColor.hex === 'inherit' && 'hidden',
+          )}
           style={{
             backgroundColor: `hsl(${selfColor.hsv.h}, 100%, 50%)`,
             left: huePosition.x,

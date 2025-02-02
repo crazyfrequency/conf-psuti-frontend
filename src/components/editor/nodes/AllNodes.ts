@@ -23,7 +23,7 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 // import {CollapsibleTitleNode} from '../plugins/CollapsiblePlugin/CollapsibleTitleNode';
 // import {AutocompleteNode} from './AutocompleteNode';
 // import {EmojiNode} from './EmojiNode';
-// import {EquationNode} from './EquationNode';
+import { EquationNode } from './EquationNode';
 // import {ExcalidrawNode} from './ExcalidrawNode';
 // import {FigmaNode} from './FigmaNode';
 // import {ImageNode} from './ImageNode';
@@ -60,7 +60,7 @@ const AllNodes: Array<Klass<LexicalNode>> = [
   // MentionNode,
   // EmojiNode,
   // ExcalidrawNode,
-  // EquationNode,
+  EquationNode,
   // AutocompleteNode,
   // KeywordNode,
   HorizontalRuleNode,

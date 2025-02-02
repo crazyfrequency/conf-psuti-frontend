@@ -22,8 +22,8 @@ import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import EquationEditor from '../ui/EquationEditor';
-import KatexRenderer from '../ui/KatexRenderer';
+import EquationEditor from '@/components/ui/editor/equation-editor';
+import KatexRenderer from '@/components/ui/editor/katex-renderer';
 import { $isEquationNode } from './EquationNode';
 
 type EquationComponentProps = {

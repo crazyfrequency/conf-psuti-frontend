@@ -2,6 +2,7 @@
 
 import { InitialConfigType, InitialEditorStateType, LexicalComposer } from '@lexical/react/LexicalComposer';
 
+import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import { $createParagraphNode, $getRoot, $isTextNode, DOMConversionMap, TextNode } from 'lexical';
 import { toast } from 'sonner';
@@ -86,8 +87,10 @@ function $preloadDefault() {
 export default function Editor({
   namespace,
   editorState = null,
-  placeholder
-}: Readonly<{
+  placeholder,
+  className,
+  ...props
+}: Readonly<React.HTMLAttributes<HTMLDivElement>> & Readonly<{
   namespace?: string
   editorState?: InitialEditorStateType
   placeholder?: string
@@ -109,7 +112,13 @@ export default function Editor({
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className="relative max-w-full rounded-md">
+      <div
+        className={cn(
+          "relative max-w-full rounded-md",
+          className
+        )}
+        {...props}
+      >
         <ToolbarContext>
           <EditorMain placeholder={placeholder ?? i18n('editor.placeholder')} />
         </ToolbarContext>

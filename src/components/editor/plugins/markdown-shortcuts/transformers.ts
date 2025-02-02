@@ -46,7 +46,7 @@ import {
   $isEquationNode,
   EquationNode,
 } from '../../nodes/EquationNode';
-import { $createImageNode, $isImageNode, ImageNode } from '../../nodes/ImageNode';
+// import { $createImageNode, $isImageNode, ImageNode } from '../../nodes/ImageNode';
 
 export const HR: ElementTransformer = {
   dependencies: [HorizontalRuleNode],
@@ -69,29 +69,29 @@ export const HR: ElementTransformer = {
   type: 'element',
 };
 
-export const IMAGE: TextMatchTransformer = {
-  dependencies: [ImageNode],
-  export: (node) => {
-    if (!$isImageNode(node)) {
-      return null;
-    }
+// export const IMAGE: TextMatchTransformer = {
+//   dependencies: [ImageNode],
+//   export: (node) => {
+//     if (!$isImageNode(node)) {
+//       return null;
+//     }
 
-    return `![${node.getAltText()}](${node.getSrc()})`;
-  },
-  importRegExp: /!(?:\[([^[]*)\])(?:\(([^(]+)\))/,
-  regExp: /!(?:\[([^[]*)\])(?:\(([^(]+)\))$/,
-  replace: (textNode, match) => {
-    const [, altText, src] = match;
-    const imageNode = $createImageNode({
-      altText,
-      maxWidth: 800,
-      src,
-    });
-    textNode.replace(imageNode);
-  },
-  trigger: ')',
-  type: 'text-match',
-};
+//     return `![${node.getAltText()}](${node.getSrc()})`;
+//   },
+//   importRegExp: /!(?:\[([^[]*)\])(?:\(([^(]+)\))/,
+//   regExp: /!(?:\[([^[]*)\])(?:\(([^(]+)\))$/,
+//   replace: (textNode, match) => {
+//     const [, altText, src] = match;
+//     const imageNode = $createImageNode({
+//       altText,
+//       maxWidth: 800,
+//       src,
+//     });
+//     textNode.replace(imageNode);
+//   },
+//   trigger: ')',
+//   type: 'text-match',
+// };
 
 export const EQUATION: TextMatchTransformer = {
   dependencies: [EquationNode],
@@ -137,7 +137,7 @@ export const TABLE: ElementTransformer = {
         // It's TableCellNode so it's just to make flow happy
         if ($isTableCellNode(cell)) {
           rowOutput.push(
-            $convertToMarkdownString(PLAYGROUND_TRANSFORMERS, cell).replace(
+            $convertToMarkdownString(EDITOR_TRANSFORMERS, cell).replace(
               /\n/g,
               '\\n',
             ),
@@ -260,7 +260,7 @@ function getTableColumnsSize(table: TableNode) {
 const $createTableCell = (textContent: string): TableCellNode => {
   textContent = textContent.replace(/\\n/g, '\n');
   const cell = $createTableCellNode(TableCellHeaderStates.NO_STATUS);
-  $convertFromMarkdownString(textContent, PLAYGROUND_TRANSFORMERS, cell);
+  $convertFromMarkdownString(textContent, EDITOR_TRANSFORMERS, cell);
   return cell;
 };
 
@@ -272,10 +272,10 @@ const mapToTableCells = (textContent: string): Array<TableCellNode> | null => {
   return match[1].split('|').map((text) => $createTableCell(text));
 };
 
-export const PLAYGROUND_TRANSFORMERS: Array<Transformer> = [
+export const EDITOR_TRANSFORMERS: Array<Transformer> = [
   TABLE,
   HR,
-  IMAGE,
+  // IMAGE,
   EQUATION,
   CHECK_LIST,
   ...ELEMENT_TRANSFORMERS,

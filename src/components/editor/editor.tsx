@@ -17,13 +17,14 @@ import { CAN_USE_DOM } from '@lexical/utils';
 import { toast } from 'sonner';
 import { useSharedHistoryContext } from './context/history-context';
 import LexicalAutoLinkPlugin from './plugins/auto-link-plugin';
+import CodeHighlightPlugin from './plugins/code-highlight-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
 import LinkPlugin from './plugins/link-plugin';
 import { useEnhanceLinks } from './plugins/link-plugin/bar-fix';
+import MarkdownShortcutPlugin from './plugins/markdown-shortcuts';
 import ShortcutsPlugin from './plugins/shortcuts-plugin';
 import EditorToolbar from "./plugins/toolbar";
-
 
 export default function EditorMain({
   placeholder
@@ -40,6 +41,12 @@ export default function EditorMain({
   const [editor] = useLexicalComposerContext();
   const [activeEditor, setActiveEditor] = useState(editor);
   const [isLinkEditMode, setIsLinkEditMode] = useState<boolean>(false);
+
+  const onRef = (_floatingAnchorElem: HTMLDivElement) => {
+    if (_floatingAnchorElem !== null) {
+      setFloatingAnchorElem(_floatingAnchorElem);
+    }
+  };
 
   useEffect(() => {
     const updateViewPortWidth = () => {
@@ -68,7 +75,7 @@ export default function EditorMain({
         setActiveEditor={setActiveEditor}
         setIsLinkEditMode={setIsLinkEditMode}
       />
-      <div className="border border-t-0 rounded-b-lg relative bg-background editor-text">
+      <div className="border border-t-0 rounded-b-lg relative bg-background editor-text" ref={onRef}>
         <RichTextPlugin
           contentEditable={
             <ContentEditable
@@ -89,6 +96,7 @@ export default function EditorMain({
         <ClickableLinkPlugin disabled={isEditable} />
         <HistoryPlugin externalHistoryState={historyState} />
         <AutoFocusPlugin />
+        <CodeHighlightPlugin />
         <HorizontalRulePlugin />
         <LexicalAutoLinkPlugin />
         <FloatingLinkEditorPlugin
@@ -101,6 +109,7 @@ export default function EditorMain({
           setIsLinkEditMode={setIsLinkEditMode}
         />
         <LinkPlugin hasLinkAttributes />
+        <MarkdownShortcutPlugin />
         <ShortcutsPlugin editor={editor} setIsLinkEditMode={setIsLinkEditMode} />
       </div>
     </>

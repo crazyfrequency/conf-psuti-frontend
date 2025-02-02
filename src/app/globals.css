@@ -133,7 +133,6 @@
 }
 
 * {
-  scrollbar-width: .5rem;
   scrollbar-color: var(--color-border);
 }
 

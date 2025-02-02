@@ -82,7 +82,7 @@ export class EquationNode extends DecoratorNode<React.JSX.Element> {
   createDOM(_config: EditorConfig): HTMLElement {
     const element = document.createElement(this.__inline ? 'span' : 'div');
     // EquationNodes should implement `user-action:none` in their CSS to avoid issues with deletion on Android.
-    element.className = 'editor-equation';
+    element.className = 'select-none cursor-default';
     return element;
   }
 
@@ -94,7 +94,7 @@ export class EquationNode extends DecoratorNode<React.JSX.Element> {
     element.setAttribute('data-lexical-inline', `${this.__inline}`);
     katex.render(this.__equation, element, {
       displayMode: !this.__inline, // true === block display //
-      errorColor: '#cc0000',
+      errorColor: 'var(--color-destructive)',
       output: 'html',
       strict: 'warn',
       throwOnError: false,

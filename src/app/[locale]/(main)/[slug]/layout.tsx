@@ -5,6 +5,9 @@ import { getConfBySlug } from "@/services/confs.server.service";
 import { notFound } from "next/navigation";
 import React from "react";
 
+import '@/components/editor/themes/MainEditorTheme.css';
+import 'katex/dist/katex.min.css';
+
 export default async function Layout({
   params,
   children,
