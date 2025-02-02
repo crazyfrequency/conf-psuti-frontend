@@ -51,7 +51,7 @@ export default function ConfContext({
       reload: fetchConf
     }}>
       <Path />
-      <div className="grid relative grid-rows-1 lg:grid-cols-[auto_auto_1fr] gap-2 w-full">
+      <div className="grid relative grid-rows-1 grid-cols-1 lg:grid-cols-[auto_auto_1fr] gap-2 w-full">
         <LeftMenu
           className={cn(
             "max-lg:overflow-y-auto max-lg:max-h-72 max-lg:p-4",
@@ -60,7 +60,7 @@ export default function ConfContext({
           )}
         />
         <Separator className="max-lg:hidden" orientation="vertical" />
-        <main>
+        <main className='min-w-0 w-full'>
           <TopMenu />
           <Separator className="my-4" />
           {children}

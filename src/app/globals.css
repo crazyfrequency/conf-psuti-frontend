@@ -123,9 +123,28 @@
   }
 }
 
-* {
-  @apply border-border;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
-body {
-  @apply bg-background text-foreground;
+
+* {
+  scrollbar-width: .5rem;
+  scrollbar-color: var(--color-border);
+}
+
+*::-webkit-scrollbar {
+  @apply w-2 h-1.5;
+}
+
+*::-webkit-scrollbar-track {
+  @apply bg-border/35;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full;
 }

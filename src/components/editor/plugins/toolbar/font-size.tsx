@@ -92,6 +92,7 @@ export default function FontSize({
                 )
               }
               size="icon"
+              className="w-6 min-w-6"
               variant="ghost"
               onClick={() =>
                 updateFontSize(editor, UpdateFontSizeType.decrement, inputValue)
@@ -111,7 +112,7 @@ export default function FontSize({
             <Input
               type="number"
               disabled={disabled}
-              className="[appearance:textfield] max-w-11 text-center"
+              className="w-11 appearance-none text-center m-0"
               value={inputValue}
               min={MIN_ALLOWED_FONT_SIZE}
               max={MAX_ALLOWED_FONT_SIZE}
@@ -136,6 +137,7 @@ export default function FontSize({
                 )
               }
               size="icon"
+              className="w-6 min-w-6"
               variant="ghost"
               onClick={() =>
                 updateFontSize(editor, UpdateFontSizeType.increment, inputValue)

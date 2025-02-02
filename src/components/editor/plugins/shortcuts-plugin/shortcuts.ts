@@ -256,3 +256,52 @@ export function isInsertLink(event: KeyboardEvent): boolean {
     code === 'KeyK' && !shiftKey && !altKey && controlOrMeta(metaKey, ctrlKey)
   );
 }
+
+export function isUndo(event: KeyboardEvent): boolean {
+  const {key, code, shiftKey, altKey, metaKey, ctrlKey} = event;
+  if (key === 'z') return false;
+  return (
+    code === 'KeyZ' && !shiftKey && !altKey && controlOrMeta(metaKey, ctrlKey)
+  );
+}
+
+export function isRedo(event: KeyboardEvent): boolean {
+  const {key, code, shiftKey, altKey, metaKey, ctrlKey} = event;
+  if (key === 'y' || key === 'z') return false;
+  return (
+    code === 'KeyY' && !shiftKey && !altKey && controlOrMeta(metaKey, ctrlKey) ||
+    code === 'KeyZ' && shiftKey && !altKey && controlOrMeta(metaKey, ctrlKey)
+  );
+}
+
+export function isBold(event: KeyboardEvent): boolean {
+  const {key, code, shiftKey, altKey, metaKey, ctrlKey} = event;
+  if (key === 'b') return false;
+  return (
+    code === 'KeyB' && !shiftKey && !altKey && controlOrMeta(metaKey, ctrlKey)
+  );
+}
+
+export function isItalic(event: KeyboardEvent): boolean {
+  const {key, code, shiftKey, altKey, metaKey, ctrlKey} = event;
+  if (key === 'i') return false;
+  return (
+    code === 'KeyI' && !shiftKey && !altKey && controlOrMeta(metaKey, ctrlKey)
+  );
+}
+
+export function isUnderline(event: KeyboardEvent): boolean {
+  const {key, code, shiftKey, altKey, metaKey, ctrlKey} = event;
+  if (key === 'u') return false;
+  return (
+    code === 'KeyU' && !shiftKey && !altKey && controlOrMeta(metaKey, ctrlKey)
+  );
+}
+
+export function isStrikethrough(event: KeyboardEvent): boolean {
+  const {key, code, shiftKey, altKey, metaKey, ctrlKey} = event;
+  if (key === 's') return false;
+  return (
+    code === 'KeyS' && !shiftKey && !altKey && controlOrMeta(metaKey, ctrlKey)
+  );
+}

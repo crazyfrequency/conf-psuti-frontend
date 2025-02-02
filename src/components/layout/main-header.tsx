@@ -11,7 +11,7 @@ export default function HeaderMain() {
   return (
     <nav className="flex h-full w-full mx-2 items-center">
       <Link href={MAIN_PAGES.HOME} className="h-full">
-        <Image className="h-full w-auto dark:hidden" src={logo_light} alt="ПГУТИ" />
+        <Image className="h-full w-auto not-dark:block dark:hidden" src={logo_light} alt="ПГУТИ" />
         <Image className="h-full w-auto hidden dark:block" src={logo_dark} alt="ПГУТИ" />
       </Link>
       <ul className="flex gap-1 ml-auto align-middle">

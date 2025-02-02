@@ -2,6 +2,20 @@
   tab-size: 1;
 }
 
+.editor-toolbar {
+  scrollbar-width: thin; /* Для Firefox - уменьшает толщину скролл-бара */
+}
+
 .editor-text ul, .editor-text ol {
   list-style: revert;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }

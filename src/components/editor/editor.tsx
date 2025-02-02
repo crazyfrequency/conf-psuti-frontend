@@ -17,7 +17,11 @@ import { CAN_USE_DOM } from '@lexical/utils';
 import { toast } from 'sonner';
 import { useSharedHistoryContext } from './context/history-context';
 import LexicalAutoLinkPlugin from './plugins/auto-link-plugin';
+import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
+import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
 import LinkPlugin from './plugins/link-plugin';
+import { useEnhanceLinks } from './plugins/link-plugin/bar-fix';
+import ShortcutsPlugin from './plugins/shortcuts-plugin';
 import EditorToolbar from "./plugins/toolbar";
 
 
@@ -29,6 +33,8 @@ export default function EditorMain({
   const locale = useCurrentLocale();
   const {historyState} = useSharedHistoryContext();
   const isEditable = useLexicalEditable();
+  const [floatingAnchorElem, setFloatingAnchorElem] =
+    useState<HTMLDivElement | null>(null);
   const [isSmallWidthViewport, setIsSmallWidthViewport] =
     useState<boolean>(false);
   const [editor] = useLexicalComposerContext();
@@ -51,6 +57,8 @@ export default function EditorMain({
       window.removeEventListener('resize', updateViewPortWidth);
     };
   }, [isSmallWidthViewport]);
+
+  useEnhanceLinks();
 
   return (
     <>
@@ -83,7 +91,17 @@ export default function EditorMain({
         <AutoFocusPlugin />
         <HorizontalRulePlugin />
         <LexicalAutoLinkPlugin />
-        <LinkPlugin />
+        <FloatingLinkEditorPlugin
+          anchorElem={floatingAnchorElem ?? undefined}
+          isLinkEditMode={isLinkEditMode}
+          setIsLinkEditMode={setIsLinkEditMode}
+        />
+        <FloatingTextFormatToolbarPlugin
+          anchorElem={floatingAnchorElem ?? undefined}
+          setIsLinkEditMode={setIsLinkEditMode}
+        />
+        <LinkPlugin hasLinkAttributes />
+        <ShortcutsPlugin editor={editor} setIsLinkEditMode={setIsLinkEditMode} />
       </div>
     </>
   )

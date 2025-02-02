@@ -3,6 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { useCurrentLocale } from '@/locales/client';
 import { $isCodeNode, CODE_LANGUAGE_FRIENDLY_NAME_MAP, getLanguageFriendlyName } from '@lexical/code';
 import { $getNodeByKey, LexicalEditor, NodeKey } from 'lexical';
+import { ChevronDown } from 'lucide-react';
 import { useCallback } from 'react';
 import { useToolbarState } from '../../context/toolbar-context';
 
@@ -50,6 +51,7 @@ export default function CodeLangPicker({
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" disabled={disabled}>
           {codeLanguage ? getLanguageFriendlyName(codeLanguage) : (locale === 'ru' ? 'Выбрать язык' : 'Select language')}
+          <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

@@ -12,6 +12,15 @@ const header_ru = {
       decrease: 'Уменьшить размер шрифта',
       increase: 'Увеличить размер шрифта',
     }
+  },
+  text_formats: {
+    lower: 'Нижний регистр',
+    upper: 'Верхний регистр',
+    capitalize: 'С заглавной буквы',
+    strikethrough: 'Зачеркнутый',
+    subscript: 'Нижний индекс',
+    superscript: 'Верхний индекс',
+    clear: 'Очистить форматирование'
   }
 } as const;
 
@@ -29,6 +38,15 @@ const header_en = {
       decrease: 'Decrease font size',
       increase: 'Increase font size',
     }
+  },
+  text_formats: {
+    lower: 'Lowercase',
+    upper: 'Uppercase',
+    capitalize: 'Capitalize',
+    strikethrough: 'Strikethrough',
+    subscript: 'Subscript',
+    superscript: 'Superscript',
+    clear: 'Clear formatting',
   }
 } as const;
 

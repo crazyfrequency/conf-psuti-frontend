@@ -8,7 +8,7 @@ import { $isCodeNode, CODE_LANGUAGE_MAP } from "@lexical/code";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { $isListNode, ListNode } from "@lexical/list";
 import { $isHeadingNode } from "@lexical/rich-text";
-import { $getSelectionStyleValueForProperty, $isParentElementRTL } from "@lexical/selection";
+import { $getSelectionStyleValueForProperty, $isParentElementRTL, $patchStyleText } from "@lexical/selection";
 import { $isTableNode, $isTableSelection } from "@lexical/table";
 import { $findMatchingParent, $getNearestNodeOfType, $isEditorIsNestedEditor, mergeRegister } from "@lexical/utils";
 import { $getSelection, $isElementNode, $isRangeSelection, $isRootOrShadowRoot, CAN_REDO_COMMAND, CAN_UNDO_COMMAND, COMMAND_PRIORITY_CRITICAL, FORMAT_TEXT_COMMAND, LexicalEditor, NodeKey, REDO_COMMAND, SELECTION_CHANGE_COMMAND, UNDO_COMMAND } from "lexical";
@@ -20,8 +20,10 @@ import { sanitizeUrl } from "../../utils/url";
 import { SHORTCUTS } from "../shortcuts-plugin/shortcuts";
 import BlockFormatDropdown from "./block-format";
 import CodeLangPicker from "./code-lang-picker";
+import ColorPickerDropdown from "./color-picker";
 import FontPicker from "./font-picker";
 import FontSize from "./font-size";
+import TextFormat from "./text-format";
 
 export default function EditorToolbar({
   editor,
@@ -239,16 +241,46 @@ export default function EditorToolbar({
     }
   }, [activeEditor, setIsLinkEditMode, toolbarState.isLink]);
 
+  const applyStyleText = useCallback(
+    (styles: Record<string, string>, skipHistoryStack?: boolean) => {
+      activeEditor.update(
+        () => {
+          const selection = $getSelection();
+          if (selection !== null) {
+            $patchStyleText(selection, styles);
+          }
+        },
+        skipHistoryStack ? {tag: 'historic'} : {},
+      );
+    },
+    [activeEditor],
+  );
+
+  const onFontColorSelect = useCallback(
+    (value: string, skipHistoryStack: boolean) => {
+      applyStyleText({color: value}, skipHistoryStack);
+    },
+    [applyStyleText],
+  );
+
+  const onBgColorSelect = useCallback(
+    (value: string, skipHistoryStack: boolean) => {
+      applyStyleText({'background-color': value}, skipHistoryStack);
+    },
+    [applyStyleText],
+  );
+
   const canViewerSeeInsertDropdown = !toolbarState.isImageCaption;
   const canViewerSeeInsertCodeButton = !toolbarState.isImageCaption;
 
   return (
-    <div className="sticky flex h-[3.125rem] gap-1 top-14 border bg-background rounded-t-lg p-1 align-middle border-solid z-10 overflow-auto overflow-y-hidden">
+    <div className="sticky flex h-[3.125rem] max-w-full gap-1 top-14 border bg-background rounded-t-lg p-1 align-middle border-solid z-10 overflow-x-auto overflow-y-hidden">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
+              className="min-w-10"
               size="icon"
               disabled={!toolbarState.canUndo || !isEditable}
               onClick={() => {
@@ -268,6 +300,7 @@ export default function EditorToolbar({
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
+              className="min-w-10"
               size="icon"
               disabled={!toolbarState.canRedo || !isEditable}
               onClick={() => {
@@ -310,9 +343,10 @@ export default function EditorToolbar({
           <Separator orientation="vertical" />
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <Toggle
                   disabled={!isEditable}
+                  data-state={toolbarState.isBold ? 'on' : 'off'}
                   pressed={toolbarState.isBold}
                   onClick={() => {
                     activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
@@ -328,9 +362,10 @@ export default function EditorToolbar({
           </TooltipProvider>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <Toggle
                   disabled={!isEditable}
+                  data-state={toolbarState.isItalic ? 'on' : 'off'}
                   pressed={toolbarState.isItalic}
                   onClick={() => {
                     activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
@@ -346,9 +381,10 @@ export default function EditorToolbar({
           </TooltipProvider>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <Toggle
                   disabled={!isEditable}
+                  data-state={toolbarState.isUnderline ? 'on' : 'off'}
                   pressed={toolbarState.isUnderline}
                   onClick={() => {
                     activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
@@ -362,29 +398,33 @@ export default function EditorToolbar({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          {canViewerSeeInsertCodeButton && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Toggle
+                    disabled={!isEditable}
+                    data-state={toolbarState.isCode ? 'on' : 'off'}
+                    pressed={toolbarState.isCode}
+                    onClick={() => {
+                      activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
+                    }}
+                  >
+                    <Code />
+                  </Toggle>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {header_locale.hints.code_block}{` (${SHORTCUTS.INSERT_CODE_BLOCK})`}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <Toggle
                   disabled={!isEditable}
-                  pressed={toolbarState.isCode}
-                  onClick={() => {
-                    activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
-                  }}
-                >
-                  <Code />
-                </Toggle>
-              </TooltipTrigger>
-              <TooltipContent>
-                {header_locale.hints.code_block}{` (${SHORTCUTS.CODE_BLOCK})`}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Toggle
-                  disabled={!isEditable}
+                  data-state={toolbarState.isLink ? 'on' : 'off'}
                   pressed={toolbarState.isLink}
                   onClick={insertLink}
                 >
@@ -396,6 +436,22 @@ export default function EditorToolbar({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          <ColorPickerDropdown
+            disabled={!isEditable}
+            type="font"
+            color={toolbarState.fontColor}
+            onChange={onFontColorSelect}
+          />
+          <ColorPickerDropdown
+            disabled={!isEditable}
+            type="background"
+            color={toolbarState.bgColor}
+            onChange={onBgColorSelect}
+          />
+          <TextFormat
+            disabled={!isEditable}
+            activeEditor={activeEditor}
+          />
         </>
       )}
     </div>

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { $patchStyleText } from '@lexical/selection';
 import { $getSelection, LexicalEditor } from 'lexical';
-import { Type } from 'lucide-react';
+import { ChevronDown, Type } from 'lucide-react';
 import { useCallback } from 'react';
 
 const FONT_FAMILY_OPTIONS: [string, string][] = [
@@ -40,8 +40,9 @@ export default function FontPicker({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" disabled={disabled} style={{ fontFamily: value }}>
+        <Button variant="ghost" className="p-2" disabled={disabled} style={{ fontFamily: value }}>
           <Type />{" "}{value}
+          <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

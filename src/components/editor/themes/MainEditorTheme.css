@@ -1,4 +1,9 @@
 @import 'tailwindcss';
+
+@import '../../../app/globals.css';
+
+@plugin 'tailwindcss-animate';
+
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -118,12 +123,7 @@
   border-bottom: 1px solid rgba(88, 144, 255, 0.3);
 }
 .MainEditorTheme__link {
-  color: rgb(33, 111, 219);
-  text-decoration: none;
-}
-.MainEditorTheme__link:hover {
-  text-decoration: underline;
-  cursor: pointer;
+  @apply **:underline **:underline-offset-4 hover:cursor-pointer;
 }
 .MainEditorTheme__blockCursor {
   display: block;

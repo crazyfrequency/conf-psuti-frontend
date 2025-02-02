@@ -16,7 +16,7 @@ export default function EditClient() {
   }
 
   return (
-    <div>
+    <div data-disable-nprogress={true}>
       <Editor />
     </div>
   )

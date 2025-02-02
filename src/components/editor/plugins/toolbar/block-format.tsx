@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { useCurrentLocale } from '@/locales/client';
 import { DropdownMenu } from '@radix-ui/react-dropdown-menu';
 import { LexicalEditor } from 'lexical';
-import { Code, Heading1, Heading2, Heading3, LetterText, List, ListOrdered, ListTodo, Quote } from 'lucide-react';
+import { ChevronDown, Code, Heading1, Heading2, Heading3, LetterText, List, ListOrdered, ListTodo, Quote } from 'lucide-react';
 import { blockTypeToBlockName, blockTypeToBlockNameRu, useToolbarState } from '../../context/toolbar-context';
 import { SHORTCUTS } from '../shortcuts-plugin/shortcuts';
 import { formatBulletList, formatCheckList, formatCode, formatHeading, formatNumberedList, formatParagraph, formatQuote } from './utils';
@@ -63,12 +63,13 @@ export default function BlockFormatDropdown({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" disabled={disabled}>
+          <Button variant="ghost" className="p-2" disabled={disabled}>
             <BlockIcon blockType={blockType} /> {
               locale === 'ru'
                 ? blockTypeToBlockNameRu[blockType]
                 : blockTypeToBlockName[blockType]
             }
+            <ChevronDown />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
