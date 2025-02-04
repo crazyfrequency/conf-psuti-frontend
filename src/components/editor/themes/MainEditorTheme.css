@@ -17,11 +17,15 @@
   text-align: right;
 }
 .MainEditorTheme__paragraph {
-  @apply relative [&:not(:first-child)]:mt-4;
+  @apply relative [&:not(:first-child)]:mt-4 [.katex]:inline-block;
 }
 .MainEditorTheme__paragraph sup,
 .MainEditorTheme__paragraph sub {
   @apply top-auto;
+}
+.MainEditorTheme__paragraph s,
+.MainEditorTheme__paragraph u {
+  text-decoration-line: none;
 }
 .MainEditorTheme__quote {
   @apply m-0 mt-4 border-l-2 pl-6 italic;
@@ -145,11 +149,11 @@
   }
 }
 .MainEditorTheme__code {
-  @apply block relative bg-muted m-0 my-3 font-mono p-2 pl-[52px] text-sm leading-6 overflow-x-auto rounded-sm;
+  @apply block relative whitespace-pre bg-muted m-0 my-3 font-mono p-2 pl-[52px] text-sm leading-6 overflow-y-hidden overflow-x-auto rounded-sm;
   tab-size: 2;
 }
 .MainEditorTheme__code:before {
-  @apply absolute top-0 left-0 p-2 bg-primary/40 border-r border-primary whitespace-pre-wrap text-right min-w-[25px];
+  @apply absolute top-0 left-0 p-2 bg-primary/40 border-r border-primary whitespace-pre-wrap text-right min-w-[40px];
   content: attr(data-gutter);
 }
 .MainEditorTheme__tableScrollableWrapper {
@@ -320,6 +324,7 @@
 }
 .MainEditorTheme__ol1 {
   @apply [&:not(:first-child)]:mt-4 m-0 p-0 list-outside;
+  list-style-type: decimal;
 }
 .MainEditorTheme__ol2 {
   @apply [&:not(:first-child)]:mt-4 m-0 p-0 list-outside;
@@ -339,31 +344,22 @@
 }
 .MainEditorTheme__ul {
   @apply [&:not(:first-child)]:mt-4 m-0 p-0 list-outside;
+  list-style: revert;
 }
 .MainEditorTheme__listItem {
-  margin: 0 32px;
+  @apply ml-8;
 }
 .MainEditorTheme__listItemChecked,
 .MainEditorTheme__listItemUnchecked {
-  position: relative;
-  margin-left: 8px;
-  margin-right: 8px;
-  padding-left: 24px;
-  padding-right: 24px;
-  list-style-type: none;
-  outline: none;
+  @apply relative mx-2 px-6 list-none outline-none;
 }
 .MainEditorTheme__listItemChecked {
-  text-decoration: line-through;
+  @apply *:line-through relative;
 }
 .MainEditorTheme__listItemUnchecked:before,
 .MainEditorTheme__listItemChecked:before {
+  @apply absolute block rounded-xs size-4 top-1/2 left-0 -translate-y-2;
   content: '';
-  width: 16px;
-  height: 16px;
-  top: 2px;
-  left: 0;
-  display: block;
   background-size: cover;
   position: absolute;
 }
@@ -374,29 +370,19 @@
 }
 .MainEditorTheme__listItemUnchecked:focus:before,
 .MainEditorTheme__listItemChecked:focus:before {
-  box-shadow: 0 0 0 2px #a6cdfe;
-  border-radius: 2px;
+  @apply shadow shadow-primary;
 }
 .MainEditorTheme__listItemUnchecked:before {
-  border: 1px solid #999;
-  border-radius: 2px;
+  @apply border border-border;
 }
 .MainEditorTheme__listItemChecked:before {
-  border: 1px solid rgb(61, 135, 245);
-  border-radius: 2px;
-  background-color: #3d87f5;
+  @apply bg-primary border-border;
   background-repeat: no-repeat;
 }
 .MainEditorTheme__listItemChecked:after {
+  @apply absolute block top-1/2 left-1 w-1.5 h-2.5 -translate-y-1.5 translate-x-[.0625rem];
   content: '';
-  border-style: solid;
   position: absolute;
-  display: block;
-  top: 6px;
-  width: 3px;
-  left: 7px;
-  right: 7px;
-  height: 6px;
   transform: rotate(45deg);
   border-width: 0 2px 2px 0;
 }
@@ -452,7 +438,7 @@
   user-select: none;
 }
 .MainEditorTheme__embedBlockFocus {
-  outline: 2px solid rgb(60, 132, 244);
+  @apply outline-primary outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring;
 }
 .MainEditorTheme__layoutContainer {
   display: grid;
@@ -463,18 +449,10 @@
   border: 1px dashed #ddd;
   padding: 8px 16px;
 }
-.MainEditorTheme__hr {
-  padding: 2px 2px;
-  border: none;
-  margin: 1em 0;
+.MainEditorTheme hr {
+  @apply my-4;
+  color: inherit;
   cursor: pointer;
-}
-.MainEditorTheme__hr:after {
-  content: '';
-  display: block;
-  height: 2px;
-  background-color: #ccc;
-  line-height: 2px;
 }
 .MainEditorTheme__hr.selected {
   outline: 2px solid rgb(60, 132, 244);

@@ -173,8 +173,8 @@ export default function ColorPicker({
           )}
           style={{
             backgroundColor: selfColor.hex,
-            left: saturationPosition.x,
-            top: saturationPosition.y,
+            left: saturationPosition?.x || 0,
+            top: saturationPosition?.y || 0,
           }}
         />
       </MoveWrapper>
@@ -284,7 +284,7 @@ interface Color {
 }
 
 export function toHex(value: string): string {
-  if (value === 'inherit') return 'inherit';
+  if (value === 'inherit' || value === 'none') return 'inherit';
   if (!value.startsWith('#')) {
     const ctx = document.createElement('canvas').getContext('2d');
 
@@ -306,7 +306,7 @@ export function toHex(value: string): string {
     return value;
   }
 
-  return '#000000';
+  return 'inherit';
 }
 
 function hex2rgb(hex: string): RGB {

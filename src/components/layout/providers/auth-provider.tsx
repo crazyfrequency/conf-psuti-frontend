@@ -39,7 +39,6 @@ export function AuthProvider({
 
   useEffect(() => {
     const getUser = async (event: StorageEvent) => {
-      console.log(event)
       if (event.key === 'user') {
         const user = event.newValue ? JSON.parse(event.newValue) : null;
         setUser(user)

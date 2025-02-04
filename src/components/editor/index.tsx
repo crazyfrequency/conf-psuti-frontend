@@ -4,30 +4,34 @@ import { InitialConfigType, InitialEditorStateType, LexicalComposer } from '@lex
 
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import { $createParagraphNode, $getRoot, $isTextNode, DOMConversionMap, TextNode } from 'lexical';
+import { CodeHighlightNode, CodeNode } from '@lexical/code';
+import { ListItemNode } from '@lexical/list';
+import { $createParagraphNode, $getRoot, $isTextNode, DOMConversionMap, DOMExportOutput, DOMExportOutputMap, Klass, LexicalEditor, LexicalNode, LineBreakNode, TextNode } from 'lexical';
 import { toast } from 'sonner';
+import { parseAllowedColor } from '../ui/editor/color-picker';
 import { ToolbarContext } from './context/toolbar-context';
 import EditorMain from './editor';
 import './editor.css';
 import AllNodes from './nodes/AllNodes';
+import { parseAllowedFontSize } from './plugins/toolbar/font-size';
 import theme from './themes/MainEditorTheme';
 
 function getExtraStyles(element: HTMLElement): string {
   // Parse styles from pasted input, but only if they match exactly the
   // sort of styles that would be produced by exportDOM
   let extraStyles = '';
-  // const fontSize = parseAllowedFontSize(element.style.fontSize);
-  // const backgroundColor = parseAllowedColor(element.style.backgroundColor);
-  // const color = parseAllowedColor(element.style.color);
-  // if (fontSize !== '' && fontSize !== '16px') {
-  //   extraStyles += `font-size: ${fontSize};`;
-  // }
-  // if (backgroundColor !== '' && backgroundColor !== 'inherit') {
-  //   extraStyles += `background-color: ${backgroundColor};`;
-  // }
-  // if (color !== '' && color !== 'inherit') {
-  //   extraStyles += `color: ${color};`;
-  // }
+  const fontSize = parseAllowedFontSize(element.style.fontSize);
+  const backgroundColor = parseAllowedColor(element.style.backgroundColor);
+  const color = parseAllowedColor(element.style.color);
+  if (fontSize !== '' && fontSize !== '16px') {
+    extraStyles += `font-size: ${fontSize};`;
+  }
+  if (backgroundColor !== '' && backgroundColor !== 'inherit') {
+    extraStyles += `background-color: ${backgroundColor};`;
+  }
+  if (color !== '' && color !== 'inherit') {
+    extraStyles += `color: ${color};`;
+  }
   return extraStyles;
 }
 
@@ -77,6 +81,61 @@ function buildImportMap(): DOMConversionMap {
   return importMap;
 }
 
+function buildExportMap(): DOMExportOutputMap {
+  return new Map<Klass<LexicalNode>, (editor: LexicalEditor, node: LexicalNode) => DOMExportOutput>([
+    [
+      CodeNode,
+      (editor: LexicalEditor, node: LexicalNode) => {
+        const codeNode = node as CodeNode;
+
+        const count = codeNode.getChildren().filter(v => v.getType() === LineBreakNode.getType()).length
+
+        let { element, after } = codeNode.exportDOM(editor);
+
+        if (element instanceof HTMLElement) {
+          element.setAttribute("data-gutter", Array.from({ length: count+1 }).map((_, i) => i + 1).join("\n"));
+        }
+
+        return {
+          element,
+          after: (element) => {
+            element?.appendChild(document.createElement("br"));
+            return after?.(element);
+          }
+        };
+      },
+    ],
+    [
+      CodeHighlightNode,
+      (editor: LexicalEditor, node: LexicalNode) => {
+        const codeHighlightNode = node as CodeHighlightNode;
+        const { element, after } = codeHighlightNode.exportDOM(editor);
+
+        if (element instanceof HTMLElement) {
+          element.removeAttribute("style");
+        }
+
+        return { element, after };
+      },
+    ],
+    [
+      ListItemNode,
+      (editor: LexicalEditor, node: LexicalNode) => {
+        const listItemNode = node as ListItemNode;
+        const { element, after } = listItemNode.exportDOM(editor);
+
+        if (element instanceof HTMLElement) {
+          if (listItemNode.getChildrenSize() === 0) {
+            element.appendChild(document.createElement("br"));
+          }
+        }
+
+        return { element, after };
+      },
+    ]
+  ])
+}
+
 function $preloadDefault() {
   const root = $getRoot();
   if (root.getFirstChild() === null) {
@@ -100,7 +159,7 @@ export default function Editor({
   const initialConfig: InitialConfigType = {
     namespace: namespace ?? "text_editor",
     editorState: editorState ?? $preloadDefault,
-    html: {import: buildImportMap()},
+    html: {import: buildImportMap(), export: buildExportMap()},
     theme: theme,
     nodes: AllNodes,
     onError: (error) => {

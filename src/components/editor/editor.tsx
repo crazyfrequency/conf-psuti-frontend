@@ -9,6 +9,7 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { HorizontalRulePlugin } from '@lexical/react/LexicalHorizontalRulePlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { SelectionAlwaysOnDisplay } from '@lexical/react/LexicalSelectionAlwaysOnDisplay';
 import { useLexicalEditable } from '@lexical/react/useLexicalEditable';
 import { useEffect, useState } from 'react';
 
@@ -18,6 +19,7 @@ import { toast } from 'sonner';
 import { useSharedHistoryContext } from './context/history-context';
 import LexicalAutoLinkPlugin from './plugins/auto-link-plugin';
 import CodeHighlightPlugin from './plugins/code-highlight-plugin';
+import DraggableBlockPlugin from './plugins/draggable-block-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
 import LinkPlugin from './plugins/link-plugin';
@@ -52,8 +54,6 @@ export default function EditorMain({
     const updateViewPortWidth = () => {
       const isNextSmallWidthViewport =
         CAN_USE_DOM && window.matchMedia('(max-width: 640px)').matches;
-      
-        console.log(isNextSmallWidthViewport)
 
       if (isNextSmallWidthViewport !== isSmallWidthViewport) {
         setIsSmallWidthViewport(isNextSmallWidthViewport);
@@ -81,11 +81,11 @@ export default function EditorMain({
         <RichTextPlugin
           contentEditable={
             <div
-              className="relative min-h-36 resize-y text-base editor-input outline-none outline-0 py-4 px-3 caret-secondary-foreground"
+              className="relative resize-y text-base [tab-size:1]"
               ref={onRef}
             >
               <ContentEditable
-                className="outline-none outline-0"
+                className="relative min-h-36 outline-none outline-0 py-4 px-3 caret-secondary-foreground MainEditorTheme"
                 aria-placeholder={placeholder}
                 placeholder={
                   <div className="absolute inline-block top-4 left-3 select-none pointer-events-none text-ellipsis">
@@ -117,8 +117,12 @@ export default function EditorMain({
               anchorElem={floatingAnchorElem ?? undefined}
               setIsLinkEditMode={setIsLinkEditMode}
             />
+            <DraggableBlockPlugin
+              anchorElem={floatingAnchorElem ?? undefined}
+            />
           </>
         )}
+        <SelectionAlwaysOnDisplay />
         <LinkPlugin hasLinkAttributes />
         <MarkdownShortcutPlugin />
         <ShortcutsPlugin editor={editor} setIsLinkEditMode={setIsLinkEditMode} />

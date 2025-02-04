@@ -50,7 +50,7 @@ export default function FontPicker({
           {FONT_FAMILY_OPTIONS.map(
             ([option, text]) => (
               <DropdownMenuItem
-                className={option === value ? 'bg-muted' : ''}
+                className={option === value ? 'bg-accent/65' : ''}
                 style={{ fontFamily: option }}
                 onClick={() => handleClick(option)}
                 key={option}

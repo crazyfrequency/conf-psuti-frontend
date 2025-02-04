@@ -21,6 +21,16 @@ const header_ru = {
     subscript: 'Нижний индекс',
     superscript: 'Верхний индекс',
     clear: 'Очистить форматирование'
+  },
+  align: {
+    left: 'По левому краю',
+    center: 'По центру',
+    right: 'По правому краю',
+    justify: 'По ширине',
+    start: 'К началу строки',
+    end: 'К концу строки',
+    outdent: 'Уменьшить отступ',
+    indent: 'Увеличить отступ'
   }
 } as const;
 
@@ -47,6 +57,16 @@ const header_en = {
     subscript: 'Subscript',
     superscript: 'Superscript',
     clear: 'Clear formatting',
+  },
+  align: {
+    left: 'Left Align',
+    center: 'Center Align',
+    right: 'Right Align',
+    justify: 'Justify',
+    start: 'Start Align',
+    end: 'End Align',
+    outdent: 'Outdent',
+    indent: 'Indent'
   }
 } as const;
 

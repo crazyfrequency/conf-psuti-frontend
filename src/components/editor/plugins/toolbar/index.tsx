@@ -23,6 +23,7 @@ import CodeLangPicker from "./code-lang-picker";
 import ColorPickerDropdown from "./color-picker";
 import FontPicker from "./font-picker";
 import FontSize from "./font-size";
+import FormatPicker from "./format-picker";
 import TextFormat from "./text-format";
 
 export default function EditorToolbar({
@@ -454,6 +455,11 @@ export default function EditorToolbar({
           />
         </>
       )}
+      <Separator orientation="vertical" />
+      <FormatPicker
+        editor={activeEditor}
+        disabled={!isEditable}
+      />
     </div>
   )
 }
