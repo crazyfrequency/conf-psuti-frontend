@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import { useCurrentLocale } from "@/locales/client";
 import { Pen } from "lucide-react";
 import Link from "next/link";
@@ -23,7 +24,8 @@ export default function TopMenu() {
     </div>
   );
 
-  const isEdit = pathname.endsWith('/edit');
+  const isAdmin = user !== "unauthorized" && user?.role === 'ADMIN';
+  const isEditButton = isAdmin && !pathname.endsWith('/edit');
 
   const editLink = '/' + slug + '/' + (
     typeof sub_path === "string"
@@ -40,16 +42,16 @@ export default function TopMenu() {
     : data?.statusRu ?? data?.statusEn;
 
   return (
-    <div className="relative text-center">
+    <div className={cn("relative text-center", isEditButton && "md:px-10")}>
       <h1 className="text-2xl">{title}</h1>
       {
         status &&
         <h2 className="text-lg text-muted-foreground">{status}</h2>
       }
       {
-        user !== "unauthorized" && user?.role === 'ADMIN' &&
+        isEditButton &&
         <Button
-          className="absolute bottom-0 right-0"
+          className="md:absolute bottom-0 md:right-0"
           variant="ghost"
           size="icon"
           asChild
