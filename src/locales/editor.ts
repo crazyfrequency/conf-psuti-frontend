@@ -31,6 +31,11 @@ const header_ru = {
     end: 'К концу строки',
     outdent: 'Уменьшить отступ',
     indent: 'Увеличить отступ'
+  },
+  insert: {
+    default: 'Вставка',
+    horizontal: 'Горизонтальная линия',
+    collapsible: 'Сворачивающийся контейнер'
   }
 } as const;
 
@@ -67,6 +72,11 @@ const header_en = {
     end: 'End Align',
     outdent: 'Outdent',
     indent: 'Indent'
+  },
+  insert: {
+    default: 'Insert',
+    horizontal: 'Horizontal line',
+    collapsible: 'Collapsible container'
   }
 } as const;
 

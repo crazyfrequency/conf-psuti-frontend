@@ -23,6 +23,9 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 // import {CollapsibleTitleNode} from '../plugins/CollapsiblePlugin/CollapsibleTitleNode';
 // import {AutocompleteNode} from './AutocompleteNode';
 // import {EmojiNode} from './EmojiNode';
+import { CollapsibleContainerNode } from '../plugins/collapsible-plugin/collapsible-container-node';
+import { CollapsibleContentNode } from '../plugins/collapsible-plugin/collapsible-content-node';
+import { CollapsibleTitleNode } from '../plugins/collapsible-plugin/collapsible-title-node';
 import { EquationNode } from './EquationNode';
 // import {ExcalidrawNode} from './ExcalidrawNode';
 // import {FigmaNode} from './FigmaNode';
@@ -68,9 +71,9 @@ const AllNodes: Array<Klass<LexicalNode>> = [
   // YouTubeNode,
   // FigmaNode,
   MarkNode,
-  // CollapsibleContainerNode,
-  // CollapsibleContentNode,
-  // CollapsibleTitleNode,
+  CollapsibleContainerNode,
+  CollapsibleContentNode,
+  CollapsibleTitleNode,
   // PageBreakNode,
   // LayoutContainerNode,
   // LayoutItemNode,

@@ -27,7 +27,7 @@ export default async function MainLayout({
     <div className="min-h-dvh bg-background">
       <header className={cn(
         "sticky flex items-center h-14 w-full top-0 mx-auto",
-        "z-50 rounded-b-lg border-solid border border-t-0",
+        "z-50 rounded-b-2xl border-solid border border-t-0",
         "bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/25",
         "sm:max-w-(--breakpoint-sm) md:max-w-(--breakpoint-md) lg:max-w-(--breakpoint-lg) xl:max-w-(--breakpoint-xl) 2xl:max-w-(--breakpoint-2xl)"
       )}>

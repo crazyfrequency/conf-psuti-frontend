@@ -19,6 +19,7 @@ import { toast } from 'sonner';
 import { useSharedHistoryContext } from './context/history-context';
 import LexicalAutoLinkPlugin from './plugins/auto-link-plugin';
 import CodeHighlightPlugin from './plugins/code-highlight-plugin';
+import CollapsiblePlugin from './plugins/collapsible-plugin';
 import DraggableBlockPlugin from './plugins/draggable-block-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
@@ -106,6 +107,7 @@ export default function EditorMain({
         <CodeHighlightPlugin />
         <HorizontalRulePlugin />
         <LexicalAutoLinkPlugin />
+        <CollapsiblePlugin />
         {floatingAnchorElem && !isSmallWidthViewport && (
           <>
             <FloatingLinkEditorPlugin

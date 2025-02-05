@@ -24,6 +24,7 @@ import ColorPickerDropdown from "./color-picker";
 import FontPicker from "./font-picker";
 import FontSize from "./font-size";
 import FormatPicker from "./format-picker";
+import InsertPicker from "./insert-picker";
 import TextFormat from "./text-format";
 
 export default function EditorToolbar({
@@ -317,11 +318,14 @@ export default function EditorToolbar({
         </Tooltip>
       </TooltipProvider>
       <Separator orientation="vertical" />
-      <BlockFormatDropdown
-        activeEditor={activeEditor}
-        editor={editor}
-        disabled={!isEditable}
-      />
+      {toolbarState.blockType in blockTypeToBlockName &&
+      activeEditor === editor && (
+        <BlockFormatDropdown
+          activeEditor={activeEditor}
+          editor={editor}
+          disabled={!isEditable}
+        />
+      )}
       {toolbarState.blockType === 'code' ? (
         <CodeLangPicker
           activeEditor={activeEditor}
@@ -460,6 +464,16 @@ export default function EditorToolbar({
         editor={activeEditor}
         disabled={!isEditable}
       />
+      {
+        toolbarState.blockType !== 'code' &&
+        canViewerSeeInsertDropdown && (
+          <InsertPicker
+            editor={editor}
+            activeEditor={activeEditor}
+            disabled={!isEditable}
+          />
+        )
+      }
     </div>
   )
 }
