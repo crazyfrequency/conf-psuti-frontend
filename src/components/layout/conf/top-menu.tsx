@@ -10,6 +10,8 @@ import { useParams, usePathname } from "next/navigation";
 import { useAuth } from "../providers/auth-provider";
 import { useConfContext } from "./conf-context";
 
+const regex = /^(\/(?:ru|en)?)?\/[^\/]+\/(?:[^\/]+\/edit|admin(?:\/.*)?)$/;
+
 export default function TopMenu() {
   const { data, isLoading } = useConfContext();
   const locale = useCurrentLocale();
@@ -25,7 +27,8 @@ export default function TopMenu() {
   );
 
   const isAdmin = user !== "unauthorized" && user?.role === 'ADMIN';
-  const isEditButton = isAdmin && !pathname.endsWith('/edit');
+  const isEditButton = isAdmin && !regex.test(pathname);
+  console.log(pathname)
 
   const editLink = '/' + slug + '/' + (
     typeof sub_path === "string"
