@@ -465,7 +465,7 @@
 }
 
 .Collapsible__container {
-  @apply mb-2 bg-card border border-border rounded-md;
+  @apply [&:not(:first-child)]:mt-4 mb-2 bg-card border border-border rounded-md;
 }
 
 .Collapsible__title {
@@ -492,7 +492,7 @@
 }
 
 .Collapsible__content {
-  padding: 0 5px 5px 20px;
+  padding: .5rem 5px 5px 20px;
 }
 
 .Collapsible__collapsed .Collapsible__content {
