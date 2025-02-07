@@ -8,6 +8,7 @@ export type TConf = {
   slug: string;
   startDate: string|number;
   endDate?: string|number;
+  closingDateForApplications?: string|number;
   paths: IPath[];
   url: string;
   statusEn?: string

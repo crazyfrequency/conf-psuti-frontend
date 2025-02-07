@@ -52,6 +52,15 @@ export default {
     },
     new: {
       title: 'Новые конференции',
+    },
+    info: {
+      dates: 'Даты проведения',
+      registration: 'Дата окончания регистрации',
+      submission: 'Дата окончания принятия докладов',
+      place: 'Место проведения',
+      site: 'Веб-сайт',
+      email: 'E-mail',
+      phone: 'Телефон',
     }
   },
   login: {

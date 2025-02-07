@@ -52,6 +52,15 @@ export default {
     },
     new: {
       title: 'New conferences'
+    },
+    info: {
+      dates: 'Conference Dates',
+      registration: 'Registration Due Date',
+      submission: 'Paper Submission Due Date',
+      place: 'Place',
+      site: 'Website',
+      email: 'E-mail',
+      phone: 'Phone',
     }
   },
   login: {

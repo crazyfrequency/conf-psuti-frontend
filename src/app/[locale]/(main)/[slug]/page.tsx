@@ -5,7 +5,7 @@ import { getCurrentLocale } from "@/locales/server";
 import { getConfBySlug } from "@/services/confs.server.service";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Conf from "./[sub_path]/conf";
+import Info from "./info";
 
 export async function generateMetadata({
   params
@@ -42,5 +42,5 @@ export default async function ConfSsr({ params }: {params: Promise<{ slug: strin
   const { slug } = await params;
   let response = await getConfBySlug(slug);
   if(response.status === 'error') return notFound();
-  return <Conf response={response}/>
+  return <Info response={response}/>
 }
