@@ -1,3 +1,5 @@
+import zod from "./zod.json";
+
 export default {
   title: {
     default: 'PSUTI Conference Website',
@@ -49,9 +51,30 @@ export default {
     create: {
       title: 'Create conference',
       description: 'Fill in the form to create a new conference',
+      fields: {
+        slug: 'Conference address',
+        title_ru: 'Conference name (Russian)',
+        title_en: 'Conference name (English)',
+        status_ru: 'Conference status (Russian)',
+        status_en: 'Conference status (English)',
+        english_enabled: 'Enable English',
+        start_date: 'Start date',
+        end_date: 'End date',
+        enter_date: 'Pick a date',
+        required: 'Required field',
+        optional: 'Optional field'
+      },
+      cancel: 'Cancel',
+      submit: 'Create conference',
+      errors: {
+        invalid_slug: "Conference address should contain only numbers, letters, hyphens and underscores. It should start with a letter and not contain the following words: {invalids}.",
+        slug_in_use: 'This conference address is already in use',
+      },
+      success: 'Conference created',
     },
     new: {
-      title: 'New conferences'
+      title: 'New conferences',
+      create: 'Create'
     },
     info: {
       dates: 'Conference Dates',
@@ -128,6 +151,15 @@ export default {
     actions: {
       reload: 'reload',
       help: 'Help'
+    },
+    access: {
+      forbidden: 'Access denied',
+      unauthorized: 'Unauthorized access (you may have logged out)',
+    },
+    conferences: {
+      not_found: 'Conferences not found',
+      error: 'An error occurred while loading conferences',
+      no_current: 'No current conferences',
     }
   },
   zod_errors: {
@@ -145,5 +177,6 @@ export default {
       lastname: 'Last name is required',
       firstname: 'First name is required'
     },
-  }
+  },
+  zod: zod
 } as const;
