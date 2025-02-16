@@ -4,19 +4,27 @@ import { TResponseResult } from "@/api/error";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Error from "@/components/ui/error";
 import { MAIN_PAGES } from "@/constants/pages.constants";
-import { useCurrentLocale, useI18n } from "@/locales/client";
+import { useLocale } from "@/hooks/date-locale.hook";
+import { cn } from "@/lib/utils";
+import { useI18n } from "@/locales/client";
 import { TConf } from "@/types/conf.types";
+import { utc, UTCDate } from "@date-fns/utc";
+import { format } from "date-fns";
 import Link from "next/link";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
 export default function Confs({
-  response
+  response,
+  className,
+  current = false,
+  ...props
 }: Readonly<{
   response: TResponseResult<TConf[]>
-}>) {
+  current?: boolean
+}> & React.HTMLAttributes<HTMLDivElement>) {
+  const { locale, dateLocale } = useLocale();
   const t = useI18n();
-  const locale = useCurrentLocale();
 
   useEffect(()=>{
     if (response.status !== 'success')
@@ -31,16 +39,19 @@ export default function Confs({
       })
   }, [response])
 
+  if (response.status === 'forbidden')
+    return <Error className={className}>{t('errors.access.forbidden')}</Error>
+
   if (response.status !== 'success')
-    return <Error>Не удалось загрузить конференции</Error>
+    return <Error className={className}>{t('errors.conferences.error')}</Error>
 
   const elements = response.data.map(conf => {
-    const start = new Date(conf.startDate);
-    const end = conf.endDate != undefined ? new Date(conf.endDate) : null;
-    const title = locale === 'en' && conf.isEnglishEnable
+    const start = new UTCDate(conf.startDate);
+    const end = conf.endDate != undefined ? new UTCDate(conf.endDate) : null;
+    const title = locale === 'en' && conf.isEnglishEnabled
       ? conf.conferenceNameEn ?? conf.conferenceNameRu
       : conf.conferenceNameRu;
-    const status = locale === 'en' && conf.isEnglishEnable
+    const status = locale === 'en' && conf.isEnglishEnabled
       ? conf.statusEn ?? conf.statusRu
       : conf.statusRu ?? conf.statusEn;
 
@@ -52,17 +63,31 @@ export default function Confs({
             {status && <CardDescription>{status}</CardDescription>}
           </CardHeader>
           <div className="flex p-6 items-center gap-2 max-md:pt-0 max-md:text-sm text-muted-foreground">
-            <time dateTime={start.toISOString()}>{start.toLocaleDateString("ru")}</time>
+            <time dateTime={start.toISOString()}>{format(start, "PPP", { locale: dateLocale, in: utc })}</time>
             {end && "-"}
-            {end && <time dateTime={end.toISOString()}>{end.toLocaleDateString("ru")}</time>}
+            {end && <time dateTime={end.toISOString()}>{format(end, "PPP", { locale: dateLocale, in: utc })}</time>}
           </div>
         </Card>
       </Link>
     )
   })
 
+  if (elements.length === 0)
+    return <Error className={cn(
+      current && "text-primary",
+      className
+    )}>
+      {current ? t('errors.conferences.no_current') : t('errors.conferences.not_found')}
+    </Error>
+
   return (
-    <div className="grid gap-4">
+    <div
+      className={cn(
+        "grid gap-4",
+        className
+      )}
+      {...props}
+    >
       {elements}
     </div>
   );

@@ -21,7 +21,7 @@ export default async function Image({ params: { slug } }: Readonly<{ params: { s
 
   const image = "data:image/png;base64," + (await readFile(join(process.cwd(), 'public', 'logo_pguti_color.png'))).toString('base64');
 
-  const title = locale === 'en' && response.data.isEnglishEnable
+  const title = locale === 'en' && response.data.isEnglishEnabled
     ? response.data.conferenceNameEn ?? response.data.conferenceNameRu
     : response.data.conferenceNameRu
 

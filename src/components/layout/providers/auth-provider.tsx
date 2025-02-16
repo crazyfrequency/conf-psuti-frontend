@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 type TAuthContext = {
   reloadAuth: () => void
   logout: () => void
-  user: IUser | "unauthorized"
+  user: IUser | "unauthorized" | "loading"
 }
 
 const AuthProviderContext = React.createContext<TAuthContext|undefined>(undefined)
@@ -18,7 +18,7 @@ export function AuthProvider({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const [user, setUser] = React.useState<IUser|undefined>(undefined)
+  const [user, setUser] = React.useState<IUser|"unauthorized"|undefined>(undefined)
 
   const reloadAuth = useCallback(async () => {
     const user = getUserFromLocalStorage();
@@ -26,7 +26,7 @@ export function AuthProvider({
     if (user) return setUser(user);
 
     const response = await getMe()
-    if (response.status !== 'success') return
+    if (response.status !== 'success') return setUser("unauthorized");
     setUser(response.data)
   }, [setUser])
 
@@ -34,7 +34,7 @@ export function AuthProvider({
     const response = await logout();
     if (response.status !== 'success') return
     localStorage.removeItem('user');
-    setUser(undefined);
+    setUser("unauthorized");
   }, [setUser])
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export function AuthProvider({
     return {
       reloadAuth,
       logout: logoutAuth,
-      user: user ?? "unauthorized" as "unauthorized"
+      user: user ?? "loading" as const
     }
   }, [user, reloadAuth])
 

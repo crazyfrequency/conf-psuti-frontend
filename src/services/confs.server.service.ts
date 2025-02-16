@@ -28,7 +28,7 @@ export async function getConfsListByYear(year?: number) {
     response = await fetch(`${base_url}/years/${year??"current"}`, {
       cache: CACHE_MODE,
       next: {
-        revalidate: 60*60*24*14,
+        revalidate: year ? 60*60*24*14 : 60*60*12,
         tags: [`conf_year_${year??"current"}`, "confs", "all"]
       }
     });

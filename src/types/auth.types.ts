@@ -1,3 +1,5 @@
+import { locales } from "@/constants/i18n.constants";
+
 export interface IAuthForm {
   email: string
   password: string
@@ -6,12 +8,13 @@ export interface IAuthForm {
 export interface IUser {
   id: number
   email: string
-  role: "USER" | "ADMIN"
+  role: "USER" | "ADMIN",
+  preferredLocale: (typeof locales)[number],
   lastnameRu?: string
   lastnameEn?: string
-  firstnameRu: string
+  firstnameRu?: string
   firstnameEn?: string
-  middlenameRu: string
+  middlenameRu?: string
   middlenameEn?: string
 }
 

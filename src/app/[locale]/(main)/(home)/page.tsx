@@ -22,5 +22,5 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HomeSsr() {
   const data = await getConfsListByYear();
-  return <Confs response={data}/>
+  return <Confs current response={data}/>
 }

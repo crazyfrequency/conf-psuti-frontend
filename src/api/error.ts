@@ -1,3 +1,4 @@
+import { locales } from '@/constants/i18n.constants'
 import { AxiosResponse } from 'axios'
 
 /**
@@ -122,7 +123,7 @@ export type TResponseSuccess<T> = {
 export type TResponseError = {
   status: "error"|"unauthorized"|"forbidden";
   code: number;
-  message: Record<"ru"|"en", string>;
+  message: Record<(typeof locales)[number], string>;
   errors?: any;
 }
 

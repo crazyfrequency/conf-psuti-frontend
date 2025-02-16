@@ -10,6 +10,7 @@ import { CircleUser, User } from 'lucide-react';
 import { useRouter } from 'next-nprogress-bar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Skeleton } from '../ui/skeleton';
 import { useAuth } from './providers/auth-provider';
 
 export default function UserMenu() {
@@ -21,23 +22,28 @@ export default function UserMenu() {
 
   useKeyBind({
     keyBind: 'Ctrl+KeyP',
-    callback: () => user !== "unauthorized" && !pathname.match(/(\/en|)\/profile/)
+    callback: () => typeof user === "object" && !pathname.match(/(\/en|)\/profile/)
       ? router.push(MAIN_PAGES.PROFILE)
       : null
   })
   useKeyBind({
     keyBind: 'Alt+KeyC',
-    callback: () => user !== "unauthorized" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/confs\/new/)
+    callback: () => typeof user === "object" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/confs\/new/)
       ? router.push(ADMIN_PAGES.NEW_CONFS)
       : null
   })
   useKeyBind({
     keyBind: 'Alt+KeyU',
-    callback: () => user !== "unauthorized" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/users/)
+    callback: () => typeof user === "object" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/users/)
       ? router.push(ADMIN_PAGES.USERS)
       : null
   })
   useKeyBind({ keyBind: 'Ctrl+Shift+KeyQ', callback: logout })
+
+  if (user === "loading")
+    return (
+      <Skeleton className="size-10" />
+    )
 
   if (user === "unauthorized")
     return (

@@ -20,13 +20,13 @@ export default function TopMenu() {
   const { user } = useAuth();
 
   if (isLoading) return (
-    <div className="relative text-center">
-      <h1 className="text-2xl"><Skeleton className="h-5 w-20" /></h1>
-      <h2 className="text-lg text-muted-foreground"><Skeleton className="h-4 w-20" /></h2>
+    <div className="relative text-center *:mx-auto space-y-2">
+      <Skeleton className="h-6 w-64 max-w-full" />
+      <Skeleton className="h-4 w-32 max-w-full" />
     </div>
   );
 
-  const isAdmin = user !== "unauthorized" && user?.role === 'ADMIN';
+  const isAdmin = typeof user === "object" && user?.role === 'ADMIN';
   const isEditButton = isAdmin && !regex.test(pathname);
   console.log(pathname)
 
@@ -36,11 +36,11 @@ export default function TopMenu() {
       : 'info'
   ) + '/edit';
 
-  const title = locale === 'en' && data?.isEnglishEnable
+  const title = locale === 'en' && data?.isEnglishEnabled
     ? data?.conferenceNameEn
     : data?.conferenceNameRu
       ?? data?.conferenceNameRu;
-  const status = locale === 'en' && data?.isEnglishEnable
+  const status = locale === 'en' && data?.isEnglishEnabled
     ? data?.statusEn ?? data?.statusRu
     : data?.statusRu ?? data?.statusEn;
 

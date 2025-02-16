@@ -3,8 +3,9 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { PasswordInput, PasswordInputAdornmentToggle, PasswordInputInput } from "@/components/ui/password-input";
 import { form_signup_schema } from "@/constants/auth.constants";
 import { AUTH_PAGES } from "@/constants/pages.constants";
 import { useCurrentLocale, useI18n } from "@/locales/client";
@@ -73,6 +74,7 @@ export default function SignUp() {
     const response = await register({
       email: data.email,
       password: data.password,
+      preferredLocale: locale,
       lastnameRu: data.lastname,
       firstnameRu: data.firstname,
       middlenameRu: data.middlename
@@ -113,8 +115,10 @@ export default function SignUp() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="email">{t('signup.email')}</FormLabel>
-                  <Input id="email" type="email" placeholder={t('signup.email')} {...field} />
+                  <FormLabel>{t('signup.email')}</FormLabel>
+                  <FormControl>
+                    <Input type="email" autoComplete="email" placeholder="me@example.com" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -125,8 +129,13 @@ export default function SignUp() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="password">{t('signup.password')}</FormLabel>
-                  <Input id="password" type="password" placeholder={t('signup.password')} {...field} />
+                  <FormLabel>{t('signup.password')}</FormLabel>
+                  <PasswordInput>
+                    <FormControl>
+                      <PasswordInputInput autoComplete="new-password" placeholder={t('signup.password').toLowerCase()} {...field} />
+                    </FormControl>
+                    <PasswordInputAdornmentToggle />
+                  </PasswordInput>
                   <FormMessage />
                 </FormItem>
               )}
@@ -137,8 +146,13 @@ export default function SignUp() {
               name="confirm"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="confirm">{t('signup.confirm')}</FormLabel>
-                  <Input id="confirm" type="password" placeholder={t('signup.confirm')} {...field} />
+                  <FormLabel>{t('signup.confirm')}</FormLabel>
+                  <PasswordInput>
+                    <FormControl>
+                      <PasswordInputInput autoComplete="new-password" placeholder={t('signup.confirm').toLowerCase()} {...field} />
+                    </FormControl>
+                    <PasswordInputAdornmentToggle />
+                  </PasswordInput>
                   <FormMessage />
                 </FormItem>
               )}
@@ -149,8 +163,10 @@ export default function SignUp() {
               name="lastname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="lastname">{t('signup.lastname.title')}</FormLabel>
-                  <Input id="lastname" type="text" placeholder="Иванов" {...field} />
+                  <FormLabel>{t('signup.lastname.title')}</FormLabel>
+                  <FormControl>
+                    <Input type="text" autoComplete="family-name" placeholder="Иванов" {...field} />
+                  </FormControl>
                   <FormDescription>{t('signup.lastname.description')}</FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -162,8 +178,10 @@ export default function SignUp() {
               name="firstname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="firstname">{t('signup.firstname.title')}</FormLabel>
-                  <Input id="firstname" type="text" placeholder="Иван" {...field} />
+                  <FormLabel>{t('signup.firstname.title')}</FormLabel>
+                  <FormControl>
+                    <Input type="text" autoComplete="given-name" placeholder="Иван" {...field} />
+                  </FormControl>
                   <FormDescription>{t('signup.firstname.description')}</FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -175,8 +193,10 @@ export default function SignUp() {
               name="middlename"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="middlename">{t('signup.middlename.title')}</FormLabel>
-                  <Input id="middlename" type="text" placeholder="Иванович" {...field} />
+                  <FormLabel>{t('signup.middlename.title')}</FormLabel>
+                  <FormControl>
+                    <Input type="text" autoComplete="additional-name" placeholder="Иванович" {...field} />
+                  </FormControl>
                   <FormDescription>{t('signup.middlename.description')}</FormDescription>
                   <FormMessage />
                 </FormItem>

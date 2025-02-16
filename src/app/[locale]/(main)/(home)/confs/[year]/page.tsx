@@ -34,5 +34,6 @@ export default async function ConfsSsr({
   const { year } = await params;
   const data = await getConfsListByYear(+year);
   if(data.status !== 'success') notFound();
+  if(data.data.length === 0) return notFound();
   return <Confs response={data}/>
 }

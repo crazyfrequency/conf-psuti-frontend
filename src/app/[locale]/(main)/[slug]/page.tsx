@@ -22,7 +22,7 @@ export async function generateMetadata({
     ...NO_INDEX_PAGE
   };
 
-  const title = conf_response.data.isEnglishEnable && locale === 'en'
+  const title = conf_response.data.isEnglishEnabled && locale === 'en'
     ? conf_response.data.conferenceNameEn
     : conf_response.data.conferenceNameRu;
 
