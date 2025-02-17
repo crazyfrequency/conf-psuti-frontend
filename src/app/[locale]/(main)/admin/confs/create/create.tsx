@@ -158,16 +158,16 @@ export default function CreateConf() {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent forceMount className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
                       timeZone="UTC"
                       locale={dateLocale}
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date < utc("2010-01-01")
-                      }
+                      selected={field.value ? utc(field.value) : undefined}
+                      onSelect={v => field.onChange(v ? utc(v) : undefined)}
+                      defaultMonth={field.value ? utc(field.value) : undefined}
+                      disabled={{ before: utc("2010-01-01") }}
+                      startMonth={utc("2010-01-01")}
                       autoFocus
                     />
                   </PopoverContent>
@@ -198,16 +198,16 @@ export default function CreateConf() {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent forceMount className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
                       timeZone="UTC"
                       locale={dateLocale}
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date < utc("2010-01-01")
-                      }
+                      selected={field.value ? utc(field.value) : undefined}
+                      onSelect={v => field.onChange(v ? utc(v) : undefined)}
+                      defaultMonth={field.value ? utc(field.value) : undefined}
+                      disabled={{ before: utc("2010-01-01") }}
+                      startMonth={utc("2010-01-01")}
                       autoFocus
                     />
                   </PopoverContent>

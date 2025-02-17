@@ -9,6 +9,7 @@ import {
   DayPicker,
   labelNext,
   labelPrevious,
+  TZDate,
   useDayPicker,
   type DayPickerProps,
 } from "react-day-picker"
@@ -80,7 +81,7 @@ function Calendar({
     }, [yearRange])
   )
 
-  const { onNextClick, onPrevClick, startMonth, endMonth } = props
+  const { onNextClick, onPrevClick, startMonth, endMonth, timeZone } = props
 
   const columnsDisplayed = navView === "years" ? 1 : numberOfMonths
 
@@ -228,6 +229,7 @@ function Calendar({
             startMonth={startMonth}
             endMonth={endMonth}
             navView={navView}
+            timeZone={timeZone}
             setNavView={setNavView}
             {...props}
           />
@@ -412,6 +414,7 @@ function MonthGrid({
   startMonth,
   endMonth,
   navView,
+  timeZone,
   setNavView,
   ...props
 }: {
@@ -421,6 +424,7 @@ function MonthGrid({
   startMonth?: Date
   endMonth?: Date
   navView: NavView
+  timeZone?: string
   setNavView: React.Dispatch<React.SetStateAction<NavView>>
 } & React.TableHTMLAttributes<HTMLTableElement>) {
   if (navView === "years") {
@@ -432,6 +436,7 @@ function MonthGrid({
         setNavView={setNavView}
         navView={navView}
         className={className}
+        timeZone={timeZone}
         {...props}
       />
     )
@@ -450,6 +455,7 @@ function YearGrid({
   endMonth,
   setNavView,
   navView,
+  timeZone,
   ...props
 }: {
   className?: string
@@ -458,6 +464,7 @@ function YearGrid({
   endMonth?: Date
   setNavView: React.Dispatch<React.SetStateAction<NavView>>
   navView: NavView
+  timeZone?: string
 } & React.HTMLAttributes<HTMLDivElement>) {
   const { goToMonth, selected } = useDayPicker()
 
@@ -491,10 +498,15 @@ function YearGrid({
               onClick={() => {
                 setNavView("days")
                 goToMonth(
-                  new Date(
-                    displayYears.from + i,
-                    (selected as Date | undefined)?.getMonth() ?? 0
-                  )
+                  timeZone ?
+                    new TZDate(
+                      displayYears.from + i,
+                      (selected as TZDate | undefined)?.getMonth() ?? 0,
+                      timeZone
+                    ) : new Date(
+                      displayYears.from + i,
+                      (selected as Date | undefined)?.getMonth() ?? 0
+                    )
                 )
               }}
               disabled={navView === "years" ? isDisabled : undefined}
