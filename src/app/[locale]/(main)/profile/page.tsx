@@ -1,18 +1,20 @@
-'use client'
+'use server'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import Profile from "./profile"
+import { getScopedI18n } from "@/locales/server";
+import { Metadata } from "next";
+import Profile from "./profile";
 
-export default function page() {
-  return (
-    <Card className="mt-2">
-      <CardHeader>
-        <CardTitle>тест</CardTitle>
-        <CardDescription></CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Profile />
-      </CardContent>
-    </Card>
-  )
+export async function generateMetadata(): Promise<Metadata> {
+  const title = (await getScopedI18n('profile'))('title');
+
+  return {
+    title: {
+      template: `%s | ${title}`,
+      default: title
+    }
+  }
+}
+
+export default async function page() {
+  return <Profile />
 }

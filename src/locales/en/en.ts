@@ -1,3 +1,4 @@
+import profile from "./profile.json";
 import zod from "./zod.json";
 
 export default {
@@ -178,5 +179,6 @@ export default {
       firstname: 'First name is required'
     },
   },
-  zod: zod
+  zod: zod,
+  profile
 } as const;
