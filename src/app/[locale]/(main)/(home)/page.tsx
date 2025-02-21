@@ -1,5 +1,6 @@
 'use server'
 
+import Page500 from "@/components/auth/500";
 import Confs from "@/components/confs/confs";
 import { getScopedI18n } from "@/locales/server";
 import { getConfsListByYear } from "@/services/confs.server.service";
@@ -22,5 +23,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HomeSsr() {
   const data = await getConfsListByYear();
+  if (data.status === "error") return <Page500 />;
   return <Confs current response={data}/>
 }

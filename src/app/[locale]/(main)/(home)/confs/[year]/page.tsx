@@ -1,5 +1,6 @@
 'use server'
 
+import Page500 from "@/components/auth/500";
 import Confs from "@/components/confs/confs";
 import { getScopedI18n } from "@/locales/server";
 import { getConfsListByYear } from "@/services/confs.server.service";
@@ -33,7 +34,8 @@ export default async function ConfsSsr({
 }>) {
   const { year } = await params;
   const data = await getConfsListByYear(+year);
-  if(data.status !== 'success') notFound();
-  if(data.data.length === 0) return notFound();
+  if (data.status === 'error') return <Page500 />;
+  if (data.status !== 'success') notFound();
+  if (data.data.length === 0) return notFound();
   return <Confs response={data}/>
 }

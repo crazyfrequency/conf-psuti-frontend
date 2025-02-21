@@ -16,7 +16,7 @@ export const errorCatch = (error: any): string => {
     : error.message
 }
 
-const codes: Record<number, Record<"ru"|"en", string> | undefined> = {
+const codes: Record<number, Record<typeof locales[number], string> | undefined> = {
   400: {
     ru: 'Некорректные данные в запросе',
     en: 'Bad request'
@@ -121,7 +121,7 @@ export type TResponseSuccess<T> = {
 }
 
 export type TResponseError = {
-  status: "error"|"unauthorized"|"forbidden";
+  status: "error"|"unauthorized"|"forbidden"|"not-found";
   code: number;
   message: Record<(typeof locales)[number], string>;
   errors?: any;
@@ -153,7 +153,9 @@ export function checkErrorsClient<T>(response: AxiosResponse<T>|null): TResponse
           response.status === 401
             ? "unauthorized" :
           response.status === 403
-            ? "forbidden" : "error",
+            ? "forbidden" :
+          response.status === 404
+            ? "not-found" : "error",
         code: response.status,
         message: codes[response.status]!,
         errors: response.data
@@ -179,18 +181,24 @@ export function checkErrorsClient<T>(response: AxiosResponse<T>|null): TResponse
 
   const message = (response?.data as any)?.message
 
-  const description = message
+  const description: string|Record<(typeof locales)[number], string> = message
       ? typeof message === 'object'
         ? message[0]
         : message
       : typeof response?.statusText === 'string'
         ? response.statusText
-        : 'Произошла неизвестная ошибка';
+        : {
+          ru: 'Произошла неизвестная ошибка',
+          en: 'Unknown error'
+        };
 
   return {
     status: "error",
     code: response?.status ?? -1,
-    message: description,
+    message: typeof description === 'string' ? {
+      ru: description,
+      en: description
+    } : description,
     errors: response?.data
   }
 }
@@ -234,6 +242,14 @@ export async function checkErrorsServer<T>(response: Response|null): Promise<TRe
   if (response.status === 401) {
     return {
       status: "unauthorized",
+      code: response.status,
+      message: codes[response.status]!
+    }
+  }
+
+  if (response.status === 404) {
+    return {
+      status: "not-found",
       code: response.status,
       message: codes[response.status]!
     }

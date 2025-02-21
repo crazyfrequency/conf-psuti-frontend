@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 type TAuthContext = {
   reloadAuth: () => void
   logout: () => void
-  user: IUser | "unauthorized" | "loading"
+  user: IUser | "unauthorized" | "error" | "loading"
 }
 
 const AuthProviderContext = React.createContext<TAuthContext|undefined>(undefined)
@@ -18,7 +18,7 @@ export function AuthProvider({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const [user, setUser] = React.useState<IUser|"unauthorized"|undefined>(undefined)
+  const [user, setUser] = React.useState<IUser|"unauthorized"|"error"|undefined>(undefined)
 
   const reloadAuth = useCallback(async () => {
     const user = getUserFromLocalStorage();
@@ -26,6 +26,10 @@ export function AuthProvider({
     if (user) return setUser(user);
 
     const response = await getMe()
+    if (response.status === 'error' || response.status === 'not-found') {
+      setTimeout(reloadAuth, 5000);
+      return setUser("error");
+    };
     if (response.status !== 'success') return setUser("unauthorized");
     setUser(response.data)
   }, [setUser])
@@ -39,7 +43,6 @@ export function AuthProvider({
 
   useEffect(() => {
     const getUser = async (event: StorageEvent) => {
-      console.log(event)
       if (event.key === 'user') {
         const user = event.newValue ? JSON.parse(event.newValue) : null;
         setUser(user)

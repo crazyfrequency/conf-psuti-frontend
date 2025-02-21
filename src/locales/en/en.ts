@@ -147,6 +147,7 @@ export default {
         title: 'Email is already in use',
         description: 'You may already be registered'
       },
+      auth: 'An error occurred while authorizing',
     },
     login: 'Invalid email or password',
     actions: {
@@ -161,6 +162,14 @@ export default {
       not_found: 'Conferences not found',
       error: 'An error occurred while loading conferences',
       no_current: 'No current conferences',
+    },
+    403: {
+      title: 'Access denied',
+      description: 'You do not have permission to view this page'
+    },
+    500: {
+      title: 'Internal server error',
+      description: 'An internal server error occurred'
     }
   },
   zod_errors: {
