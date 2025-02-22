@@ -5,7 +5,7 @@ import { getMe, logout } from '@/services/auth.service'
 import { IUser } from '@/types/auth.types'
 import React, { useCallback, useEffect, useMemo } from 'react'
 
-type TAuthContext = {
+export type TAuthContext = {
   reloadAuth: () => void
   logout: () => void
   user: IUser | "unauthorized" | "error" | "loading"
