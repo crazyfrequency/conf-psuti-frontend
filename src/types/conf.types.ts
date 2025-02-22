@@ -3,20 +3,19 @@
  */
 export type TConf = {
   conferenceNameRu: string;
-  type: string;
   statusRu?: string;
   slug: string;
   startDate: string|number;
-  endDate?: string|number;
+  endDate: string|number;
+  closingDateForApplications?: string|number;
   paths: IPath[];
-  url: string;
   statusEn?: string
 } & (
   {
-    isEnglishEnable?: true
+    isEnglishEnabled?: true
     conferenceNameEn: string
   } | {
-    isEnglishEnable?: false
+    isEnglishEnabled?: false
   }
 )
 
@@ -27,4 +26,8 @@ export interface IPath {
   titleRu: string;
   titleEn?: string;
   url: string;
+}
+
+export type TConfForm = Omit<TConf, 'paths'|'closingDateForApplications'> & {
+  conferenceNameEn?: string;
 }

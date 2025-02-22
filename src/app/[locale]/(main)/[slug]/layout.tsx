@@ -1,5 +1,6 @@
 'use server'
 
+import Page500 from "@/components/auth/500";
 import ConfContext from "@/components/layout/conf/conf-context";
 import { getConfBySlug } from "@/services/confs.server.service";
 import { notFound } from "next/navigation";
@@ -19,7 +20,8 @@ export default async function Layout({
 
   const response = await getConfBySlug(slug);
 
-  if (response.status==='error') notFound();
+  if (response.status === "not-found") return notFound();
+  if (response.status === "error") return <Page500 />;
 
   return (
     <ConfContext slug={slug} response={response}>

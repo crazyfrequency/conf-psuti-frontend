@@ -6,8 +6,8 @@ export const form_login_schema = z.object({
 })
 
 export const form_signup_schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8).max(32),
+  email: z.string().email().nonempty(),
+  password: z.string().min(8).max(32).nonempty(),
   confirm: z.string(),
   firstname: z.string().nonempty().max(50),
   lastname: z.string().nonempty().max(100),

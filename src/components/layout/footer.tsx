@@ -25,12 +25,12 @@ export default function Footer({
       <p>
         {t('administrations')}{" "}
         {t('email')}{" "}
-        <a className="underline" href={`mailto:${EMAIL}`}>
+        <a className="underline text-primary" href={`mailto:${EMAIL}`}>
           {EMAIL}
         </a>
         {" "}
         {t('phone')}{" "}
-        <a className="underline" href={`tel:${PHONE}`}>
+        <a className="underline text-primary" href={`tel:${PHONE}`}>
           {PHONE}
         </a>
       </p>

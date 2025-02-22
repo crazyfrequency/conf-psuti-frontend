@@ -2,6 +2,7 @@
 
 import { TResponseResult } from "@/api/error";
 import { TConfContext } from "@/components/layout/conf/conf-context";
+import { useAuth } from "@/components/layout/providers/auth-provider";
 import { AUTH_PAGES } from "@/constants/pages.constants";
 import { getConf } from "@/services/confs.client.service";
 import { TConf } from "@/types/conf.types";
@@ -18,6 +19,7 @@ export default function useConfHook({
 }>) {
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useAuth();
 
   const [context, setContext] = useState<TConfContext>(() => {
     if (response.status === 'success')
@@ -36,9 +38,11 @@ export default function useConfHook({
 
   useEffect(()=>{
     console.log(response);
-    if(response.status !== 'success')
+    if (user === "unauthorized") return router.replace(AUTH_PAGES.LOGIN(pathname));
+    if (user === "loading") return;
+    if (response.status !== 'success')
       fetchConf();
-  }, [response, slug])
+  }, [response, slug, user]);
 
   return { context, fetchConf }
 }

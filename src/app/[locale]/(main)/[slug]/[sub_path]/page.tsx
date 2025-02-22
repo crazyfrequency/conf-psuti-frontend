@@ -1,5 +1,6 @@
 'use server'
 
+import Page500 from "@/components/auth/500";
 import { NO_INDEX_PAGE } from "@/constants/seo.constants";
 import { getCurrentLocale } from "@/locales/server";
 import { getConfBySlug } from "@/services/confs.server.service";
@@ -15,14 +16,12 @@ export async function generateMetadata({
   const { slug, sub_path } = await params;
   const locale = await getCurrentLocale();
   const response = await getConfBySlug(slug);
-  
-  if (response.status === 'error') return notFound();
 
   if (response.status !== 'success') return {
     ...NO_INDEX_PAGE
   };
 
-  const title = response.data.isEnglishEnable && locale === 'en'
+  const title = response.data.isEnglishEnabled && locale === 'en'
     ? response.data.conferenceNameEn
     : response.data.conferenceNameRu;
 
@@ -41,6 +40,7 @@ export async function generateMetadata({
 export default async function ConfSsr({ params }: {params: Promise<{ slug: string, sub_path: string }>}) {
   const { slug } = await params;
   let data = await getConfBySlug(slug);
-  if(data.status === "error") return notFound();
+  if (data.status === "not-found") return notFound();
+  if (data.status === "error") return <Page500 />;
   return <Conf response={data}/>
 }
