@@ -69,7 +69,7 @@ export default function Login() {
   }
 
   return (
-    <Card>
+    <Card className="max-w-sm">
       <CardHeader className="text-center">
         <CardTitle className="text-xl">{t('login.title')}</CardTitle>
         <CardDescription>{t('login.description')}</CardDescription>

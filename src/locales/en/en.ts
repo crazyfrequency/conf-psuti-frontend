@@ -1,4 +1,5 @@
 import auth_errors from "./auth/errors.json";
+import languages from "./languages.json";
 import profile from "./profile.json";
 import zod from "./zod.json";
 
@@ -122,6 +123,7 @@ export default {
     lastname: 'Last name',
     firstname: 'First name',
     middlename: 'Middle name (optional)',
+    names: 'Names {on}',
     preferred_locale: 'Preferred language',
     caution: {
       title: 'Caution',
@@ -185,5 +187,6 @@ export default {
     auth: auth_errors,
     ...zod
   },
-  profile
+  profile,
+  languages
 } as const;

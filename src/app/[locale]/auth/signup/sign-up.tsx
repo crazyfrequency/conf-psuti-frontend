@@ -6,14 +6,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput, PasswordInputAdornmentToggle, PasswordInputInput } from "@/components/ui/password-input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioCardGroup, RadioGroupItem } from "@/components/ui/RadioCardGroup";
+import { Separator } from "@/components/ui/separator";
 import { form_signup_schema } from "@/constants/auth.constants";
-import { BigLocales, localeNames } from "@/constants/i18n.constants";
+import { BigLocales } from "@/constants/i18n.constants";
 import { AUTH_PAGES } from "@/constants/pages.constants";
 import { makeZodI18nMap } from "@/lib/zod-i18n";
 import { useCurrentLocale, useScopedI18n } from "@/locales/client";
 import { register } from "@/services/auth.service";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Label } from "@radix-ui/react-dropdown-menu";
 import { Info } from "lucide-react";
 import { useRouter } from "next-nprogress-bar";
 import Link from "next/link";
@@ -23,6 +25,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 export default function SignUp() {
+  const t_locales = useScopedI18n('languages');
   const t_error = useScopedI18n('errors');
   const t_zod = useScopedI18n('zod');
   const t = useScopedI18n('signup');
@@ -62,7 +65,7 @@ export default function SignUp() {
       names: {
 
       }
-    }, locale);
+    } as any, locale);
 
     if (response.status === 'success')
       router.replace(AUTH_PAGES.CONFIRM_EMAIL(data.email, +Date.now()));
@@ -86,7 +89,7 @@ export default function SignUp() {
   }
 
   return (
-    <Card>
+    <Card className="max-w-4xl">
       <CardHeader className="text-center">
         <CardTitle className="text-xl">{t('title')}</CardTitle>
         <CardDescription>{t('description')}</CardDescription>
@@ -149,75 +152,121 @@ export default function SignUp() {
                 <FormItem className="grid gap-0.5">
                   <FormLabel>{t('preferred_locale')}</FormLabel>
                   <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="gap-2 ml-1.5"
-                    >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
+                    <RadioCardGroup className="grid-cols-2" value={field.value} onValueChange={field.onChange}>
+                      <FormItem>
                         <FormControl>
-                          <RadioGroupItem value="RU" />
+                          <RadioGroupItem value="RU">
+                            {t_locales('names.ru')}
+                          </RadioGroupItem>
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          {localeNames.RU[locale]}
-                        </FormLabel>
                       </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormItem>
                         <FormControl>
-                          <RadioGroupItem value="EN" />
+                          <RadioGroupItem value="EN">
+                            {t_locales('names.en')}
+                          </RadioGroupItem>
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          {localeNames.EN[locale]}
-                        </FormLabel>
                       </FormItem>
-                    </RadioGroup>
+                    </RadioCardGroup>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <FormField 
-              control={form.control}
-              name="names.RU.lastName"
-              render={({ field }) => (
-                <FormItem className="grid gap-0.5">
-                  <FormLabel>{t('lastname')}</FormLabel>
-                  <FormControl>
-                    <Input type="text" autoComplete="family-name" placeholder="Иванов" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <Separator />
 
-            <FormField 
-              control={form.control}
-              name="names.RU.firstName"
-              render={({ field }) => (
-                <FormItem className="grid gap-0.5">
-                  <FormLabel>{t('firstname')}</FormLabel>
-                  <FormControl>
-                    <Input type="text" autoComplete="given-name" placeholder="Иван" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr]">
+              <div className="grid gap-4">
+                <Label className="text-center font-bold">{t('names', { on: t_locales('context.ru') })}</Label>
+                <FormField 
+                  control={form.control}
+                  name="names.RU.lastName"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-0.5">
+                      <FormLabel>{t('lastname')}</FormLabel>
+                      <FormControl>
+                        <Input type="text" autoComplete="family-name" placeholder="Иванов" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <FormField 
-              control={form.control}
-              name="names.RU.middleName"
-              render={({ field }) => (
-                <FormItem className="grid gap-0.5">
-                  <FormLabel>{t('middlename')}</FormLabel>
-                  <FormControl>
-                    <Input type="text" autoComplete="additional-name" placeholder="Иванович" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField 
+                  control={form.control}
+                  name="names.RU.firstName"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-0.5">
+                      <FormLabel>{t('firstname')}</FormLabel>
+                      <FormControl>
+                        <Input type="text" autoComplete="given-name" placeholder="Иван" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField 
+                  control={form.control}
+                  name="names.RU.middleName"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-0.5">
+                      <FormLabel>{t('middlename')}</FormLabel>
+                      <FormControl>
+                        <Input type="text" autoComplete="additional-name" placeholder="Иванович" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Separator className="max-md:hidden" orientation="vertical" />
+              <div className="grid gap-4">
+                <Label className="text-center font-bold max-md:mt-4">{t('names', { on: t_locales('context.en') })}</Label>
+                <FormField 
+                  control={form.control}
+                  name="names.EN.lastName"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-0.5">
+                      <FormLabel>{t('lastname')}</FormLabel>
+                      <FormControl>
+                        <Input type="text" autoComplete="family-name" placeholder="Ivanov" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField 
+                  control={form.control}
+                  name="names.EN.firstName"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-0.5">
+                      <FormLabel>{t('firstname')}</FormLabel>
+                      <FormControl>
+                        <Input type="text" autoComplete="given-name" placeholder="Ivan" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField 
+                  control={form.control}
+                  name="names.EN.middleName"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-0.5">
+                      <FormLabel>{t('middlename')}</FormLabel>
+                      <FormControl>
+                        <Input type="text" autoComplete="additional-name" placeholder="Ivanovich" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
 
             <Alert>
               <Info />

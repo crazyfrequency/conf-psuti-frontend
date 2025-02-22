@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { localeNames } from "@/constants/i18n.constants";
+import { Locales } from "@/constants/i18n.constants";
 import { AUTH_PAGES } from "@/constants/pages.constants";
 import { useLocale } from "@/hooks/date-locale.hook";
 import { getUserNames } from "@/lib/localalization-tools";
@@ -17,13 +17,16 @@ import { usePathname } from "next/navigation";
 
 export default function Profile() {
   const { locale, dateLocale } = useLocale();
+  const t_languages = useScopedI18n('languages');
   const t = useScopedI18n('profile');
   const pathname = usePathname();
   const router = useRouter();
   const { user } = useAuth();
 
-  if (user === "unauthorized") 
-    return router.replace(AUTH_PAGES.LOGIN(pathname));
+  if (user === "unauthorized") {
+    router.replace(AUTH_PAGES.LOGIN(pathname));
+    return null
+  }
 
   if (user === "loading") return (
     <Card className="mt-2">
@@ -47,7 +50,7 @@ export default function Profile() {
           {title}
         </CardTitle>
         <CardDescription>
-          {t('preferred_locale')}: {localeNames[user.preferredLocale]?.[locale]}
+          {t('preferred_locale')}: {t_languages(`names.${user.preferredLocale.toLowerCase() as Locales}`)}
         </CardDescription>
         <Button className="absolute right-6 top-1/2 -translate-y-1/2" variant="ghost" size="icon">
           <Pencil />
