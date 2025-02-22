@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useConfContext } from './conf-context';
 
+const admin_pages = ['settings', 'pages', 'admins', 'form', 'topics', 'mailing'] as const;
+
 export default function Path({
   className,
   ...props
@@ -44,6 +46,8 @@ export default function Path({
 
   const [slug, sub_path, ...rest] = segments;
 
+  const isEdit = rest[rest.length - 1] === 'edit';
+
   const year = new Date(data.startDate).getFullYear();
 
   const title = data.isEnglishEnabled && locale === 'en'
@@ -52,11 +56,13 @@ export default function Path({
 
   const path_data = data.paths?.find(v=>v.url===sub_path);
 
-  const path_title = path_data
-    ? locale === 'en' && path_data.titleEn
-      ? path_data.titleEn ?? path_data.titleRu
-      : path_data.titleRu
-    : t('pages.info');
+  const path_title = !sub_path || sub_path === 'info'
+    ? t('pages.info')
+    : path_data
+      ? locale === 'en' && path_data.titleEn
+        ? path_data.titleEn ?? path_data.titleRu
+        : path_data.titleRu
+      : t('pages.unknown');
 
   return (
     <Breadcrumb className='m-5 mt-2'>
@@ -84,6 +90,40 @@ export default function Path({
             {path_title}
           </BreadcrumbPage>
         </BreadcrumbItem>
+        {rest[0] === "admin" && (
+          <>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className='truncate max-w-60'>
+                {t('pages.admin')}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            {(admin_pages as readonly string[]).includes(rest[1]) ? (
+              <BreadcrumbItem>
+                <BreadcrumbPage className='truncate max-w-60'>
+                  {t(`pages.${rest[1] as typeof admin_pages[number]}`)}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            ) : (
+              <BreadcrumbItem>
+                <BreadcrumbPage className='truncate max-w-60'>
+                  {t('pages.unknown')}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            )}
+          </>
+        )}
+        {isEdit && (
+          <>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className='truncate max-w-60'>
+                {t('pages.edit')}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </>
+        )}
       </BreadcrumbList>
     </Breadcrumb>
   )

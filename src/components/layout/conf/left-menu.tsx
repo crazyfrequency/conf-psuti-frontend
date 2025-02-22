@@ -13,7 +13,6 @@ import { usePathname } from "next/navigation";
 import { HTMLAttributes } from "react";
 import { useConfContext } from "./conf-context";
 
-// TODO: реализовать переключение языков
 export default function LeftMenu({
   className,
   ...props

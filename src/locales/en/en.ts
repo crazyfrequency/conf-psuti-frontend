@@ -54,7 +54,9 @@ export default {
       admins: 'Administrators',
       form: 'Application form',
       topics: 'Sections and meetings',
-      mailing: 'Mailing'
+      mailing: 'Mailing',
+      edit: 'Editing',
+      unknown: 'Unknown page'
     },
     create: {
       title: 'Create conference',
