@@ -47,7 +47,14 @@ export default {
   confs: {
     pages: {
       home: 'Home',
-      info: 'General information'
+      info: 'General information',
+      settings: 'Settings',
+      admin: 'Admin panel',
+      pages: 'Pages',
+      admins: 'Administrators',
+      form: 'Application form',
+      topics: 'Sections and meetings',
+      mailing: 'Mailing'
     },
     create: {
       title: 'Create conference',

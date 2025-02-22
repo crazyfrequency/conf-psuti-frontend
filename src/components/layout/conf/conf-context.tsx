@@ -1,11 +1,11 @@
 'use client'
 
 import { TResponseResult } from '@/api/error';
+import Page403 from '@/components/auth/403';
 import { Separator } from '@/components/ui/separator';
 import useConfHook from '@/hooks/conf-context-hook';
 import { cn } from '@/lib/utils';
 import { TConf } from '@/types/conf.types';
-import { notFound } from 'next/navigation';
 import React, { createContext } from 'react';
 import LeftMenu from './left-menu';
 import Path from './path';
@@ -43,7 +43,7 @@ export default function ConfContext({
   const { context, fetchConf } = useConfHook({ slug, response });
 
   if (context.data === "forbidden")
-    return notFound();
+    return <Page403 />;
 
   return (
     <DataContext.Provider value={{

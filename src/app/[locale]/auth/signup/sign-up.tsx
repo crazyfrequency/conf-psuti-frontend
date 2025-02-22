@@ -78,7 +78,7 @@ export default function SignUp() {
       lastnameRu: data.lastname,
       firstnameRu: data.firstname,
       middlenameRu: data.middlename
-    }, locale);
+    } as any, locale);
 
     if (response.status === 'success')
       router.replace(AUTH_PAGES.CONFIRM_EMAIL(data.email, +Date.now()));

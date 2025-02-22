@@ -1,11 +1,15 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import { locales } from "@/constants/i18n.constants";
+import { CONF_PAGES } from "@/constants/pages.constants";
 import { cn } from "@/lib/utils";
-import { useCurrentLocale, useScopedI18n } from "@/locales/client";
+import { useScopedI18n } from "@/locales/client";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { HTMLAttributes } from "react";
 import { useConfContext } from "./conf-context";
 
@@ -16,12 +20,18 @@ export default function LeftMenu({
 }: Readonly<
   HTMLAttributes<HTMLDivElement>
 >) {
-  const { slug, sub_path } = useParams();
+  const segments = usePathname().split('/').filter(Boolean);
   const { data, isLoading } = useConfContext();
   const t = useScopedI18n('confs');
-  const locale = useCurrentLocale();
 
   if (data === "forbidden") return null;
+
+  if ((locales as readonly string[]).includes(segments[0]))
+    segments.shift();
+
+  const [slug, sub_path, ...rest] = segments;
+
+  const isEdit = rest[rest.length - 1] === 'edit';
 
   const elements = data?.paths?.map((v) => (
       <li key={`nav_${v.url}`}>
@@ -30,7 +40,7 @@ export default function LeftMenu({
           variant={ sub_path === v.url ? 'default' : 'ghost'}
           asChild
         >
-          <Link href={`/${slug}/${v.url}`}>
+          <Link href={CONF_PAGES.CONF_PAGE(slug, v.url, isEdit)}>
             {v.titleRu}
           </Link>
         </Button>
@@ -50,12 +60,84 @@ export default function LeftMenu({
             variant={ !sub_path || sub_path === 'info' ? 'default' : 'ghost'}
             asChild
           >
-            <Link href={`/${slug}`}>
+            <Link href={CONF_PAGES.INFO_PAGE(slug, isEdit)}>
               {t('pages.info')}
             </Link>
           </Button>
         </li>
         {elements}
+      </ul>
+      <Separator className="mt-4.5 mb-2.5" />
+      <div className="flex justify-center">
+        <Label className="font-bold text-[.8rem]">{t('pages.admin')}</Label>
+      </div>
+      <ul className="grid gap-0.5 px-1 mt-2">
+        <li key='nav_admin_settings'>
+          <Button
+            className="justify-start w-full h-auto"
+            variant={ sub_path === 'admin' && rest[0] === 'settings' ? 'default' : 'ghost'}
+            asChild
+          >
+            <Link href={CONF_PAGES.CONF_ADMIN_PAGE(slug, 'settings')}>
+              {t('pages.settings')}
+            </Link>
+          </Button>
+        </li>
+        <li key='nav_admin_pages'>
+          <Button
+            className="justify-start w-full h-auto"
+            variant={ sub_path === 'admin' && rest[0] === 'pages' ? 'default' : 'ghost'}
+            asChild
+          >
+            <Link href={CONF_PAGES.CONF_ADMIN_PAGE(slug, 'pages')}>
+              {t('pages.pages')}
+            </Link>
+          </Button>
+        </li>
+        <li key='nav_admin_admins'>
+          <Button
+            className="justify-start w-full h-auto"
+            variant={ sub_path === 'admin' && rest[0] === 'admins' ? 'default' : 'ghost'}
+            asChild
+          >
+            <Link href={CONF_PAGES.CONF_ADMIN_PAGE(slug, 'admins')}>
+              {t('pages.admins')}
+            </Link>
+          </Button>
+        </li>
+        <li key='nav_admin_form'>
+          <Button
+            className="justify-start w-full h-auto"
+            variant={ sub_path === 'admin' && rest[0] === 'form' ? 'default' : 'ghost'}
+            asChild
+          >
+            <Link href={CONF_PAGES.CONF_ADMIN_PAGE(slug, 'form')}>
+              {t('pages.form')}
+            </Link>
+          </Button>
+        </li>
+        <li key='nav_admin_topics'>
+          <Button
+            className="justify-start w-full h-auto"
+            variant={ sub_path === 'admin' && rest[0] === 'topics' ? 'default' : 'ghost'}
+            asChild
+          >
+            <Link href={CONF_PAGES.CONF_ADMIN_PAGE(slug, 'topics')}>
+              {t('pages.topics')}
+            </Link>
+          </Button>
+        </li>
+        <li key='nav_admin_mailing'>
+          <Button
+            className="justify-start w-full h-auto"
+            variant={ sub_path === 'admin' && rest[0] === 'mailing' ? 'default' : 'ghost'}
+            asChild
+          >
+            <Link href={CONF_PAGES.CONF_ADMIN_PAGE(slug, 'mailing')}>
+              {t('pages.mailing')}
+            </Link>
+          </Button>
+        </li>
       </ul>
     </nav>
   )

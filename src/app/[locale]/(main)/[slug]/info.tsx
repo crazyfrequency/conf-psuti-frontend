@@ -26,20 +26,22 @@ export default function Info({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-[auto_1fr] px-4 gap-3">
         <Label className="flex justify-end items-center font-bold text-base">{t('dates')}</Label>
-        <div className="flex items-center text-sm font-normal gap-1.5">
-          <time dateTime={start.toISOString()}>
-            {format(start, 'PPP', { locale: dateLocale, in: utc })}
-          </time>
-          {start !== end && end && (
-            <>
-              –
-              <time dateTime={end.toISOString()}>
-                {format(end, 'PPP', { locale: dateLocale, in: utc })}
-              </time>
-            </>
-          )}
+        <div className="flex items-center text-sm font-normal">
+          <div>
+            <time dateTime={start.toISOString()}>
+              {format(start, 'PPP', { locale: dateLocale, in: utc })}
+            </time>
+            {start !== end && end && (
+              <>
+                {" – "}
+                <time dateTime={end.toISOString()}>
+                  {format(end, 'PPP', { locale: dateLocale, in: utc })}
+                </time>
+              </>
+            )}
+          </div>
         </div>
         {closingDateForApplications && (
           <>
