@@ -21,8 +21,7 @@ import {
   LexicalEditor,
   SELECTION_CHANGE_COMMAND,
 } from 'lexical';
-import * as React from 'react';
-import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
+import { Dispatch, JSX, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Toggle } from '@/components/ui/toggle';
@@ -67,7 +66,7 @@ function TextFormatFloatingToolbar({
   isSuperscript: boolean;
   isUnderline: boolean;
   setIsLinkEditMode: Dispatch<boolean>;
-}): React.JSX.Element | null {
+}): JSX.Element | null {
   const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null);
   const hints = {
     ...editor_headers[locale].hints,
@@ -407,7 +406,7 @@ function useFloatingTextFormatToolbar(
   editor: LexicalEditor,
   anchorElem: HTMLElement,
   setIsLinkEditMode: Dispatch<boolean>,
-): React.JSX.Element | null {
+): JSX.Element | null {
   const locale = useCurrentLocale();
   const [isText, setIsText] = useState(false);
   const [isLink, setIsLink] = useState(false);
@@ -537,7 +536,7 @@ export default function FloatingTextFormatToolbarPlugin({
 }: {
   anchorElem?: HTMLElement;
   setIsLinkEditMode: Dispatch<boolean>;
-}): React.JSX.Element | null {
+}): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
   return useFloatingTextFormatToolbar(editor, anchorElem, setIsLinkEditMode);
 }

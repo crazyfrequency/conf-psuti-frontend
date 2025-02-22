@@ -12,8 +12,7 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { calculateZoomLevel } from '@lexical/utils';
 import { DropletOff } from 'lucide-react';
-import * as React from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { JSX, useEffect, useMemo, useRef, useState } from 'react';
 
 let skipAddingToHistoryStack = false;
 
@@ -51,7 +50,7 @@ const HEIGHT = 112;
 export default function ColorPicker({
   color,
   onChange,
-}: Readonly<ColorPickerProps>): React.JSX.Element {
+}: Readonly<ColorPickerProps>): JSX.Element {
   const [selfColor, setSelfColor] = useState(transformColor('hex', color));
   const [inputColor, setInputColor] = useState(color);
   const innerDivRef = useRef(null);
@@ -203,7 +202,7 @@ interface MoveWrapperProps {
   className?: string;
   style?: React.CSSProperties;
   onChange: (position: Position) => void;
-  children: React.JSX.Element;
+  children: JSX.Element;
 }
 
 function MoveWrapper({className, style, onChange, children}: MoveWrapperProps) {

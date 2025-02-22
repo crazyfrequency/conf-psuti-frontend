@@ -27,8 +27,7 @@ import {
   LexicalEditor,
   SELECTION_CHANGE_COMMAND,
 } from 'lexical';
-import * as React from 'react';
-import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
+import { Dispatch, JSX, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Button } from '@/components/ui/button';
@@ -59,7 +58,7 @@ function FloatingLinkEditor({
   anchorElem: HTMLElement;
   isLinkEditMode: boolean;
   setIsLinkEditMode: Dispatch<boolean>;
-}): React.JSX.Element {
+}): JSX.Element {
   const editorRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [linkUrl, setLinkUrl] = useState('');
@@ -317,7 +316,7 @@ function useFloatingLinkEditorToolbar(
   anchorElem: HTMLElement,
   isLinkEditMode: boolean,
   setIsLinkEditMode: Dispatch<boolean>,
-): React.JSX.Element | null {
+): JSX.Element | null {
   const [activeEditor, setActiveEditor] = useState(editor);
   const [isLink, setIsLink] = useState(false);
 
@@ -412,7 +411,7 @@ export default function FloatingLinkEditorPlugin({
   anchorElem?: HTMLElement;
   isLinkEditMode: boolean;
   setIsLinkEditMode: Dispatch<boolean>;
-}): React.JSX.Element | null {
+}): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
   return useFloatingLinkEditorToolbar(
     editor,

@@ -7,7 +7,7 @@
  */
 
 import { LinkPlugin as LexicalLinkPlugin } from '@lexical/react/LexicalLinkPlugin';
-import * as React from 'react';
+import { JSX } from 'react';
 
 import { validateUrl } from '../../utils/url';
 
@@ -17,7 +17,7 @@ type Props = {
 
 export default function LinkPlugin({
   hasLinkAttributes = false,
-}: Props): React.JSX.Element {
+}: Props): JSX.Element {
   return (
     <LexicalLinkPlugin
       validateUrl={validateUrl}

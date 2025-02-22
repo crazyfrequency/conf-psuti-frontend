@@ -18,10 +18,9 @@ import type {
 
 import katex from 'katex';
 import { $applyNodeReplacement, DecoratorNode, DOMExportOutput } from 'lexical';
-import * as React from 'react';
-import { Suspense } from 'react';
+import { JSX, lazy, Suspense } from 'react';
 
-const EquationComponent = React.lazy(() => import('./EquationComponent'));
+const EquationComponent = lazy(() => import('./EquationComponent'));
 
 export type SerializedEquationNode = Spread<
   {
@@ -46,7 +45,7 @@ function $convertEquationElement(
   return null;
 }
 
-export class EquationNode extends DecoratorNode<React.JSX.Element> {
+export class EquationNode extends DecoratorNode<JSX.Element> {
   __equation: string;
   __inline: boolean;
 
@@ -144,7 +143,7 @@ export class EquationNode extends DecoratorNode<React.JSX.Element> {
     writable.__equation = equation;
   }
 
-  decorate(): React.JSX.Element {
+  decorate(): JSX.Element {
     return (
       <Suspense fallback={null}>
         <EquationComponent
