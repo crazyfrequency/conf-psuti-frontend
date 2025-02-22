@@ -18,7 +18,7 @@ export interface IUser {
   email: string
   role: "USER" | "ADMIN",
   preferredLocale: Locales,
-  names: Record<Locales, INames|undefined>
+  names: Partial<Record<Locales, INames>>
 }
 
 export type TUserTokenData = {

@@ -1,3 +1,4 @@
+import auth_errors from "./auth/errors.json";
 import profile from "./profile.json";
 import zod from "./zod.json";
 
@@ -118,21 +119,13 @@ export default {
     email: 'Email',
     password: 'Password',
     confirm: 'Confirm password',
-    lastname: {
-      title: 'Last name (RU)',
-      description: 'Last name in Russian'
-    },
-    firstname: {
-      title: 'First name (RU)',
-      description: 'First name in Russian'
-    },
-    middlename: {
-      title: 'Middle name (RU)',
-      description: 'Middle name in Russian (if applicable)'
-    },
+    lastname: 'Last name',
+    firstname: 'First name',
+    middlename: 'Middle name (optional)',
+    preferred_locale: 'Preferred language',
     caution: {
       title: 'Caution',
-      description: 'Other details, such as full name in English, can be filled in after registration',
+      description: 'Other information can be entered later in the profile',
     },
     signup: 'Sign up',
     have_account: {
@@ -188,6 +181,9 @@ export default {
       firstname: 'First name is required'
     },
   },
-  zod: zod,
+  zod: {
+    auth: auth_errors,
+    ...zod
+  },
   profile
 } as const;
