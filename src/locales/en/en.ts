@@ -145,6 +145,7 @@ export default {
       auth: 'An error occurred while authorizing',
     },
     login: 'Invalid email or password',
+    bad_credentials: 'Invalid email or password',
     actions: {
       reload: 'reload',
       help: 'Help'

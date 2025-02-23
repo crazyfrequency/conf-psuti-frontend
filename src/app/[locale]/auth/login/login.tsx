@@ -60,12 +60,16 @@ export default function Login() {
     if (response.status === 'forbidden')
       return router.replace(AUTH_PAGES.CONFIRM_EMAIL(data.email))
 
-    if(response.status === 'unauthorized')
+    if(response.status === 'unauthorized') {
+      form.setError('password', { message: t('errors.bad_credentials') });
       return toast.error(t('errors.fetch'), {
         description: response.message[locale]
       });
+    }
 
-    toast.error(t('errors.fetch'))
+    toast.error(t('errors.fetch'), {
+      description: response.message[locale]
+    })
   }
 
   return (
