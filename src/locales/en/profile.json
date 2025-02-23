@@ -3,5 +3,16 @@
     "preferred_locale": "Preferred locale",
     "email": "Email",
     "change_password": "Change password",
-    "change_email": "Change email"
+    "change_email": "Change email",
+    "phone": "Phone",
+    "country": "Country",
+    "city": "City",
+    "home_address": "Home address",
+    "organization": "Organization",
+    "organization_address": "Organization address",
+    "organization_position": "Organization position",
+    "academic_degree": "Academic degree",
+    "academic_title": "Academic title",
+    "supervisor": "Supervisor",
+    "not_specified": "Not specified"
 }

@@ -49,6 +49,16 @@ export interface IUser {
   email: string
   role: TRole,
   preferredLocale: Locales,
+  phone: string,
+  country: string,
+  city: string,
+  homeAddress: string,
+  organization: string,
+  organizationAddress: string,
+  organizationPosition: string,
+  academicDegree: string,
+  academicTitle: string,
+  supervisor: string,
   names: Partial<Record<Locales, INames>>,
   conferences: IConfPermissions[]
 }

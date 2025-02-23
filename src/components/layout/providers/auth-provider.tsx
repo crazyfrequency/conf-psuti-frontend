@@ -28,6 +28,7 @@ export function AuthProvider({
     const response = await getMe()
     if (response.status === 'error' || response.status === 'not-found') {
       setTimeout(reloadAuth, 5000);
+      if (user === "error") return
       return setUser("error");
     };
     if (response.status !== 'success') return setUser("unauthorized");
