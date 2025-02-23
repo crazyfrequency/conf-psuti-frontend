@@ -60,16 +60,20 @@ export default function Login() {
     if (response.status === 'forbidden')
       return router.replace(AUTH_PAGES.CONFIRM_EMAIL(data.email))
 
-    if(response.status === 'unauthorized')
+    if(response.status === 'unauthorized') {
+      form.setError('password', { message: t('errors.bad_credentials') });
       return toast.error(t('errors.fetch'), {
         description: response.message[locale]
       });
+    }
 
-    toast.error(t('errors.fetch'))
+    toast.error(t('errors.fetch'), {
+      description: response.message[locale]
+    })
   }
 
   return (
-    <Card>
+    <Card className="max-w-sm">
       <CardHeader className="text-center">
         <CardTitle className="text-xl">{t('login.title')}</CardTitle>
         <CardDescription>{t('login.description')}</CardDescription>
@@ -89,7 +93,7 @@ export default function Login() {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="grid gap-0.5">
                   <FormLabel>{t('login.email')}</FormLabel>
                   <FormControl>
                     <Input type="email" autoComplete="email" placeholder="me@example.com" {...field} />
@@ -102,8 +106,8 @@ export default function Login() {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem>
-                  <div className="flex justify-between">
+                <FormItem className="grid gap-0.5">
+                  <div className="flex items-center justify-between">
                     <FormLabel>{t('login.password')}</FormLabel>
                     <Link href={AUTH_PAGES.FORGOT_PASSWORD} className="text-sm underline">{t('login.forgot')}</Link>
                   </div>

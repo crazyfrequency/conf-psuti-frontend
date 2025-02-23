@@ -1,3 +1,5 @@
+import auth_errors from "./auth/errors.json";
+import languages from "./languages.json";
 import profile from "./profile.json";
 import zod from "./zod.json";
 
@@ -127,21 +129,14 @@ export default {
     email: 'Почта',
     password: 'Пароль',
     confirm: 'Подтвердите пароль',
-    lastname: {
-      title: 'Фамилия (RU)',
-      description: 'Фамилия на русском языке'
-    },
-    firstname: {
-      title: 'Имя (RU)',
-      description: 'Имя на русском языке'
-    },
-    middlename: {
-      title: 'Отчество (RU)',
-      description: 'Отчество на русском языке (при наличии)'
-    },
+    lastname: 'Фамилия',
+    firstname: 'Имя',
+    middlename: 'Отчество (необязательно)',
+    names: 'ФИО {on}',
+    preferred_locale: 'Предпочитаемый язык',
     caution: {
       title: 'Внимание',
-      description: 'Остальные данные, такие как ФИО на английском языке, можно будет заполнить после регистрации'
+      description: 'Остальные данные можно будет указать после регистрации в профиле',
     },
     signup: 'Зарегистрироваться',
     have_account: {
@@ -159,6 +154,7 @@ export default {
       auth: 'Не удалось выполнить запрос на авторизацию'
     },
     login: 'Неверная почта или пароль',
+    bad_credentials: 'Неверная почта или пароль',
     actions: {
       reload: 'повтор',
       help: 'Помощь'
@@ -197,6 +193,10 @@ export default {
       firstname: 'Введите имя'
     }
   },
-  zod: zod,
-  profile
+  zod: {
+    auth: auth_errors,
+    ...zod
+  },
+  profile,
+  languages
 } as const;

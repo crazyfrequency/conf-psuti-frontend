@@ -1,21 +1,8 @@
 export const locales = ['en', 'ru'] as const;
 
-export const localeNames: Record<
-  Uppercase<typeof locales[number]>,
-  Record<
-    typeof locales[number],
-    string
-  >
-> = {
-  EN: {
-    en: 'English',
-    ru: 'Английский',
-  },
-  RU: {
-    en: 'Russian',
-    ru: 'Русский',
-  },
-}
+export type Locales = typeof locales[number];
+
+export type BigLocales = Uppercase<Locales>;
 
 export const defaultLocale = 'ru';
 

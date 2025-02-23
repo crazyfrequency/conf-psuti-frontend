@@ -3,5 +3,16 @@
     "preferred_locale": "Предпочитаемый язык",
     "email": "Электронная почта",
     "change_password": "Изменить пароль",
-    "change_email": "Изменить электронную почту"
+    "change_email": "Изменить электронную почту",
+    "phone": "Телефон",
+    "country": "Страна",
+    "city": "Город",
+    "home_address": "Домашний адрес",
+    "organization": "Организация",
+    "organization_address": "Адрес организации",
+    "organization_position": "Должность в организации",
+    "academic_degree": "Ученая степень",
+    "academic_title": "Ученое звание",
+    "supervisor": "Руководитель",
+    "not_specified": "Не указано"
 }
