@@ -9,14 +9,7 @@ export async function generateStaticParams() {
   return getStaticParams();
 }
 
-export async function generateMetadata({
-  params
-}: Readonly<{
-  params: Promise<{ locale: string }>
-}>): Promise<Metadata> {
-  const { locale } = await params;
-  setStaticParamsLocale(locale);
-
+export async function generateMetadata(): Promise<Metadata> {
   const title = (await getScopedI18n('profile'))('title');
 
   return {
@@ -27,6 +20,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function page() {
+export default async function page({
+  params
+}: Readonly<{
+  params: Promise<{ locale: string }>
+}>) {
+  const { locale } = await params;
+  setStaticParamsLocale(locale);
   return <Profile />
 }

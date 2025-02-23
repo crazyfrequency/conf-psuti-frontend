@@ -33,7 +33,7 @@ export default function RootLayout({
           <LoaderProvider>
             <AuthProvider>
               <I18nProvider>
-                <Toaster duration={5000} pauseWhenPageIsHidden closeButton richColors />
+                <Toaster duration={5000} closeButton richColors />
                 {children}
                 <CookiesConfirm />
               </I18nProvider>

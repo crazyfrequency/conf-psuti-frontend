@@ -9,6 +9,7 @@ export type TAuthContext = {
   reloadAuth: () => void
   logout: () => void
   user: IUser | "unauthorized" | "error" | "loading"
+  lastErrors?: "logout"
 }
 
 const AuthProviderContext = React.createContext<TAuthContext|undefined>(undefined)
@@ -37,7 +38,12 @@ export function AuthProvider({
 
   const logoutAuth = useCallback(async () => {
     const response = await logout();
-    if (response.status !== 'success') return
+    if (response.status !== 'success') return setUser(
+      u => typeof u === "object" && u ? {
+        ...u,
+        lastErrors: "logout"
+      } : "error"
+    );
     localStorage.removeItem('user');
     setUser("unauthorized");
   }, [setUser])
@@ -60,7 +66,10 @@ export function AuthProvider({
   
   const context = useMemo(() => {
     return {
-      reloadAuth,
+      reloadAuth: () => {
+        setUser(undefined);
+        reloadAuth()
+      },
       logout: logoutAuth,
       user: user ?? "loading" as const
     }
