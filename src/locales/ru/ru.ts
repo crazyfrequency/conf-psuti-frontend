@@ -96,6 +96,9 @@ export default {
       site: 'Веб-сайт',
       email: 'E-mail',
       phone: 'Телефон',
+      letter: 'Информационное письмо',
+      organizations: 'Организаторы',
+      sections: 'Секции конференции',
     }
   },
   login: {

@@ -8,7 +8,7 @@ function DataLabel({
   return (
     <Label
       className={cn(
-        "flex text-end justify-end items-center font-bold text-base",
+        "flex text-end justify-end items-center font-bold max-md:max-w-32",
         className
       )}
       {...props}

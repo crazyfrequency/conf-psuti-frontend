@@ -96,6 +96,9 @@ export default {
       site: 'Website',
       email: 'E-mail',
       phone: 'Phone',
+      letter: 'Information letter',
+      organizations: 'Organizations',
+      sections: 'Conference sections',
     }
   },
   login: {
