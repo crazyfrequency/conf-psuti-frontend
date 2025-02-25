@@ -53,7 +53,7 @@ export default async function AuthLayout({
           </li>
         </ul>
       </div>
-      <div className="relative flex w-full max-w-sm mt-12 flex-col overflow-x-hidden">
+      <div className="relative flex w-full *:w-full *:mx-auto mt-12 flex-col overflow-x-hidden">
         {children}
       </div>
     </div>

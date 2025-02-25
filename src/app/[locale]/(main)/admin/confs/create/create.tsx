@@ -21,7 +21,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { useRouter } from "next-nprogress-bar"
-import Link from "next/link"
 import { useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -274,10 +273,13 @@ export default function CreateConf() {
         </div>
           
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <Button variant="secondary" type="button" asChild>
-            <Link href={ADMIN_PAGES.NEW_CONFS}>
-              {t('cancel')}
-            </Link>
+          <Button
+            onClick={() => router.back()}
+            className="cursor-pointer"
+            variant="secondary"
+            type="button"
+          >
+            {t('cancel')}
           </Button>
           <Button className="cursor-pointer" type="submit">{t('submit')}</Button>
         </div>

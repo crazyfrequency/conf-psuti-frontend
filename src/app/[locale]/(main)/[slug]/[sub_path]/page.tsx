@@ -1,11 +1,9 @@
 'use server'
 
-import Page500 from "@/components/auth/500";
+import { CACHE_MODE } from "@/constants/app.constants";
 import { NO_INDEX_PAGE } from "@/constants/seo.constants";
-import { getCurrentLocale } from "@/locales/server";
 import { getConfBySlug } from "@/services/confs.server.service";
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import Conf from "./conf";
 
 export async function generateMetadata({
@@ -14,33 +12,25 @@ export async function generateMetadata({
   params: Promise<{ slug: string, sub_path: string }>
 }>): Promise<Metadata> {
   const { slug, sub_path } = await params;
-  const locale = await getCurrentLocale();
-  const response = await getConfBySlug(slug);
 
-  if (response.status !== 'success') return {
-    ...NO_INDEX_PAGE
-  };
-
-  const title = response.data.isEnglishEnabled && locale === 'en'
-    ? response.data.conferenceNameEn
-    : response.data.conferenceNameRu;
+  if (CACHE_MODE === 'force-cache') {
+    const response = await getConfBySlug(slug, 'only-if-cached');
+    if (response.status !== 'success') return { ...NO_INDEX_PAGE };
+    if (!response.data?.pages?.some?.(page => page.path === sub_path))
+      return { ...NO_INDEX_PAGE };
+  }
 
   return {
-    title: title,
     alternates: {
-      canonical: `/confs/${slug}/${sub_path}`,
+      canonical: `/${slug}/${sub_path}`,
       languages: {
-        ru: `/ru/confs/${slug}/${sub_path}`,
-        en: `/en/confs/${slug}/${sub_path}`,
+        en: `/${slug}/en/${sub_path}`,
+        ru: `/${slug}/ru/${sub_path}`,
       }
     }
   }
 }
 
 export default async function ConfSsr({ params }: {params: Promise<{ slug: string, sub_path: string }>}) {
-  const { slug } = await params;
-  let data = await getConfBySlug(slug);
-  if (data.status === "not-found") return notFound();
-  if (data.status === "error") return <Page500 />;
-  return <Conf response={data}/>
+  return <Conf/>
 }

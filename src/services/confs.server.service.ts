@@ -38,11 +38,11 @@ export async function getConfsListByYear(year?: number) {
   return checkErrorsServer<TConf[]>(response);
 }
 
-export async function getConfBySlug(slug: string) {
+export async function getConfBySlug(slug: string, cache?: RequestCache) {
   let response: Response|null = null;
   try {
     response = await fetch(`${base_url}/slug/${slug}`, {
-      cache: CACHE_MODE,
+      cache: cache ?? CACHE_MODE,
       next: {
         revalidate: 60*60*24*7,
         tags: [`conf_slug_${slug}`, "confs", "all"]

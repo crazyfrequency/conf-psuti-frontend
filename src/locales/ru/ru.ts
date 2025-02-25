@@ -1,3 +1,5 @@
+import auth_errors from "./auth/errors.json";
+import languages from "./languages.json";
 import profile from "./profile.json";
 import zod from "./zod.json";
 
@@ -55,6 +57,8 @@ export default {
       form: 'Форма заявки',
       topics: 'Секции и заседания',
       mailing: 'Письма',
+      edit: 'Редактирование',
+      unknown: 'Неизвестная страница'
     },
     create: {
       title: 'Создание конференции',
@@ -92,6 +96,9 @@ export default {
       site: 'Веб-сайт',
       email: 'E-mail',
       phone: 'Телефон',
+      letter: 'Информационное письмо',
+      organizations: 'Организаторы',
+      sections: 'Секции конференции',
     }
   },
   login: {
@@ -125,21 +132,14 @@ export default {
     email: 'Почта',
     password: 'Пароль',
     confirm: 'Подтвердите пароль',
-    lastname: {
-      title: 'Фамилия (RU)',
-      description: 'Фамилия на русском языке'
-    },
-    firstname: {
-      title: 'Имя (RU)',
-      description: 'Имя на русском языке'
-    },
-    middlename: {
-      title: 'Отчество (RU)',
-      description: 'Отчество на русском языке (при наличии)'
-    },
+    lastname: 'Фамилия',
+    firstname: 'Имя',
+    middlename: 'Отчество (необязательно)',
+    names: 'ФИО {on}',
+    preferred_locale: 'Предпочитаемый язык',
     caution: {
       title: 'Внимание',
-      description: 'Остальные данные, такие как ФИО на английском языке, можно будет заполнить после регистрации'
+      description: 'Остальные данные можно будет указать после регистрации в профиле',
     },
     signup: 'Зарегистрироваться',
     have_account: {
@@ -160,6 +160,7 @@ export default {
       auth: 'Не удалось выполнить запрос на авторизацию'
     },
     login: 'Неверная почта или пароль',
+    bad_credentials: 'Неверная почта или пароль',
     editor: 'Произошла ошибка \"{error}\" в редакторе',
     actions: {
       reload: 'повтор',
@@ -199,6 +200,10 @@ export default {
       firstname: 'Введите имя'
     }
   },
-  zod: zod,
-  profile
+  zod: {
+    auth: auth_errors,
+    ...zod
+  },
+  profile,
+  languages
 } as const;

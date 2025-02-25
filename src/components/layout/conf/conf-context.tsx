@@ -60,7 +60,7 @@ export default function ConfContext({
           )}
         />
         <Separator className="max-lg:hidden" orientation="vertical" />
-        <main className='min-w-0 w-full'>
+        <main className='min-w-0 w-full max-lg:pt-3'>
           <TopMenu />
           <Separator className="my-4" />
           {children}

@@ -1,3 +1,5 @@
+import auth_errors from "./auth/errors.json";
+import languages from "./languages.json";
 import profile from "./profile.json";
 import zod from "./zod.json";
 
@@ -54,7 +56,9 @@ export default {
       admins: 'Administrators',
       form: 'Application form',
       topics: 'Sections and meetings',
-      mailing: 'Mailing'
+      mailing: 'Mailing',
+      edit: 'Editing',
+      unknown: 'Unknown page'
     },
     create: {
       title: 'Create conference',
@@ -92,6 +96,9 @@ export default {
       site: 'Website',
       email: 'E-mail',
       phone: 'Phone',
+      letter: 'Information letter',
+      organizations: 'Organizations',
+      sections: 'Conference sections',
     }
   },
   login: {
@@ -125,21 +132,14 @@ export default {
     email: 'Email',
     password: 'Password',
     confirm: 'Confirm password',
-    lastname: {
-      title: 'Last name (RU)',
-      description: 'Last name in Russian'
-    },
-    firstname: {
-      title: 'First name (RU)',
-      description: 'First name in Russian'
-    },
-    middlename: {
-      title: 'Middle name (RU)',
-      description: 'Middle name in Russian (if applicable)'
-    },
+    lastname: 'Last name',
+    firstname: 'First name',
+    middlename: 'Middle name (optional)',
+    names: 'Names {on}',
+    preferred_locale: 'Preferred language',
     caution: {
       title: 'Caution',
-      description: 'Other details, such as full name in English, can be filled in after registration',
+      description: 'Other information can be entered later in the profile',
     },
     signup: 'Sign up',
     have_account: {
@@ -160,6 +160,7 @@ export default {
       auth: 'An error occurred while authorizing',
     },
     login: 'Invalid email or password',
+    bad_credentials: 'Invalid email or password',
     editor: 'An error occurred in the editor: {error}',
     actions: {
       reload: 'reload',
@@ -199,6 +200,10 @@ export default {
       firstname: 'First name is required'
     },
   },
-  zod: zod,
-  profile
+  zod: {
+    auth: auth_errors,
+    ...zod
+  },
+  profile,
+  languages
 } as const;
