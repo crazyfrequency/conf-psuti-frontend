@@ -36,12 +36,16 @@ export default function useConfHook({
     setContext({ isLoading: false, data: response.data, reload: fetchConf, clientLoading: false });
   }, [context]);
 
-  useEffect(()=>{
-    console.log(response);
+  useEffect(() => {
+    if (response.status === "success") return setContext({
+      isLoading: false,
+      data: response.data,
+      reload: fetchConf,
+      clientLoading: false
+    });
     if (user === "unauthorized") return router.replace(AUTH_PAGES.LOGIN(pathname));
     if (user === "loading") return;
-    if (response.status !== 'success')
-      fetchConf();
+    fetchConf();
   }, [response, slug, user]);
 
   return { context, fetchConf }

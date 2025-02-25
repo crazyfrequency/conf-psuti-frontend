@@ -8,7 +8,7 @@ export type TConf = {
   startDate: string|number;
   endDate: string|number;
   closingDateForApplications?: string|number;
-  paths: IPath[];
+  pages: IPath[];
   statusEn?: string
 } & (
   {
@@ -23,11 +23,11 @@ export type TConf = {
  * Структура путей в конференции
  */
 export interface IPath {
-  titleRu: string;
-  titleEn?: string;
-  url: string;
+  pageNameRu: string;
+  pageNameEn?: string;
+  path: string;
 }
 
-export type TConfForm = Omit<TConf, 'paths'|'closingDateForApplications'> & {
+export type TConfForm = Omit<TConf, 'pages'|'closingDateForApplications'> & {
   conferenceNameEn?: string;
 }

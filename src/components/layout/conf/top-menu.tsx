@@ -2,11 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PermissionFlags, UserConferencePermissions } from "@/lib/user-permissions";
 import { cn } from "@/lib/utils";
 import { useCurrentLocale } from "@/locales/client";
 import { Pen } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
+import { useMemo } from "react";
 import { useAuth } from "../providers/auth-provider";
 import { useConfContext } from "./conf-context";
 
@@ -26,8 +28,17 @@ export default function TopMenu() {
     </div>
   );
 
-  const isAdmin = typeof user === "object" && user?.role === 'ADMIN';
-  const isEditButton = isAdmin && !regex.test(pathname);
+  const canEdit = useMemo(() => {
+    const permissions = new UserConferencePermissions(user, slug as string);
+
+    return permissions.hasAnyRole(
+      'ADMIN'
+    ) || permissions.hasAnyPermission(
+      PermissionFlags.WRITE_PAGES,
+      PermissionFlags.WRITE
+    );
+  }, [user, slug]);
+  const isEditButton = canEdit && !regex.test(pathname);
   console.log(pathname)
 
   const editLink = '/' + slug + '/' + (

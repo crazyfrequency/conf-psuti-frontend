@@ -54,14 +54,14 @@ export default function Path({
     ? data.conferenceNameEn
     : data.conferenceNameRu;
 
-  const path_data = data.paths?.find(v=>v.url===sub_path);
+  const path_data = data.pages?.find(v=>v.path === sub_path);
 
   const path_title = !sub_path || sub_path === 'info'
     ? t('pages.info')
     : path_data
-      ? locale === 'en' && path_data.titleEn
-        ? path_data.titleEn ?? path_data.titleRu
-        : path_data.titleRu
+      ? locale === 'en' && path_data.pageNameEn
+        ? path_data.pageNameEn ?? path_data.pageNameRu
+        : path_data.pageNameRu
       : t('pages.unknown');
 
   return (
