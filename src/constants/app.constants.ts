@@ -44,4 +44,4 @@ const cacheModeValue = process.env.NEXT_PUBLIC_CACHE_MODE || "";
 export const CACHE_MODE: RequestCache =
   ['default', 'no-cache', 'no-store', 'reload', 'force-cache', 'only-if-cached'].includes(cacheModeValue)
     ? cacheModeValue as RequestCache
-    : 'force-cache';
+    : 'no-cache';
