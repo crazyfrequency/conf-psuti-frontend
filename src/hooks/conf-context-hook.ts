@@ -4,11 +4,12 @@ import { TResponseResult } from "@/api/error";
 import { TConfContext } from "@/components/layout/conf/conf-context";
 import { useAuth } from "@/components/layout/providers/auth-provider";
 import { AUTH_PAGES } from "@/constants/pages.constants";
+import { UserConferencePermissions } from "@/lib/user-permissions";
 import { getConf } from "@/services/confs.client.service";
 import { TConf } from "@/types/conf.types";
 import { useRouter } from "next-nprogress-bar";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function useConfHook({
   slug,
@@ -21,10 +22,14 @@ export default function useConfHook({
   const router = useRouter();
   const { user } = useAuth();
 
+  const permissions = useMemo(() => {
+    return new UserConferencePermissions(user, slug)
+  }, [user, slug]);
+
   const [context, setContext] = useState<TConfContext>(() => {
     if (response.status === 'success')
-      return { isLoading: false, data: response.data, reload: () => {}, clientLoading: false };
-    return { isLoading: true, data: null, reload: () => {}, clientLoading: true };
+      return { isLoading: false, data: response.data, permissions, reload: () => {}, clientLoading: false };
+    return { isLoading: true, data: null, permissions, reload: () => {}, clientLoading: true };
   });
 
   const fetchConf = useCallback(async () => {
@@ -32,14 +37,15 @@ export default function useConfHook({
     if (response.status === 'unauthorized')
       return router.replace(AUTH_PAGES.LOGIN(pathname));
     if (response.status !== 'success')
-      return setContext({ isLoading: true, data: "forbidden", reload: fetchConf, clientLoading: false });
-    setContext({ isLoading: false, data: response.data, reload: fetchConf, clientLoading: false });
+      return setContext({ isLoading: true, data: "forbidden", permissions, reload: fetchConf, clientLoading: false });
+    setContext({ isLoading: false, data: response.data, permissions, reload: fetchConf, clientLoading: false });
   }, [context]);
 
   useEffect(() => {
     if (response.status === "success") return setContext({
       isLoading: false,
       data: response.data,
+      permissions,
       reload: fetchConf,
       clientLoading: false
     });

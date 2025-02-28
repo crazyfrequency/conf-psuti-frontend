@@ -18,6 +18,8 @@ export default function Page500({
       "fixed top-0 left-0 z-50 bg-background gap-3 h-dvh w-screen flex flex-col justify-center items-center font-sans text-center",
       className
     )} {...props}>
+      <meta name="robots" content="noindex nofollow" />
+      <meta name="googlebot" content="noindex nofollow" />
       <div className="flex justify-center items-center gap-6">
         <h1 className="text-2xl my-2">500</h1>
         <Separator orientation="vertical" />

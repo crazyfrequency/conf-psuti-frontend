@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { locales } from "@/constants/i18n.constants";
 import { CONF_PAGES } from "@/constants/pages.constants";
-import { PermissionFlags, UserConferencePermissions } from "@/lib/user-permissions";
+import { PermissionFlags } from "@/lib/user-permissions";
 import { cn } from "@/lib/utils";
 import { useCurrentLocale, useScopedI18n } from "@/locales/client";
 import Link from "next/link";
@@ -24,7 +24,7 @@ export default function LeftMenu({
   HTMLAttributes<HTMLDivElement>
 >) {
   const segments = usePathname().split('/').filter(Boolean);
-  const { data, isLoading } = useConfContext();
+  const { data, permissions, isLoading } = useConfContext();
   const locale = useCurrentLocale();
   const t = useScopedI18n('confs');
   const { user } = useAuth();
@@ -58,15 +58,10 @@ export default function LeftMenu({
       )) : null
     )
 
-  const [permissions, isAdmin] = useMemo(() => {
-    const permissions = new UserConferencePermissions(user, slug)
-
-    return [
-      permissions,
-      permissions.hasAnyRole('ADMIN') ||
-      permissions.hasAnyPermission(PermissionFlags.ADMIN)
-    ]
-  }, [user, slug]);
+  const isAdmin = useMemo(() => {
+    return permissions.hasAnyRole("ADMIN") ||
+      permissions.hasAnyPermission(PermissionFlags.ADMIN);
+  }, [permissions])
 
   return (
     <nav className={cn("py-2 h-fit lg:max-w-52", className)} {...props}>

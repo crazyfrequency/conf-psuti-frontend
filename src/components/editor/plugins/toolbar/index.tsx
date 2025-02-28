@@ -276,7 +276,7 @@ export default function EditorToolbar({
   const canViewerSeeInsertCodeButton = !toolbarState.isImageCaption;
 
   return (
-    <div className="sticky flex h-[3.125rem] max-w-full gap-1 top-14 border bg-background rounded-t-lg p-1 align-middle border-solid z-10  overflow-x-auto overflow-y-hidden">
+    <div className="sticky flex h-[3.125rem] max-w-full gap-1 top-14 border bg-background rounded-t-lg p-1 align-middle border-solid z-10  overflow-x-auto overflow-y-hidden scrollbar-thin">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>

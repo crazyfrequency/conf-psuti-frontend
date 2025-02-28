@@ -4,6 +4,7 @@ import { TResponseResult } from '@/api/error';
 import Page403 from '@/components/auth/403';
 import { Separator } from '@/components/ui/separator';
 import useConfHook from '@/hooks/conf-context-hook';
+import { UserConferencePermissions } from '@/lib/user-permissions';
 import { cn } from '@/lib/utils';
 import { TConf } from '@/types/conf.types';
 import React, { createContext } from 'react';
@@ -14,11 +15,13 @@ import TopMenu from './top-menu';
 export type TConfContext = {
   isLoading: false;
   data: TConf;
+  permissions: UserConferencePermissions;
   reload: () => Promise<void>|void;
   clientLoading: boolean;
 } | {
   isLoading: true;
   data: null|"forbidden";
+  permissions: UserConferencePermissions;
   reload: () => Promise<void>|void;
   clientLoading?: boolean;
 };
@@ -26,6 +29,7 @@ export type TConfContext = {
 const DataContext = createContext<TConfContext>({
   isLoading: true,
   data: null,
+  permissions: new UserConferencePermissions("loading", ""),
   reload: () => {}
 });
 

@@ -1,8 +1,5 @@
 'use server'
 
-import { CACHE_MODE } from "@/constants/app.constants";
-import { NO_INDEX_PAGE } from "@/constants/seo.constants";
-import { getConfBySlug } from "@/services/confs.server.service";
 import { Metadata } from "next";
 import Conf from "./conf";
 
@@ -12,13 +9,6 @@ export async function generateMetadata({
   params: Promise<{ slug: string, sub_path: string }>
 }>): Promise<Metadata> {
   const { slug, sub_path } = await params;
-
-  if (CACHE_MODE === 'force-cache') {
-    const response = await getConfBySlug(slug, 'only-if-cached');
-    if (response.status !== 'success') return { ...NO_INDEX_PAGE };
-    if (!response.data?.pages?.some?.(page => page.path === sub_path))
-      return { ...NO_INDEX_PAGE };
-  }
 
   return {
     alternates: {
@@ -31,6 +21,6 @@ export async function generateMetadata({
   }
 }
 
-export default async function ConfSsr({ params }: {params: Promise<{ slug: string, sub_path: string }>}) {
+export default async function ConfSsr() {
   return <Conf/>
 }

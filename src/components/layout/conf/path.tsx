@@ -86,9 +86,17 @@ export default function Path({
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage className='truncate max-w-60'>
-            {path_title}
-          </BreadcrumbPage>
+          {
+            rest[0] === "admin" || isEdit ? (
+              <BreadcrumbLink asChild>
+                <Link className='truncate max-w-60' href={`/${slug}/${sub_path}`}>{path_title}</Link>
+              </BreadcrumbLink>
+            ) : (
+              <BreadcrumbPage className='truncate max-w-60'>
+                {path_title}
+              </BreadcrumbPage>
+            )
+          }
         </BreadcrumbItem>
         {rest[0] === "admin" && (
           <>

@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @plugin 'tailwindcss-animate';
+@plugin 'tailwind-scrollbar';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -132,18 +133,6 @@
   }
 }
 
-* {
-  scrollbar-color: var(--color-border);
-}
-
-*::-webkit-scrollbar {
-  @apply w-2 h-1.5;
-}
-
-*::-webkit-scrollbar-track {
-  @apply bg-border/35;
-}
-
-*::-webkit-scrollbar-thumb {
-  @apply bg-border rounded-full;
+*:not(.scrollbar-thin) {
+  @apply scrollbar scrollbar-thumb-primary/70 scrollbar-track-border/50;
 }

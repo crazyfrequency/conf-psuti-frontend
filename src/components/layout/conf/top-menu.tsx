@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PermissionFlags, UserConferencePermissions } from "@/lib/user-permissions";
+import { PermissionFlags } from "@/lib/user-permissions";
 import { cn } from "@/lib/utils";
 import { useCurrentLocale } from "@/locales/client";
 import { Pen } from "lucide-react";
@@ -15,7 +15,7 @@ import { useConfContext } from "./conf-context";
 const regex = /^(\/(?:ru|en)?)?\/[^\/]+\/(?:[^\/]+\/edit|admin(?:\/.*)?)$/;
 
 export default function TopMenu() {
-  const { data, isLoading } = useConfContext();
+  const { data, permissions, isLoading } = useConfContext();
   const locale = useCurrentLocale();
   const pathname = usePathname();
   const { slug, sub_path } = useParams();
@@ -29,15 +29,14 @@ export default function TopMenu() {
   );
 
   const canEdit = useMemo(() => {
-    const permissions = new UserConferencePermissions(user, slug as string);
-
     return permissions.hasAnyRole(
       'ADMIN'
     ) || permissions.hasAnyPermission(
       PermissionFlags.WRITE_PAGES,
       PermissionFlags.WRITE
     );
-  }, [user, slug]);
+  }, [permissions]);
+  
   const isEditButton = canEdit && !regex.test(pathname);
   console.log(pathname)
 
