@@ -1,7 +1,7 @@
 'use client';
 
 import { locales } from '@/constants/i18n.constants';
-import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+import { ProgressProvider as ProgressBar } from '@bprogress/next/app';
 
 const LoaderProvider = ({ children }: { children: React.ReactNode }) => {
   return (

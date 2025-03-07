@@ -7,7 +7,7 @@ import { AUTH_PAGES } from "@/constants/pages.constants";
 import { UserConferencePermissions } from "@/lib/user-permissions";
 import { getConf } from "@/services/confs.client.service";
 import { TConf } from "@/types/conf.types";
-import { useRouter } from "next-nprogress-bar";
+import { useRouter } from "@bprogress/next";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 

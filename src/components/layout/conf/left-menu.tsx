@@ -9,7 +9,7 @@ import { AUTH_PAGES, CONF_PAGES } from "@/constants/pages.constants";
 import { PermissionFlags } from "@/lib/user-permissions";
 import { cn } from "@/lib/utils";
 import { useCurrentLocale, useScopedI18n } from "@/locales/client";
-import { useRouter } from "next-nprogress-bar";
+import { useRouter } from "@bprogress/next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HTMLAttributes, useMemo } from "react";

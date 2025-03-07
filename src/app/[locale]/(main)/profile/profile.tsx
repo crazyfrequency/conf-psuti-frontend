@@ -12,8 +12,8 @@ import { AUTH_PAGES } from "@/constants/pages.constants";
 import { useLocale } from "@/hooks/date-locale.hook";
 import { getUserNames } from "@/lib/localalization-tools";
 import { useScopedI18n } from "@/locales/client";
+import { useRouter } from "@bprogress/next";
 import { Pencil } from "lucide-react";
-import { useRouter } from "next-nprogress-bar";
 import { usePathname } from "next/navigation";
 
 export default function Profile() {

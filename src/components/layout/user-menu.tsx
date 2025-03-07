@@ -7,8 +7,8 @@ import { ADMIN_PAGES, AUTH_PAGES, MAIN_PAGES } from '@/constants/pages.constants
 import { useKeyBind } from '@/hooks/keybind-hook';
 import { getUserNames } from '@/lib/localalization-tools';
 import { useCurrentLocale, useScopedI18n } from '@/locales/client';
+import { useRouter } from '@bprogress/next';
 import { CircleUser, User } from 'lucide-react';
-import { useRouter } from 'next-nprogress-bar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';

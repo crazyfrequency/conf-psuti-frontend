@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { AUTH_PAGES } from "@/constants/pages.constants";
 import { useCurrentLocale, useI18n } from "@/locales/client";
 import { confirmEmail, getNewEmailConfirmation } from "@/services/auth.service";
-import { useRouter } from "next-nprogress-bar";
+import { useRouter } from "@bprogress/next";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";

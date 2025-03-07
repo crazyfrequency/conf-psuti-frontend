@@ -4,7 +4,7 @@ import { useAuth } from "@/components/layout/providers/auth-provider";
 import LoadingComponent from "@/components/loading-component";
 import { Button } from "@/components/ui/button";
 import { CONF_PAGES } from "@/constants/pages.constants";
-import { useRouter } from "next-nprogress-bar";
+import { useRouter } from "@bprogress/next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
