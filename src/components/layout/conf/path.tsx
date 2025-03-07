@@ -1,12 +1,13 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
 import { locales } from '@/constants/i18n.constants';
+import { CONF_PAGES } from '@/constants/pages.constants';
 import { useCurrentLocale, useScopedI18n } from '@/locales/client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useConfContext } from './conf-context';
 
-const admin_pages = ['settings', 'pages', 'admins', 'form', 'topics', 'mailing'] as const;
+export const admin_pages = ['settings', 'pages', 'admins', 'form', 'topics', 'mailing'] as const;
 
 export default function Path({
   className,
@@ -22,21 +23,11 @@ export default function Path({
   if (isLoading) return (
     <Breadcrumb className='m-5 mt-2'>
       <BreadcrumbList>
-        <BreadcrumbItem>
-          <Skeleton className='h-5 w-20' />
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <Skeleton className='h-5 w-20' />
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <Skeleton className='h-5 w-20' />
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <Skeleton className='h-5 w-20' />
-        </BreadcrumbItem>
+        {Array.from({ length: 4 }).map((_, i) => (
+          <BreadcrumbItem>
+            <Skeleton className='h-5 w-20' />
+          </BreadcrumbItem>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
   );
@@ -87,9 +78,13 @@ export default function Path({
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           {
-            rest[0] === "admin" || isEdit ? (
+            sub_path === "admin" ? (
               <BreadcrumbLink asChild>
-                <Link className='truncate max-w-60' href={`/${slug}/${sub_path}`}>{path_title}</Link>
+                <Link className='truncate max-w-60' href={CONF_PAGES.CONF_ADMIN_PAGE(slug as string, "settings")}>{t('pages.admin')}</Link>
+              </BreadcrumbLink>
+            ) : isEdit ? (
+              <BreadcrumbLink asChild>
+                <Link className='truncate max-w-60' href={CONF_PAGES.CONF_PAGE(slug as string, sub_path as string)}>{path_title}</Link>
               </BreadcrumbLink>
             ) : (
               <BreadcrumbPage className='truncate max-w-60'>
@@ -98,19 +93,13 @@ export default function Path({
             )
           }
         </BreadcrumbItem>
-        {rest[0] === "admin" && (
+        {sub_path === "admin" && rest[0] && (
           <>
             <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage className='truncate max-w-60'>
-                {t('pages.admin')}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            {(admin_pages as readonly string[]).includes(rest[1]) ? (
+            {(admin_pages as readonly string[]).includes(rest[0]) ? (
               <BreadcrumbItem>
                 <BreadcrumbPage className='truncate max-w-60'>
-                  {t(`pages.${rest[1] as typeof admin_pages[number]}`)}
+                  {t(`pages.${rest[0] as typeof admin_pages[number]}`)}
                 </BreadcrumbPage>
               </BreadcrumbItem>
             ) : (

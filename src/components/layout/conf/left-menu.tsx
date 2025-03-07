@@ -5,10 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { locales } from "@/constants/i18n.constants";
-import { CONF_PAGES } from "@/constants/pages.constants";
+import { AUTH_PAGES, CONF_PAGES } from "@/constants/pages.constants";
 import { PermissionFlags } from "@/lib/user-permissions";
 import { cn } from "@/lib/utils";
 import { useCurrentLocale, useScopedI18n } from "@/locales/client";
+import { useRouter } from "next-nprogress-bar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HTMLAttributes, useMemo } from "react";
@@ -23,11 +24,18 @@ export default function LeftMenu({
 }: Readonly<
   HTMLAttributes<HTMLDivElement>
 >) {
-  const segments = usePathname().split('/').filter(Boolean);
+  const path = usePathname();
+  const segments = path.split('/').filter(Boolean);
   const { data, permissions, isLoading } = useConfContext();
   const locale = useCurrentLocale();
   const t = useScopedI18n('confs');
+  const router = useRouter();
   const { user } = useAuth();
+
+  const isAdmin = useMemo(() => {
+    return permissions.hasAnyRole("ADMIN") ||
+      permissions.hasAnyPermission(PermissionFlags.ADMIN);
+  }, [permissions])
 
   if (data === "forbidden") return null;
 
@@ -58,10 +66,8 @@ export default function LeftMenu({
       )) : null
     )
 
-  const isAdmin = useMemo(() => {
-    return permissions.hasAnyRole("ADMIN") ||
-      permissions.hasAnyPermission(PermissionFlags.ADMIN);
-  }, [permissions])
+  if (sub_path === 'admin' && user === "unauthorized")
+    router.replace(AUTH_PAGES.LOGIN(path));
 
   return (
     <nav className={cn("py-2 h-fit lg:max-w-52", className)} {...props}>

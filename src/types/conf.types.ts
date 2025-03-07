@@ -49,9 +49,11 @@ export type TConf = {
  * Структура путей в конференции
  */
 export interface IPath {
+  id: number;
   pageNameRu: string;
   pageNameEn?: string;
   path: string;
+  pageIndex: number;
 }
 
 export type TConfForm = {

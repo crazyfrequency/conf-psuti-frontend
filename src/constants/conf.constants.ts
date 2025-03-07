@@ -28,3 +28,20 @@ export const form_conference_create_schema = (t: any) => z.object({
     });
   }
 })
+
+export const form_conference_pages = (t: any, eng: boolean) => z.object({
+  pages: z.array(z.object({
+    id: z.number(),
+    editable: z.boolean(),
+    pageNameRu: z.string().trim().nonempty(),
+    pageNameEn: eng ? z.string().trim().nonempty() : z.string().nullable(),
+    path: z.string().max(255).regex(
+      /^(?!admin$)[A-Za-z][A-Za-z0-9-_]*$/,
+      t('errors.invalid_path')
+    )
+  })).refine(pages => {
+    const paths = pages.map(page => page.path);
+    const uniquePaths = new Set(paths);
+    return paths.length === uniquePaths.size;
+  }, t('errors.duplicated_path'))
+})

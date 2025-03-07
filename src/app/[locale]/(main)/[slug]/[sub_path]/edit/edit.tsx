@@ -1,13 +1,19 @@
 'use client'
 
-import Editor from "@/components/editor";
 import { useAuth } from "@/components/layout/providers/auth-provider";
+import LoadingComponent from "@/components/loading-component";
 import { Button } from "@/components/ui/button";
 import { CONF_PAGES } from "@/constants/pages.constants";
 import { useRouter } from "next-nprogress-bar";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { useEffect } from "react";
+
+const Editor = dynamic(() => import('@/components/editor'), {
+  ssr: false,
+  loading: () => <LoadingComponent />,
+});
 
 export default function EditClient() {
   const pathname = usePathname();
