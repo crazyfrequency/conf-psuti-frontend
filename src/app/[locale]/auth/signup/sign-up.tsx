@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput, PasswordInputAdornmentToggle, PasswordInputInput } from "@/components/ui/password-input";
-import { RadioCardGroup, RadioGroupItem } from "@/components/ui/RadioCardGroup";
+import { RadioCardGroup, RadioGroupItem } from "@/components/ui/radio-card-group";
 import { Separator } from "@/components/ui/separator";
 import { form_signup_schema } from "@/constants/auth.constants";
 import { BigLocales } from "@/constants/i18n.constants";

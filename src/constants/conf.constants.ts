@@ -32,6 +32,7 @@ export const form_conference_create_schema = (t: any) => z.object({
 export const form_conference_pages = (t: any, eng: boolean) => z.object({
   pages: z.array(z.object({
     id: z.number(),
+    old_id: z.number().nullable(),
     editable: z.boolean(),
     pageNameRu: z.string().trim().nonempty(),
     pageNameEn: eng ? z.string().trim().nonempty() : z.string().nullable(),

@@ -5,7 +5,6 @@ import { defaultLocale, locales } from './constants/i18n.constants';
 const I18nMiddleware = createI18nMiddleware({
   locales: locales,
   defaultLocale: defaultLocale,
-  urlMappingStrategy: 'rewriteDefault'
 });
 
 const regex = /^\/(ru|en)?\/?([^/]+)\/info$/

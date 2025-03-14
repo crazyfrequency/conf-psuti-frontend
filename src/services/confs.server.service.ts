@@ -53,19 +53,3 @@ export async function getConfBySlug(slug: string, cache?: RequestCache) {
   }
   return checkErrorsServer<TConf>(response);
 }
-
-export async function getConfPage(slug: string, sub_path: string) {
-  let response: Response|null = null;
-  try {
-    response = await fetch(`${base_url}/${slug}/${sub_path}`, {
-      cache: CACHE_MODE,
-      next: {
-        revalidate: 60*60*24*7,
-        tags: [`conf_slug_${slug}`, "confs", "all"]
-      }
-    });
-  } catch (error) {
-    console.error(error);
-  }
-  return checkErrorsServer<TConf>(response);
-}

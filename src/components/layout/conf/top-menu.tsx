@@ -9,7 +9,6 @@ import { Pen } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { useMemo } from "react";
-import { useAuth } from "../providers/auth-provider";
 import { useConfContext } from "./conf-context";
 
 const regex = /^(\/(?:ru|en)?)?\/[^\/]+\/(?:[^\/]+\/edit|admin(?:\/.*)?)$/;
@@ -19,14 +18,6 @@ export default function TopMenu() {
   const locale = useCurrentLocale();
   const pathname = usePathname();
   const { slug, sub_path } = useParams();
-  const { user } = useAuth();
-
-  if (isLoading) return (
-    <div className="relative text-center *:mx-auto space-y-2">
-      <Skeleton className="h-6 w-64 max-w-full" />
-      <Skeleton className="h-4 w-32 max-w-full" />
-    </div>
-  );
 
   const canEdit = useMemo(() => {
     return permissions.hasAnyRole(
@@ -36,9 +27,15 @@ export default function TopMenu() {
       PermissionFlags.WRITE
     );
   }, [permissions]);
+
+  if (isLoading) return (
+    <div className="relative text-center *:mx-auto space-y-2">
+      <Skeleton className="h-6 w-64 max-w-full" />
+      <Skeleton className="h-4 w-32 max-w-full" />
+    </div>
+  );
   
   const isEditButton = canEdit && !regex.test(pathname);
-  console.log(pathname)
 
   const editLink = '/' + slug + '/' + (
     typeof sub_path === "string"

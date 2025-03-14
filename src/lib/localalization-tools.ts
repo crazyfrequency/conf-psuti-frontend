@@ -34,7 +34,6 @@ export function getUserNames(user?: IUser|null, locale?: typeof locales[number]|
   if (!firstName) firstName = user.names?.[defaultLocale]?.firstName;
   if (!lastName) lastName = user.names?.[defaultLocale]?.lastName;
   if (!middleName) middleName = user.names?.[defaultLocale]?.middleName;
-  console.log(user, locale)
 
   return {
     firstName: firstName || undefinedNames[locale].firstName,

@@ -8,12 +8,14 @@ import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { HorizontalRulePlugin } from '@lexical/react/LexicalHorizontalRulePlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
+import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { SelectionAlwaysOnDisplay } from '@lexical/react/LexicalSelectionAlwaysOnDisplay';
 import { useLexicalEditable } from '@lexical/react/useLexicalEditable';
 import { useEffect, useState } from 'react';
 
 import { useCurrentLocale } from '@/locales/client';
+import { $generateHtmlFromNodes } from '@lexical/html';
 import { CAN_USE_DOM } from '@lexical/utils';
 import { toast } from 'sonner';
 import { useSharedHistoryContext } from './context/history-context';
@@ -30,8 +32,10 @@ import ShortcutsPlugin from './plugins/shortcuts-plugin';
 import EditorToolbar from "./plugins/toolbar";
 
 export default function EditorMain({
+  onChange,
   placeholder
 }: Readonly<{
+  onChange?: (text: string) => void
   placeholder: string
 }>) {
   const locale = useCurrentLocale();
@@ -78,7 +82,7 @@ export default function EditorMain({
         setActiveEditor={setActiveEditor}
         setIsLinkEditMode={setIsLinkEditMode}
       />
-      <div className="border border-t-0 rounded-b-lg relative bg-background editor-text" ref={onRef}>
+      <div className="border border-t-0 rounded-b-lg relative bg-background" ref={onRef}>
         <RichTextPlugin
           contentEditable={
             <div
@@ -107,6 +111,7 @@ export default function EditorMain({
         <CodeHighlightPlugin />
         <HorizontalRulePlugin />
         <LexicalAutoLinkPlugin />
+        {onChange && <OnChangePlugin onChange={(_, editor) => editor.read(() => onChange($generateHtmlFromNodes(editor)))} ignoreSelectionChange />}
         <CollapsiblePlugin />
         {floatingAnchorElem && !isSmallWidthViewport && (
           <>

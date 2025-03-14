@@ -1,4 +1,5 @@
 import auth_errors from "./auth/errors.json";
+import confs from "./confs";
 import languages from "./languages.json";
 import profile from "./profile.json";
 import zod from "./zod.json";
@@ -47,19 +48,7 @@ export default {
     }
   },
   confs: {
-    pages: {
-      home: 'Home',
-      info: 'General information',
-      settings: 'Settings',
-      admin: 'Admin panel',
-      pages: 'Pages',
-      admins: 'Administrators',
-      form: 'Application form',
-      topics: 'Sections and meetings',
-      mailing: 'Mailing',
-      edit: 'Editing',
-      unknown: 'Unknown page'
-    },
+    ...confs,
     create: {
       title: 'Create conference',
       description: 'Fill in the form to create a new conference',
@@ -99,7 +88,16 @@ export default {
       letter: 'Information letter',
       organizations: 'Organizations',
       sections: 'Conference sections',
-    }
+    },
+    add_page: 'Add page',
+    save: 'Save',
+    cancel: 'Cancel',
+    page_enabled: {
+      title: 'Enable page',
+    },
+    import: 'Import',
+    export: 'Export',
+    saved: 'Successfully saved',
   },
   login: {
     title: 'Login',
@@ -150,6 +148,9 @@ export default {
   editor: {
     placeholder: 'Start typing...'
   },
+  loading: {
+    fetch: 'Executing request',
+  },
   errors: {
     fetch: 'An error occurred while executing the request',
     fetches: {
@@ -174,6 +175,9 @@ export default {
       not_found: 'Conferences not found',
       error: 'An error occurred while loading conferences',
       no_current: 'No current conferences',
+    },
+    pages: {
+      not_found: 'Page not found',
     },
     403: {
       title: 'Access denied',

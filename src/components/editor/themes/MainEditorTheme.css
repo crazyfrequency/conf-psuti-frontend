@@ -31,10 +31,10 @@
   @apply m-0 mt-4 border-l-2 pl-6 italic;
 }
 .MainEditorTheme__h3 {
-  @apply [&:not(:first-child)]:mt-10 text-3xl font-extrabold tracking-tight uppercase;
+  @apply [&:not(:first-child)]:mt-10 text-3xl font-extrabold tracking-tight;
 }
 .MainEditorTheme__h4 {
-  @apply [&:not(:first-child)]:mt-8 text-2xl font-semibold tracking-tight uppercase;
+  @apply [&:not(:first-child)]:mt-8 text-2xl font-semibold tracking-tight;
 }
 .MainEditorTheme__h5 {
   @apply [&:not(:first-child)]:mt-6 text-xl font-semibold tracking-tight;
@@ -452,7 +452,6 @@
 .MainEditorTheme hr {
   @apply my-4;
   color: inherit;
-  cursor: pointer;
 }
 .MainEditorTheme__hr.selected {
   outline: 2px solid rgb(60, 132, 244);

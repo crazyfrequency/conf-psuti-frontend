@@ -16,7 +16,7 @@ import { HTMLAttributes, useMemo } from "react";
 import { useAuth } from "../providers/auth-provider";
 import { useConfContext } from "./conf-context";
 
-const default_pages = ["info", "committee", "program", "proceedings", "report", "contacts"] as const;
+export const default_pages = ["info", "committee", "program", "proceedings", "report", "contacts"] as const;
 
 export default function LeftMenu({
   className,
@@ -49,7 +49,7 @@ export default function LeftMenu({
   const elements = data?.pages?.map((v) => (
       <li key={`nav_${v.path}`}>
         <Button
-          className="justify-start w-full whitespace-pre-wrap h-auto"
+          className="justify-start w-full whitespace-pre-wrap break-all h-auto"
           variant={ sub_path === v.path ? 'default' : 'ghost'}
           asChild
         >

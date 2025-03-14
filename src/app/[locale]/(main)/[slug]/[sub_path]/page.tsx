@@ -22,5 +22,5 @@ export async function generateMetadata({
 }
 
 export default async function ConfSsr() {
-  return <Conf/>
+  return <Conf />
 }

@@ -1,4 +1,5 @@
 import auth_errors from "./auth/errors.json";
+import confs from "./confs";
 import languages from "./languages.json";
 import profile from "./profile.json";
 import zod from "./zod.json";
@@ -47,19 +48,7 @@ export default {
     }
   },
   confs: {
-    pages: {
-      home: 'Главная',
-      info: 'Общая информация',
-      settings: 'Настройки',
-      admin: 'Панель администратора',
-      pages: 'Страницы',
-      admins: 'Администраторы',
-      form: 'Форма заявки',
-      topics: 'Секции и заседания',
-      mailing: 'Письма',
-      edit: 'Редактирование',
-      unknown: 'Неизвестная страница'
-    },
+    ...confs,
     create: {
       title: 'Создание конференции',
       description: 'Заполните форму для создания новой конференции',
@@ -99,7 +88,16 @@ export default {
       letter: 'Информационное письмо',
       organizations: 'Организаторы',
       sections: 'Секции конференции',
-    }
+    },
+    add_page: 'Добавить страницу',
+    save: 'Сохранить',
+    cancel: 'Отменить',
+    page_enabled: {
+      title: 'Включить страницу',
+    },
+    import: 'Импортировать',
+    export: 'Экспортировать',
+    saved: 'Успешно сохранено',
   },
   login: {
     title: 'Вход',
@@ -150,6 +148,9 @@ export default {
   editor: {
     placeholder: 'Начните писать...'
   },
+  loading: {
+    fetch: 'Выполняется запрос',
+  },
   errors: {
     fetch: 'Произошла ошибка при выполнении запроса',
     fetches: {
@@ -174,6 +175,9 @@ export default {
       not_found: 'Конференции не найдены',
       error: 'Произошла ошибка при загрузке конференций',
       no_current: 'Нет текущих конференций',
+    },
+    pages: {
+      not_found: 'Страница не найдена',
     },
     403: {
       title: 'Доступ запрещён',

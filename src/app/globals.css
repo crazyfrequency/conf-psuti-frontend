@@ -134,5 +134,5 @@
 }
 
 *:not(.scrollbar-thin) {
-  @apply scrollbar scrollbar-thumb-primary/70 scrollbar-track-border/50;
+  @apply scrollbar scrollbar-thumb-border scrollbar-track-transparent;
 }

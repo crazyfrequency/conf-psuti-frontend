@@ -5,8 +5,9 @@ import { InitialConfigType, InitialEditorStateType, LexicalComposer } from '@lex
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
+import { $generateNodesFromDOM } from '@lexical/html';
 import { ListItemNode } from '@lexical/list';
-import { $createParagraphNode, $getRoot, $isTextNode, DOMConversionMap, DOMExportOutput, DOMExportOutputMap, Klass, LexicalEditor, LexicalNode, LineBreakNode, TextNode } from 'lexical';
+import { $createParagraphNode, $getRoot, $insertNodes, $isTextNode, DOMConversionMap, DOMExportOutput, DOMExportOutputMap, Klass, LexicalEditor, LexicalNode, LineBreakNode, TextNode } from 'lexical';
 import { toast } from 'sonner';
 import { parseAllowedColor } from '../ui/editor/color-picker';
 import { ToolbarContext } from './context/toolbar-context';
@@ -143,18 +144,32 @@ function $preloadDefault() {
   }
 }
 
+function convertDocumentToEditorState(document: Document): (editor: LexicalEditor) => void {
+  return (editor) => {
+    const nodes = $generateNodesFromDOM(editor, document);
+    $getRoot().select();
+    $insertNodes(nodes);
+  }
+}
+
 export default function Editor({
   namespace,
   editorState = null,
   placeholder,
   className,
+  onChange,
   ...props
-}: Readonly<React.HTMLAttributes<HTMLDivElement>> & Readonly<{
+}: Readonly<Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">> & Readonly<{
+  onChange?: (text: string) => void
   namespace?: string
-  editorState?: InitialEditorStateType
+  editorState?: InitialEditorStateType | Document
   placeholder?: string
 }>) {
   const i18n = useI18n();
+
+  if (editorState instanceof Document) {
+    editorState = convertDocumentToEditorState(editorState);
+  }
 
   const initialConfig: InitialConfigType = {
     namespace: namespace ?? "text_editor",
@@ -179,7 +194,10 @@ export default function Editor({
         {...props}
       >
         <ToolbarContext>
-          <EditorMain placeholder={placeholder ?? i18n('editor.placeholder')} />
+          <EditorMain
+            placeholder={placeholder ?? i18n('editor.placeholder')}
+            onChange={onChange}
+          />
         </ToolbarContext>
       </div>
     </LexicalComposer>

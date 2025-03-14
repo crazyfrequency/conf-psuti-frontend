@@ -38,8 +38,10 @@ export default function useConfHook({
       return router.replace(AUTH_PAGES.LOGIN(pathname));
     if (response.status !== 'success')
       return setContext({ isLoading: true, data: "forbidden", permissions, reload: fetchConf, clientLoading: false });
+
+    response.data?.pages?.sort?.((a, b) => a.pageIndex - b.pageIndex);
     setContext({ isLoading: false, data: response.data, permissions, reload: fetchConf, clientLoading: false });
-  }, [context]);
+  }, [context, permissions, router]);
 
   useEffect(() => {
     if (response.status === "success") return setContext({

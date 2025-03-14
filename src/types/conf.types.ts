@@ -34,7 +34,7 @@ export type TConf = {
   endDate: string|number;
   closingDateForApplications?: string|number;
   closingDateForRegistrations?: string|number;
-  pages: IPath[];
+  pages: IPage[];
   meetingPointRu?: string;
   meetingPointEn?: string;
   webSite?: string;
@@ -48,12 +48,30 @@ export type TConf = {
 /**
  * Структура путей в конференции
  */
-export interface IPath {
+export interface IPage {
   id: number;
   pageNameRu: string;
   pageNameEn?: string;
   path: string;
   pageIndex: number;
+}
+
+/**
+ * Структура контента страницы конференции
+ */
+export type TConfPage = IPage & {
+  htmlContentRu?: string;
+  htmlContentEn?: string;
+}
+
+/**
+ * Структура контента страницы конференции на определенном языке
+ */
+export type TLocalizedConfPage = {
+  lang: string;
+  path: string;
+  pageName: string;
+  htmlContent: string;
 }
 
 export type TConfForm = {
@@ -65,4 +83,18 @@ export type TConfForm = {
   isEnglishEnabled: boolean;
   startDate: string;
   endDate: string;
+}
+
+export type TConfPageForm = {
+  id?: number|null;
+  pageNameRu: string;
+  pageNameEn?: string|null;
+  path: string;
+  pageIndex: number;
+}
+
+export type TConfPageContentForm = {
+  isEnabled: boolean;
+  htmlContentRu: string;
+  htmlContentEn?: string|null;
 }

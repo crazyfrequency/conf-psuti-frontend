@@ -24,7 +24,7 @@ export default function Path({
     <Breadcrumb className='m-5 mt-2'>
       <BreadcrumbList>
         {Array.from({ length: 4 }).map((_, i) => (
-          <BreadcrumbItem>
+          <BreadcrumbItem key={i}>
             <Skeleton className='h-5 w-20' />
           </BreadcrumbItem>
         ))}
