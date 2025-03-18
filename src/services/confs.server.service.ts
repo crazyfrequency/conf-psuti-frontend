@@ -28,7 +28,7 @@ export async function getConfsListByYear(year?: number) {
     response = await fetch(`${base_url}/years/${year??"current"}`, {
       cache: CACHE_MODE,
       next: {
-        revalidate: 60*60*24*14,
+        revalidate: year ? 60*60*24*14 : 60*60*12,
         tags: [`conf_year_${year??"current"}`, "confs", "all"]
       }
     });
@@ -38,27 +38,11 @@ export async function getConfsListByYear(year?: number) {
   return checkErrorsServer<TConf[]>(response);
 }
 
-export async function getConfBySlug(slug: string) {
+export async function getConfBySlug(slug: string, cache?: RequestCache) {
   let response: Response|null = null;
   try {
     response = await fetch(`${base_url}/slug/${slug}`, {
-      cache: CACHE_MODE,
-      next: {
-        revalidate: 60*60*24*7,
-        tags: [`conf_slug_${slug}`, "confs", "all"]
-      }
-    });
-  } catch (error) {
-    console.error(error);
-  }
-  return checkErrorsServer<TConf>(response);
-}
-
-export async function getConfPage(slug: string, sub_path: string) {
-  let response: Response|null = null;
-  try {
-    response = await fetch(`${base_url}/${slug}/${sub_path}`, {
-      cache: CACHE_MODE,
+      cache: cache ?? CACHE_MODE,
       next: {
         revalidate: 60*60*24*7,
         tags: [`conf_slug_${slug}`, "confs", "all"]

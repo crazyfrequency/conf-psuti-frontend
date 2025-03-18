@@ -20,7 +20,7 @@ export default function Error404() {
       <p>Запрошенная страница не может быть найдена, но возможно снова станет доступна в будущем.</p>
       <footer className="fixed bottom-2 justify-center items-center">
         <p>
-          Служба поддержки <a className="underline" href={`mailto:${HELP_DESK_EMAIL}`}>helpdesk@psuti.ru</a>
+          Служба поддержки <a className="underline text-primary" href={`mailto:${HELP_DESK_EMAIL}`}>helpdesk@psuti.ru</a>
         </p>
       </footer>
     </div>

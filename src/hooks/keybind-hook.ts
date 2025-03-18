@@ -11,10 +11,14 @@ export function useKeyBind({ keyBind, callback, useCode = true }: KeyComboOption
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const keys = keyBind.split("+");
+      const ctrlPressed = event.ctrlKey || event.metaKey;
+      const shiftPressed = event.shiftKey;
+      const altPressed = event.altKey;
+
       const modifiersMatch =
-        (!(keys.includes("Ctrl") || event.ctrlKey || event.metaKey) || event.ctrlKey) &&
-        (!keys.includes("Shift") || event.shiftKey) &&
-        (!keys.includes("Alt") || event.altKey);
+        (keys.includes("Ctrl") === ctrlPressed) &&
+        (keys.includes("Shift") === shiftPressed) &&
+        (keys.includes("Alt") === altPressed);
 
       const keyToCheck = keys[keys.length - 1];
       const keyMatch = useCode ? event.code === keyToCheck : event.key === keyToCheck;

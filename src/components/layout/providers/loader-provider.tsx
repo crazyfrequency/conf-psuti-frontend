@@ -1,6 +1,7 @@
 'use client';
 
-import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+import { locales } from '@/constants/i18n.constants';
+import { ProgressProvider as ProgressBar } from '@bprogress/next/app';
 
 const LoaderProvider = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -13,12 +14,15 @@ const LoaderProvider = ({ children }: { children: React.ReactNode }) => {
         shallowRouting
         targetPreprocessor={url => {
           const current_url = new URL(window.location.href)
-          
-          if (current_url.pathname==="/en" || current_url.pathname.startsWith("/en/")) {
-            url.pathname = "/en" + url.pathname;
-            if (url.pathname.endsWith("/"))
+
+          const currentLocale = locales.find(locale => current_url.pathname === `/${locale}` || current_url.pathname.startsWith(`/${locale}/`));
+
+          if (currentLocale) {
+            url.pathname = `/${currentLocale}` + url.pathname;
+            if (url.pathname.endsWith("/")) {
               url.pathname = url.pathname.slice(0, -1);
-            url.href = url.origin + url.pathname + url.search
+            }
+            url.href = url.origin + url.pathname + url.search;
           }
           
           return url

@@ -5,15 +5,20 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ADMIN_PAGES, AUTH_PAGES, MAIN_PAGES } from '@/constants/pages.constants';
 import { useKeyBind } from '@/hooks/keybind-hook';
+import { getUserNames } from '@/lib/localalization-tools';
 import { useCurrentLocale, useScopedI18n } from '@/locales/client';
+import { useRouter } from '@bprogress/next';
 import { CircleUser, User } from 'lucide-react';
-import { useRouter } from 'next-nprogress-bar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+import { Skeleton } from '../ui/skeleton';
 import { useAuth } from './providers/auth-provider';
 
 export default function UserMenu() {
   const t = useScopedI18n('main_header.user_menu');
+  const t_error = useScopedI18n('errors.fetches')('auth');
   const router = useRouter();
   const locale = useCurrentLocale();
   const { user, logout } = useAuth();
@@ -21,23 +26,39 @@ export default function UserMenu() {
 
   useKeyBind({
     keyBind: 'Ctrl+KeyP',
-    callback: () => user !== "unauthorized" && !pathname.match(/(\/en|)\/profile/)
+    callback: () => typeof user === "object" && !pathname.match(/(\/en|\/ru|)\/profile/)
       ? router.push(MAIN_PAGES.PROFILE)
       : null
   })
   useKeyBind({
     keyBind: 'Alt+KeyC',
-    callback: () => user !== "unauthorized" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/confs\/new/)
+    callback: () => typeof user === "object" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/confs\/new/)
       ? router.push(ADMIN_PAGES.NEW_CONFS)
       : null
   })
   useKeyBind({
     keyBind: 'Alt+KeyU',
-    callback: () => user !== "unauthorized" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/users/)
+    callback: () => typeof user === "object" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/users/)
       ? router.push(ADMIN_PAGES.USERS)
       : null
   })
   useKeyBind({ keyBind: 'Ctrl+Shift+KeyQ', callback: logout })
+
+  useEffect(() => {
+    if (user === "error") {
+      const message = toast.error(t_error, {
+        duration: Infinity
+      });
+      return () => {
+        toast.dismiss(message);
+      }
+    }
+  }, [user])
+
+  if (user === "loading" || user === "error")
+    return (
+      <Skeleton className="size-10" />
+    )
 
   if (user === "unauthorized")
     return (
@@ -48,13 +69,7 @@ export default function UserMenu() {
       </Button>
     )
 
-  const first_name = locale === 'en'
-    ? user?.firstnameEn ?? user?.firstnameRu
-    : user?.firstnameRu;
-
-  const last_name = locale === 'en'
-    ? user?.lastnameEn ?? user?.lastnameRu
-    : user?.lastnameRu;
+  const names = getUserNames(user, locale);
 
   const admin_pages = user?.role === 'ADMIN' ? (
       <>
@@ -91,7 +106,7 @@ export default function UserMenu() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none truncate whitespace-normal">{last_name} {first_name}</p>
+            <p className="text-sm font-medium leading-none truncate whitespace-normal">{names.lastName} {names.firstName}</p>
             <p className="text-xs leading-none text-muted-foreground truncate">{user?.email}</p>
           </div>
         </DropdownMenuLabel>

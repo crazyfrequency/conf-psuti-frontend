@@ -2,7 +2,7 @@
 
 import { I18nProviderClient } from '@/locales/client';
 import { useParams } from 'next/navigation';
-import { JSX } from 'react';
+import { JSX, useEffect } from 'react';
 
 export default function I18nProvider({
   children
@@ -11,5 +11,10 @@ export default function I18nProvider({
 }>): JSX.Element {
   const { locale: localeParam } = useParams();
   const locale = localeParam as string ?? "ru";
+
+  useEffect(() => {
+    document.documentElement.lang = locale
+  }, [locale])
+
   return <I18nProviderClient locale={locale} children={children} />
 }

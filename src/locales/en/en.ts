@@ -1,3 +1,9 @@
+import auth_errors from "./auth/errors.json";
+import confs from "./confs";
+import languages from "./languages.json";
+import profile from "./profile.json";
+import zod from "./zod.json";
+
 export default {
   title: {
     default: 'PSUTI Conference Website',
@@ -42,17 +48,62 @@ export default {
     }
   },
   confs: {
-    pages: {
-      home: 'Home',
-      info: 'General information'
-    },
+    ...confs,
     create: {
       title: 'Create conference',
       description: 'Fill in the form to create a new conference',
+      fields: {
+        slug: 'Conference address',
+        title_ru: 'Conference name (Russian)',
+        title_en: 'Conference name (English)',
+        status_ru: 'Conference status (Russian)',
+        status_en: 'Conference status (English)',
+        english_enabled: 'Enable English',
+        start_date: 'Start date',
+        end_date: 'End date',
+        enter_date: 'Pick a date',
+        required: 'Required field',
+        optional: 'Optional field'
+      },
+      cancel: 'Cancel',
+      submit: 'Create conference',
+      errors: {
+        invalid_slug: "Conference address should contain only numbers, letters, hyphens and underscores. It should start with a letter and not contain the following words: {invalids}.",
+        slug_in_use: 'This conference address is already in use',
+      },
+      success: 'Conference created',
     },
     new: {
-      title: 'New conferences'
-    }
+      title: 'New conferences',
+      create: 'Create'
+    },
+    info: {
+      dates: 'Conference Dates',
+      registration: 'Registration Due Date',
+      submission: 'Paper Submission Due Date',
+      place: 'Place',
+      site: 'Website',
+      email: 'E-mail',
+      phone: 'Phone',
+      letter: 'Information letter',
+      organizations: 'Organizations',
+      sections: 'Conference sections',
+    },
+    add_page: 'Add page',
+    save: 'Save',
+    cancel: 'Cancel',
+    page_enabled: {
+      title: 'Enable page',
+    },
+    import: {
+      title: 'Import settings file',
+      button: 'Import',
+      drop: 'Drop file here',
+      select: 'Select file',
+      invalid: 'Invalid file',
+    },
+    export: 'Export',
+    saved: 'Successfully saved',
   },
   login: {
     title: 'Login',
@@ -72,6 +123,7 @@ export default {
     title: 'Email confirmation',
     message: 'A confirmation email has been sent to your email.',
     message_description: 'Confirm your email to access your account. If you don\'t confirm your email, your account will be deleted within 12-24 hours.',
+    message_time: 'The email will be sent again in {time}',
     button: 'Resend email',
     fetch_timeout: 'You recently sent a confirmation email',
     success: {
@@ -85,27 +137,26 @@ export default {
     email: 'Email',
     password: 'Password',
     confirm: 'Confirm password',
-    lastname: {
-      title: 'Last name (RU)',
-      description: 'Last name in Russian'
-    },
-    firstname: {
-      title: 'First name (RU)',
-      description: 'First name in Russian'
-    },
-    middlename: {
-      title: 'Middle name (RU)',
-      description: 'Middle name in Russian (if applicable)'
-    },
+    lastname: 'Last name',
+    firstname: 'First name',
+    middlename: 'Middle name (optional)',
+    names: 'Names {on}',
+    preferred_locale: 'Preferred language',
     caution: {
       title: 'Caution',
-      description: 'Other details, such as full name in English, can be filled in after registration',
+      description: 'Other information can be entered later in the profile',
     },
     signup: 'Sign up',
     have_account: {
       title: 'Already have an account?',
       link: 'Login'
     }
+  },
+  editor: {
+    placeholder: 'Start typing...'
+  },
+  loading: {
+    fetch: 'Executing request',
   },
   errors: {
     fetch: 'An error occurred while executing the request',
@@ -114,11 +165,34 @@ export default {
         title: 'Email is already in use',
         description: 'You may already be registered'
       },
+      auth: 'An error occurred while authorizing',
     },
     login: 'Invalid email or password',
+    bad_credentials: 'Invalid email or password',
+    editor: 'An error occurred in the editor: {error}',
     actions: {
       reload: 'reload',
       help: 'Help'
+    },
+    access: {
+      forbidden: 'Access denied',
+      unauthorized: 'Unauthorized access (you may have logged out)',
+    },
+    conferences: {
+      not_found: 'Conferences not found',
+      error: 'An error occurred while loading conferences',
+      no_current: 'No current conferences',
+    },
+    pages: {
+      not_found: 'Page not found',
+    },
+    403: {
+      title: 'Access denied',
+      description: 'You do not have permission to view this page'
+    },
+    500: {
+      title: 'Internal server error',
+      description: 'An internal server error occurred'
     }
   },
   zod_errors: {
@@ -136,5 +210,11 @@ export default {
       lastname: 'Last name is required',
       firstname: 'First name is required'
     },
-  }
+  },
+  zod: {
+    auth: auth_errors,
+    ...zod
+  },
+  profile,
+  languages
 } as const;

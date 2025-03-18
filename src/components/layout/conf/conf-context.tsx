@@ -1,11 +1,12 @@
 'use client'
 
 import { TResponseResult } from '@/api/error';
+import Page403 from '@/components/auth/403';
 import { Separator } from '@/components/ui/separator';
 import useConfHook from '@/hooks/conf-context-hook';
+import { UserConferencePermissions } from '@/lib/user-permissions';
 import { cn } from '@/lib/utils';
 import { TConf } from '@/types/conf.types';
-import { notFound } from 'next/navigation';
 import React, { createContext } from 'react';
 import LeftMenu from './left-menu';
 import Path from './path';
@@ -14,11 +15,13 @@ import TopMenu from './top-menu';
 export type TConfContext = {
   isLoading: false;
   data: TConf;
+  permissions: UserConferencePermissions;
   reload: () => Promise<void>|void;
   clientLoading: boolean;
 } | {
   isLoading: true;
   data: null|"forbidden";
+  permissions: UserConferencePermissions;
   reload: () => Promise<void>|void;
   clientLoading?: boolean;
 };
@@ -26,6 +29,7 @@ export type TConfContext = {
 const DataContext = createContext<TConfContext>({
   isLoading: true,
   data: null,
+  permissions: new UserConferencePermissions("loading", ""),
   reload: () => {}
 });
 
@@ -43,7 +47,7 @@ export default function ConfContext({
   const { context, fetchConf } = useConfHook({ slug, response });
 
   if (context.data === "forbidden")
-    return notFound();
+    return <Page403 />;
 
   return (
     <DataContext.Provider value={{
@@ -51,7 +55,7 @@ export default function ConfContext({
       reload: fetchConf
     }}>
       <Path />
-      <div className="grid relative grid-rows-1 lg:grid-cols-[auto_auto_1fr] gap-2 w-full">
+      <div className="grid relative grid-rows-1 grid-cols-1 lg:grid-cols-[auto_auto_1fr] gap-2 w-full">
         <LeftMenu
           className={cn(
             "max-lg:overflow-y-auto max-lg:max-h-72 max-lg:p-4",
@@ -60,7 +64,7 @@ export default function ConfContext({
           )}
         />
         <Separator className="max-lg:hidden" orientation="vertical" />
-        <main>
+        <main className='min-w-0 w-full max-lg:pt-3'>
           <TopMenu />
           <Separator className="my-4" />
           {children}

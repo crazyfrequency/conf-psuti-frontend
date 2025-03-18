@@ -26,14 +26,14 @@ export default async function MainLayout({
   return (
     <div className="min-h-dvh bg-background">
       <header className={cn(
-        "sticky flex items-center h-14 w-dvw top-0 mx-auto",
-        "z-50 rounded-b-lg border-solid border border-t-0",
+        "sticky flex items-center h-14 w-full top-0 mx-auto",
+        "z-50 rounded-b-2xl border-solid border border-t-0",
         "bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/25",
         "sm:max-w-(--breakpoint-sm) md:max-w-(--breakpoint-md) lg:max-w-(--breakpoint-lg) xl:max-w-(--breakpoint-xl) 2xl:max-w-(--breakpoint-2xl)"
       )}>
         <HeaderMain />
       </header>
-      <div className="w-dvw mx-auto px-2 sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-[85rem] mt-2 overflow-x-hidden">
+      <div className="w-full mx-auto px-2 pt-2.5 sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-[85rem] mt-2">
         {children}
         <Separator className="my-4" />
         <Footer year={new Date().getFullYear()} />

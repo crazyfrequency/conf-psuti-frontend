@@ -5,10 +5,11 @@ import { getMe, logout } from '@/services/auth.service'
 import { IUser } from '@/types/auth.types'
 import React, { useCallback, useEffect, useMemo } from 'react'
 
-type TAuthContext = {
+export type TAuthContext = {
   reloadAuth: () => void
   logout: () => void
-  user: IUser | "unauthorized"
+  user: IUser | "unauthorized" | "error" | "loading"
+  lastErrors?: "logout"
 }
 
 const AuthProviderContext = React.createContext<TAuthContext|undefined>(undefined)
@@ -18,7 +19,7 @@ export function AuthProvider({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const [user, setUser] = React.useState<IUser|undefined>(undefined)
+  const [user, setUser] = React.useState<IUser|"unauthorized"|"error"|undefined>(undefined)
 
   const reloadAuth = useCallback(async () => {
     const user = getUserFromLocalStorage();
@@ -26,20 +27,29 @@ export function AuthProvider({
     if (user) return setUser(user);
 
     const response = await getMe()
-    if (response.status !== 'success') return
+    if (response.status === 'error' || response.status === 'not-found') {
+      setTimeout(reloadAuth, 5000);
+      if (user === "error") return
+      return setUser("error");
+    };
+    if (response.status !== 'success') return setUser("unauthorized");
     setUser(response.data)
   }, [setUser])
 
   const logoutAuth = useCallback(async () => {
     const response = await logout();
-    if (response.status !== 'success') return
+    if (response.status !== 'success') return setUser(
+      u => typeof u === "object" && u ? {
+        ...u,
+        lastErrors: "logout"
+      } : "error"
+    );
     localStorage.removeItem('user');
-    setUser(undefined);
+    setUser("unauthorized");
   }, [setUser])
 
   useEffect(() => {
     const getUser = async (event: StorageEvent) => {
-      console.log(event)
       if (event.key === 'user') {
         const user = event.newValue ? JSON.parse(event.newValue) : null;
         setUser(user)
@@ -56,9 +66,12 @@ export function AuthProvider({
   
   const context = useMemo(() => {
     return {
-      reloadAuth,
+      reloadAuth: () => {
+        setUser(undefined);
+        reloadAuth()
+      },
       logout: logoutAuth,
-      user: user ?? "unauthorized" as "unauthorized"
+      user: user ?? "loading" as const
     }
   }, [user, reloadAuth])
 

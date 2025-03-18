@@ -1,10 +1,10 @@
 import { createI18nMiddleware } from 'next-international/middleware';
 import { NextResponse, type NextRequest } from 'next/server';
+import { defaultLocale, locales } from './constants/i18n.constants';
 
 const I18nMiddleware = createI18nMiddleware({
-  locales: ['en', 'ru'],
-  defaultLocale: 'ru',
-  urlMappingStrategy: 'rewriteDefault'
+  locales: locales,
+  defaultLocale: defaultLocale,
 });
 
 const regex = /^\/(ru|en)?\/?([^/]+)\/info$/
