@@ -1,4 +1,5 @@
 import { locales } from "@/constants/i18n.constants";
+import type { UUID } from "crypto";
 
 /**
  * Интерфейс, представляющий данные для аутентификации (форма входа).
@@ -45,7 +46,7 @@ export type TRole = "USER" | "ADMIN"
  * Включает основную информацию о пользователе, его роль, локаль и разрешения на конференции.
  */
 export interface IUser {
-  id: number
+  id: UUID
   email: string
   role: TRole,
   preferredLocale: Locales,

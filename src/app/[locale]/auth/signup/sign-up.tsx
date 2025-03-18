@@ -14,6 +14,7 @@ import { AUTH_PAGES } from "@/constants/pages.constants";
 import { makeZodI18nMap } from "@/lib/zod-i18n";
 import { useCurrentLocale, useScopedI18n } from "@/locales/client";
 import { register } from "@/services/auth.service";
+import { TUserForm } from "@/types/auth.types";
 import { useRouter } from "@bprogress/next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-dropdown-menu";
@@ -58,13 +59,19 @@ export default function SignUp() {
   })
 
   async function submitSignUp(data: z.infer<typeof form_signup_schema>) {
+    const names: TUserForm['names'] = {}
+
+    if (data.names.RU.firstName || data.names.RU.middleName || data.names.RU.lastName)
+      names.RU = data.names.RU;
+
+    if (data.names.EN.firstName || data.names.EN.middleName || data.names.EN.lastName)
+      names.EN = data.names.EN;
+
     const response = await register({
       email: data.email,
       password: data.password,
       preferredLocale: locale.toUpperCase() as BigLocales,
-      names: {
-
-      }
+      names
     } as any, locale);
 
     if (response.status === 'success')
@@ -102,7 +109,7 @@ export default function SignUp() {
               name="email"
               render={({ field }) => (
                 <FormItem className="grid gap-0.5">
-                  <FormLabel>{t('email')}</FormLabel>
+                  <FormLabel>{t('email')} *</FormLabel>
                   <FormControl>
                     <Input type="email" autoComplete="email" placeholder="me@example.com" {...field} />
                   </FormControl>
@@ -116,7 +123,7 @@ export default function SignUp() {
               name="password"
               render={({ field }) => (
                 <FormItem className="grid gap-0.5">
-                  <FormLabel>{t('password')}</FormLabel>
+                  <FormLabel>{t('password')} *</FormLabel>
                   <PasswordInput>
                     <FormControl>
                       <PasswordInputInput autoComplete="new-password" placeholder={t('password').toLowerCase()} {...field} />
@@ -133,7 +140,7 @@ export default function SignUp() {
               name="confirm"
               render={({ field }) => (
                 <FormItem className="grid gap-0.5">
-                  <FormLabel>{t('confirm')}</FormLabel>
+                  <FormLabel>{t('confirm')} *</FormLabel>
                   <PasswordInput>
                     <FormControl>
                       <PasswordInputInput autoComplete="new-password" placeholder={t('confirm').toLowerCase()} {...field} />
@@ -150,7 +157,7 @@ export default function SignUp() {
               name="preferredLocale"
               render={({ field }) => (
                 <FormItem className="grid gap-0.5">
-                  <FormLabel>{t('preferred_locale')}</FormLabel>
+                  <FormLabel>{t('preferred_locale')} *</FormLabel>
                   <FormControl>
                     <RadioCardGroup className="grid-cols-2" value={field.value} onValueChange={field.onChange}>
                       <FormItem>
@@ -184,7 +191,7 @@ export default function SignUp() {
                   name="names.RU.lastName"
                   render={({ field }) => (
                     <FormItem className="grid gap-0.5">
-                      <FormLabel>{t('lastname')}</FormLabel>
+                      <FormLabel>{t('lastname')}{form.watch("preferredLocale") === "RU" && " *"}</FormLabel>
                       <FormControl>
                         <Input type="text" autoComplete="family-name" placeholder="Иванов" {...field} />
                       </FormControl>
@@ -198,7 +205,7 @@ export default function SignUp() {
                   name="names.RU.firstName"
                   render={({ field }) => (
                     <FormItem className="grid gap-0.5">
-                      <FormLabel>{t('firstname')}</FormLabel>
+                      <FormLabel>{t('firstname')}{form.watch("preferredLocale") === "RU" && " *"}</FormLabel>
                       <FormControl>
                         <Input type="text" autoComplete="given-name" placeholder="Иван" {...field} />
                       </FormControl>
@@ -229,7 +236,7 @@ export default function SignUp() {
                   name="names.EN.lastName"
                   render={({ field }) => (
                     <FormItem className="grid gap-0.5">
-                      <FormLabel>{t('lastname')}</FormLabel>
+                      <FormLabel>{t('lastname')}{form.watch("preferredLocale") === "EN" && " *"}</FormLabel>
                       <FormControl>
                         <Input type="text" autoComplete="family-name" placeholder="Ivanov" {...field} />
                       </FormControl>
@@ -243,7 +250,7 @@ export default function SignUp() {
                   name="names.EN.firstName"
                   render={({ field }) => (
                     <FormItem className="grid gap-0.5">
-                      <FormLabel>{t('firstname')}</FormLabel>
+                      <FormLabel>{t('firstname')}{form.watch("preferredLocale") === "EN" && " *"}</FormLabel>
                       <FormControl>
                         <Input type="text" autoComplete="given-name" placeholder="Ivan" {...field} />
                       </FormControl>

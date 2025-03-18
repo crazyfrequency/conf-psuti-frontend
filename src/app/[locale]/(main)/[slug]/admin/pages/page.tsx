@@ -6,6 +6,9 @@ import { default_pages } from "@/components/layout/conf/left-menu";
 import { useAuth } from "@/components/layout/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { ControlGroup, ControlGroupItem } from "@/components/ui/control-group";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dropzone, DropzoneGroup, DropzoneInput, DropzoneTitle, DropzoneUploadIcon, DropzoneZone } from "@/components/ui/dropzone";
+import { FileList, FileListDescription, FileListHeader, FileListIcon, FileListInfo, FileListItem, FileListName, FileListSize } from "@/components/ui/file-list";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { InputBase, InputBaseAdornment, InputBaseControl, InputBaseInput } from "@/components/ui/input-base";
@@ -22,8 +25,8 @@ import { updateConfPages } from "@/services/confs.client.service";
 import { TConfPageForm } from "@/types/conf.types";
 import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowDown, ArrowUp, Download, GripVertical, Plus, Trash2, Upload } from "lucide-react";
-import { HTMLAttributes, useMemo } from "react";
+import { ArrowDown, ArrowUp, Download, FileJson, GripVertical, Plus, Trash2, Upload } from "lucide-react";
+import { HTMLAttributes, useMemo, useState } from "react";
 import { Control, useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -141,6 +144,75 @@ function Item({
   )
 }
 
+function ImportButton({
+  upload
+}: Readonly<{
+  upload: (file: File) => any
+}>) {
+  const [files, setFiles] = useState<File[]>([]);
+  const t = useScopedI18n('confs');
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          type="button"
+        >
+          <Upload />
+          {t('import.button')}
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('import.title')}</DialogTitle>
+        </DialogHeader>
+        <Dropzone
+          accept={{ "application/json": [".json"] }}
+          onDropAccepted={setFiles}
+          preventDropOnDocument
+          maxFiles={1}
+        >
+          <div className="grid gap-4 py-4">
+            <DropzoneZone>
+              <DropzoneInput />
+              <DropzoneGroup className="gap-4">
+                <DropzoneUploadIcon />
+                <DropzoneGroup>
+                  <DropzoneTitle>{t('import.drop')}</DropzoneTitle>
+                </DropzoneGroup>
+              </DropzoneGroup>
+            </DropzoneZone>
+            <FileList>
+              {files.length > 0 && (
+                <FileListItem>
+                  <FileListHeader>
+                    <FileListIcon><FileJson /></FileListIcon>
+                    <FileListInfo>
+                      <FileListName>{files[0].name}</FileListName>
+                      <FileListDescription>
+                        <FileListSize>{files[0].size}</FileListSize>
+                      </FileListDescription>
+                    </FileListInfo>
+                  </FileListHeader>
+                </FileListItem>
+              )}
+            </FileList>
+          </div>
+        </Dropzone>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="secondary">{t('cancel')}</Button>
+          </DialogClose>
+          <DialogClose asChild>
+            <Button onClick={() => upload(files[0])} type="submit">{t('import.button')}</Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 export default function page() {
   const { data, permissions, isLoading, reload } = useConfContext();
   const t_loading = useScopedI18n('loading');
@@ -223,6 +295,7 @@ export default function page() {
   const exportJson = () => {
     const formData = {
       conf_id: data.id,
+      conf_slug: data.slug,
       ...form.watch()
     };
     const json = JSON.stringify(formData, null, 2);
@@ -237,8 +310,22 @@ export default function page() {
     URL.revokeObjectURL(url);
   }
 
-  const importJson = () => {
+  const importJson = (file?: File) => {
+    if (!file) return toast.error(t('import.select'));
+    const reader = new FileReader();
+    reader.onload = () => {
+      const data = JSON.parse(reader.result as string);
+      if (!form_schema.safeParse(data).success)
+        return toast.error(t('import.invalid'));
 
+      form.reset(data);
+    };
+
+    reader.onerror = () => {
+      toast.error(t('import.invalid'));
+    };
+
+    reader.readAsText(file);
   }
 
   return (
@@ -291,13 +378,7 @@ export default function page() {
         />
         <div className="flex max-md:flex-col gap-2 mt-4 justify-end">
           <div className="flex gap-2 justify-end">
-            <Button
-              variant="outline"
-              type="button"
-            >
-              <Upload />
-              {t('import')}
-            </Button>
+            <ImportButton upload={importJson} />
             <Button
               onClick={form.handleSubmit(exportJson)}
               variant="outline"

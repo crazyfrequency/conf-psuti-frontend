@@ -95,7 +95,13 @@ export default {
     page_enabled: {
       title: 'Enable page',
     },
-    import: 'Import',
+    import: {
+      title: 'Import settings file',
+      button: 'Import',
+      drop: 'Drop file here',
+      select: 'Select file',
+      invalid: 'Invalid file',
+    },
     export: 'Export',
     saved: 'Successfully saved',
   },
@@ -117,6 +123,7 @@ export default {
     title: 'Email confirmation',
     message: 'A confirmation email has been sent to your email.',
     message_description: 'Confirm your email to access your account. If you don\'t confirm your email, your account will be deleted within 12-24 hours.',
+    message_time: 'The email will be sent again in {time}',
     button: 'Resend email',
     fetch_timeout: 'You recently sent a confirmation email',
     success: {

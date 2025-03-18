@@ -35,7 +35,7 @@ export default function useConfHook({
   const fetchConf = useCallback(async () => {
     const response = await getConf(slug);
     if (response.status === 'unauthorized')
-      return router.replace(AUTH_PAGES.LOGIN(pathname));
+      return router.push(AUTH_PAGES.LOGIN(pathname));
     if (response.status !== 'success')
       return setContext({ isLoading: true, data: "forbidden", permissions, reload: fetchConf, clientLoading: false });
 
@@ -44,14 +44,17 @@ export default function useConfHook({
   }, [context, permissions, router]);
 
   useEffect(() => {
-    if (response.status === "success") return setContext({
-      isLoading: false,
-      data: response.data,
-      permissions,
-      reload: fetchConf,
-      clientLoading: false
-    });
-    if (user === "unauthorized") return router.replace(AUTH_PAGES.LOGIN(pathname));
+    if (response.status === "success") {
+      response.data?.pages?.sort?.((a, b) => a.pageIndex - b.pageIndex);
+      return setContext({
+        isLoading: false,
+        data: response.data,
+        permissions,
+        reload: fetchConf,
+        clientLoading: false
+      });
+    }
+    if (user === "unauthorized") return router.push(AUTH_PAGES.LOGIN(pathname));
     if (user === "loading") return;
     fetchConf();
   }, [response, slug, user]);

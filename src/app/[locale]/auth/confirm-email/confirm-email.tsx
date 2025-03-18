@@ -4,52 +4,42 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { AUTH_PAGES } from "@/constants/pages.constants";
-import { useCurrentLocale, useI18n } from "@/locales/client";
-import { confirmEmail, getNewEmailConfirmation } from "@/services/auth.service";
+import { useLocale } from "@/hooks/date-locale.hook";
+import { useI18n } from "@/locales/client";
+import { getNewEmailConfirmation } from "@/services/auth.service";
 import { useRouter } from "@bprogress/next";
+import { addMinutes, formatDistance, isAfter } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function ConfirmEmail() {
   const [email, setEmail] = useState('');
-  const [time, setTime] = useState(0);
-  const locale = useCurrentLocale();
+  const [time, setTime] = useState<string|null>(null);
+  const { locale, dateLocale } = useLocale();
   const params = useSearchParams();
   const router = useRouter();
   const t = useI18n();
 
   useEffect(() => {
-    const code = params.get('code');
-    const exp = params.get('exp');
-
-    if (code || exp) {
-      if (!code || !exp) return;
-      
-      (async () => {
-        const response = await confirmEmail(code+"-"+exp);
-        if (response.status === 'success')
-          return router.replace(AUTH_PAGES.LOGIN());
-        if (response.status === 'error')
-          return toast.error(t('errors.fetch'), {
-            description: response.message[locale]
-          })
-      })();
-    }
-
-    const time = params.get('time');
+    const sendTime = addMinutes(Number(params.get('time')), 5);
     setEmail(params.get('email') ?? '');
-    if (!time) return;
-    setTime(+time + 1000*60*5 - Date.now());
+    if (!sendTime || isAfter(Date.now(), sendTime)) return;
+    setTime(formatDistance(Date.now(), sendTime, { includeSeconds: true, locale: dateLocale }));
 
     const interval = setInterval(() => {
-      setTime((time) => time - 1000);
-    }, 1000);
+      const now = Date.now();
+      if (isAfter(now, sendTime)) {
+        clearInterval(interval);
+        return setTime(null);
+      }
+      setTime(formatDistance(now, sendTime, { includeSeconds: true, locale: dateLocale }));
+    }, 2500);
 
     return () => clearInterval(interval);
   }, [params]);
 
-  if (!params.get('email') && !(params.get('code') && params.get('exp')))
+  if (!params.get('email') && !params.get('exp'))
     router.replace(AUTH_PAGES.LOGIN());
 
   const sendConfirmEmail = useCallback(async (email: string) => {
@@ -71,13 +61,13 @@ export default function ConfirmEmail() {
   }, [setTime]);
   
   return (
-    <Card>
+    <Card className="max-w-lg mx-auto">
       <CardHeader>
         <CardTitle>{params.get('time') ? t('confirm_email.message') : t("confirm_email.title")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <p>{t('confirm_email.message_description')}</p>
-        <p>{time/1000}</p>
+        {time && (<p>{t('confirm_email.message_time', { time })}</p>)}
         <Input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
       </CardContent>
       <CardFooter>

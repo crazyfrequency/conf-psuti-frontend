@@ -67,7 +67,7 @@ export default function LeftMenu({
     )
 
   if (sub_path === 'admin' && user === "unauthorized")
-    router.replace(AUTH_PAGES.LOGIN(path));
+    router.push(AUTH_PAGES.LOGIN(path));
 
   return (
     <nav className={cn("py-2 h-fit lg:max-w-52", className)} {...props}>

@@ -25,7 +25,7 @@ export default function Profile() {
   const { user } = useAuth();
 
   if (user === "unauthorized") {
-    router.replace(AUTH_PAGES.LOGIN(pathname));
+    router.push(AUTH_PAGES.LOGIN(pathname));
     return null
   }
 

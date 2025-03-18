@@ -94,7 +94,7 @@ export default function Login() {
               name="email"
               render={({ field }) => (
                 <FormItem className="grid gap-0.5">
-                  <FormLabel>{t('login.email')}</FormLabel>
+                  <FormLabel>{t('login.email')} *</FormLabel>
                   <FormControl>
                     <Input type="email" autoComplete="email" placeholder="me@example.com" {...field} />
                   </FormControl>
@@ -108,7 +108,7 @@ export default function Login() {
               render={({ field }) => (
                 <FormItem className="grid gap-0.5">
                   <div className="flex items-center justify-between">
-                    <FormLabel>{t('login.password')}</FormLabel>
+                    <FormLabel>{t('login.password')} *</FormLabel>
                     <Link href={AUTH_PAGES.FORGOT_PASSWORD} className="text-sm underline">{t('login.forgot')}</Link>
                   </div>
                   <PasswordInput>

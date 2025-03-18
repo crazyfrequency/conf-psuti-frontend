@@ -80,7 +80,7 @@ export default function CreateConf() {
       return toast.error(t_errors('access.unauthorized'));
 
     toast.success(t('success'));
-    return router.replace(ADMIN_PAGES.NEW_CONFS);
+    return router.push(ADMIN_PAGES.NEW_CONFS);
   }
 
   return (
