@@ -24,7 +24,6 @@ export default function useNewConfs() {
   }, [setConfs, setLoading]);
 
   useEffect(() => {
-    router.prefetch(AUTH_PAGES.LOGIN(pathname));
     if (user === "unauthorized") return router.push(AUTH_PAGES.LOGIN(pathname));
     fetchNewConfs()
   }, [user]);
