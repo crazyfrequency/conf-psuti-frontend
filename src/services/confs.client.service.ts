@@ -15,8 +15,8 @@ export async function getNewConfs() {
   return checkErrorsClient(await axiosWithAuth.get<TConf[]>(`${base_url}/new`))
 }
 
-export async function getConfPage(slug: string, path: string) {
-  return checkErrorsClient(await axiosWithAuth.get<TConfPage>(`${base_url}/slug/${slug}/${path}`))
+export async function getConfPage(slug: string, path: string|undefined) {
+  return checkErrorsClient(await axiosWithAuth.get<TConfPage>(`${base_url}/slug/${slug}/${path??"info"}`))
 }
 
 export async function getLocalizedConfPage(slug: string, path: string, locale: Locales) {
@@ -31,6 +31,6 @@ export async function updateConfPages(slug: string, pages: TConfPageForm[]) {
   return checkErrorsClient(await axiosWithAuth.patch<string>(`${base_url}/slug/${slug}/subPages`, pages))
 }
 
-export async function updateConfPage(slug: string, path: string, page: TConfPageContentForm) {
-  return checkErrorsClient(await axiosWithAuth.put<IPage>(`${base_url}/slug/${slug}/subPage/${path}`, page))
+export async function updateConfPage(slug: string, path: string|undefined, page: TConfPageContentForm) {
+  return checkErrorsClient(await axiosWithAuth.put<IPage>(`${base_url}/slug/${slug}/subPage/${path??"info"}`, page))
 }

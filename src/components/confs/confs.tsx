@@ -6,7 +6,7 @@ import Error from "@/components/ui/error";
 import { MAIN_PAGES } from "@/constants/pages.constants";
 import { useLocale } from "@/hooks/date-locale.hook";
 import { cn } from "@/lib/utils";
-import { useI18n } from "@/locales/client";
+import { useScopedI18n } from "@/locales/client";
 import { TConf } from "@/types/conf.types";
 import { utc, UTCDate } from "@date-fns/utc";
 import { format } from "date-fns";
@@ -24,14 +24,14 @@ export default function Confs({
   current?: boolean
 }> & React.HTMLAttributes<HTMLDivElement>) {
   const { locale, dateLocale } = useLocale();
-  const t = useI18n();
+  const t = useScopedI18n('errors');
 
   useEffect(()=>{
     if (response.status !== 'success')
-      toast.error(t('errors.fetch'), {
+      toast.error(t('fetch'), {
         description: response.message[locale],
         action: {
-          label: t('errors.actions.reload'),
+          label: t('actions.reload'),
           onClick: () => {
             window.location.reload();
           }
@@ -40,10 +40,10 @@ export default function Confs({
   }, [response])
 
   if (response.status === 'forbidden')
-    return <Error className={className}>{t('errors.access.forbidden')}</Error>
+    return <Error className={className}>{t('access.forbidden')}</Error>
 
   if (response.status !== 'success')
-    return <Error className={className}>{t('errors.conferences.error')}</Error>
+    return <Error className={className}>{t('conferences.error')}</Error>
 
   const elements = response.data.map(conf => {
     const start = new UTCDate(conf.startDate);
@@ -77,7 +77,7 @@ export default function Confs({
       current && "text-primary",
       className
     )}>
-      {current ? t('errors.conferences.no_current') : t('errors.conferences.not_found')}
+      {current ? t('conferences.no_current') : t('conferences.not_found')}
     </Error>
 
   return (

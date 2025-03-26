@@ -5,6 +5,7 @@ import HeaderMain from "@/components/layout/main-header";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { getScopedI18n } from "@/locales/server";
+import { TZDate } from "@date-fns/tz";
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -36,7 +37,7 @@ export default async function MainLayout({
       <div className="w-full mx-auto px-2 pt-2.5 sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-[85rem] mt-2">
         {children}
         <Separator className="my-4" />
-        <Footer year={new Date().getFullYear()} />
+        <Footer year={new TZDate(Date.now(), "UTC+04").getFullYear()} />
       </div>
     </div>
   );

@@ -24,8 +24,9 @@ export default function ConfirmEmail() {
   useEffect(() => {
     const sendTime = addMinutes(Number(params.get('time')), 5);
     setEmail(params.get('email') ?? '');
-    if (!sendTime || isAfter(Date.now(), sendTime)) return;
-    setTime(formatDistance(Date.now(), sendTime, { includeSeconds: true, locale: dateLocale }));
+    const now = Date.now();
+    if (!sendTime || isAfter(now, sendTime)) return;
+    setTime(formatDistance(sendTime, now, { addSuffix: true, includeSeconds: true, locale: dateLocale }));
 
     const interval = setInterval(() => {
       const now = Date.now();
@@ -33,7 +34,7 @@ export default function ConfirmEmail() {
         clearInterval(interval);
         return setTime(null);
       }
-      setTime(formatDistance(now, sendTime, { includeSeconds: true, locale: dateLocale }));
+      setTime(formatDistance(sendTime, now, { addSuffix: true, includeSeconds: true, locale: dateLocale }));
     }, 2500);
 
     return () => clearInterval(interval);
@@ -67,13 +68,13 @@ export default function ConfirmEmail() {
       </CardHeader>
       <CardContent className="space-y-4">
         <p>{t('confirm_email.message_description')}</p>
-        {time && (<p>{t('confirm_email.message_time', { time })}</p>)}
         <Input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
       </CardContent>
-      <CardFooter>
-        <Button className="w-full" onClick={() => sendConfirmEmail(email)}>
+      <CardFooter className="flex flex-col gap-2">
+        <Button className="w-full" onClick={() => sendConfirmEmail(email)} disabled={email?.trim?.()?.length === 0 || !!time}>
           {t('confirm_email.button')}
         </Button>
+        {time && (<p className="text-sm text-muted-foreground">{t('confirm_email.message_time', { time })}</p>)}
       </CardFooter>
     </Card>
   )

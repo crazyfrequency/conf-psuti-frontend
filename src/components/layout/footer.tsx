@@ -1,10 +1,10 @@
-'use client'
+'use server'
 
 import { EMAIL, PHONE } from "@/constants/app.constants";
 import { cn } from "@/lib/utils";
-import { useScopedI18n } from "@/locales/client";
+import { getScopedI18n } from "@/locales/server";
 
-export default function Footer({
+export default async function Footer({
   year,
   className,
   ...props
@@ -12,7 +12,7 @@ export default function Footer({
   year: number|string,
   className?: string,
 }> & Readonly<React.HTMLAttributes<HTMLDivElement>>) {
-  const t = useScopedI18n('footer');
+  const t = await getScopedI18n('footer');
 
   return (
     <footer

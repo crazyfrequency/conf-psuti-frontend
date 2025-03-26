@@ -175,7 +175,7 @@ export const InputBaseInput = React.forwardRef<
   <Primitive.input
     ref={ref}
     className={cn(
-      "w-full flex-1 bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-none disabled:pointer-events-none",
+      "w-full flex-1 bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-none",
       className
     )}
     {...props}

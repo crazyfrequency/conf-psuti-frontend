@@ -18,7 +18,7 @@ export const DropzoneZone = React.forwardRef<
   <DropzonePrimitive.Zone
     ref={ref}
     className={cn(
-      "cursor-pointer rounded-md border-2 border-dashed border-input p-6 shadow-sm transition-colors hover:border-accent-foreground/50 hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring data-[disabled]:cursor-not-allowed data-[drag-reject]:cursor-no-drop data-[no-click]:cursor-default data-[disabled]:border-inherit data-[drag-active]:border-accent-foreground/50 data-[drag-reject]:border-destructive data-[disabled]:bg-inherit data-[drag-active]:bg-accent data-[drag-reject]:bg-destructive/30 data-[disabled]:opacity-50",
+      "cursor-default rounded-md border-2 border-dashed border-input p-6 shadow-sm transition-colors hover:border-accent-foreground/50 hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring data-[disabled]:cursor-not-allowed data-[drag-reject]:cursor-no-drop data-[no-click]:cursor-default data-[disabled]:border-inherit data-[drag-active]:border-accent-foreground/50 data-[drag-reject]:border-destructive data-[disabled]:bg-inherit data-[drag-active]:bg-accent data-[drag-reject]:bg-destructive/30 data-[disabled]:opacity-50",
       className
     )}
     {...props}

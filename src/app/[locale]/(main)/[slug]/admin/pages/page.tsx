@@ -107,14 +107,14 @@ function Item({
                 <FormLabel>{t('pages.path')}</FormLabel>
                   <ControlGroup>
                     <ControlGroupItem>
-                      <InputBase>
+                      <InputBase disabled={disabled}>
                         <InputBaseAdornment className="break-all">
                           {SITE_DOMAIN_FRONT}/{slug}/
                         </InputBaseAdornment>
                       </InputBase>
                     </ControlGroupItem>
                     <ControlGroupItem>
-                      <InputBase asChild>
+                      <InputBase disabled={disabled} asChild>
                         <InputBaseControl>
                           <FormControl className="min-w-20">
                             <InputBaseInput {...field} disabled={disabled || field.disabled} />
@@ -129,10 +129,10 @@ function Item({
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Button size="icon" variant="outline" type="button" onClick={prev} disabled={!prev || disabled}>
+          <Button size="icon" variant="outline" type="button" onClick={prev} disabled={!prev}>
             <ArrowUp />
           </Button>
-          <Button size="icon" variant="outline" type="button" onClick={next} disabled={!next || disabled}>
+          <Button size="icon" variant="outline" type="button" onClick={next} disabled={!next}>
             <ArrowDown />
           </Button>
           <Button size="icon" variant="destructive" type="button" onClick={remove} disabled={disabled}>
@@ -358,7 +358,7 @@ export default function page() {
                   className="flex flex-col gap-2"
                 >
                   {fields.map((field, index, all) => (
-                    <SortableItem key={field.id} id={field.id} disabled={!field.editable} asChild>
+                    <SortableItem key={field.id} id={field.id} asChild>
                       <Item
                         index={index}
                         control={form.control}

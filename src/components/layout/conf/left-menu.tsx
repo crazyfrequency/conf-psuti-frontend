@@ -9,6 +9,7 @@ import { AUTH_PAGES, CONF_PAGES } from "@/constants/pages.constants";
 import { PermissionFlags } from "@/lib/user-permissions";
 import { cn } from "@/lib/utils";
 import { useCurrentLocale, useScopedI18n } from "@/locales/client";
+import { getStaticConfPageName } from "@/locales/pages";
 import { useRouter } from "@bprogress/next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -50,11 +51,17 @@ export default function LeftMenu({
       <li key={`nav_${v.path}`}>
         <Button
           className="justify-start w-full whitespace-pre-wrap break-all h-auto"
-          variant={ sub_path === v.path ? 'default' : 'ghost'}
+          variant={ sub_path === v.path || (!sub_path && v.path === 'info') ? 'default' : 'ghost'}
           asChild
         >
           <Link href={CONF_PAGES.CONF_PAGE(slug, v.path, isEdit)}>
-            {locale === 'en' ? v.pageNameEn || v.pageNameRu : v.pageNameRu}
+            {
+              default_pages.includes(v.path as any)
+                ? getStaticConfPageName(v.path as any)[locale]
+                : locale === 'en'
+                  ? v.pageNameEn || v.pageNameRu
+                  : v.pageNameRu
+            }
           </Link>
         </Button>
       </li>
@@ -72,17 +79,6 @@ export default function LeftMenu({
   return (
     <nav className={cn("py-2 h-fit lg:max-w-52", className)} {...props}>
       <ul className="grid gap-2 px-1">
-        <li key='nav_info'>
-          <Button
-            className="justify-start w-full h-auto"
-            variant={ !sub_path || sub_path === 'info' ? 'default' : 'ghost'}
-            asChild
-          >
-            <Link href={CONF_PAGES.INFO_PAGE(slug, isEdit)}>
-              {t('pages.info')}
-            </Link>
-          </Button>
-        </li>
         {elements}
       </ul>
       {(isAdmin || permissions.hasAnyPermission(
