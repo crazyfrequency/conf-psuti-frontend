@@ -20,7 +20,7 @@ export default function Conf() {
   const { user } = useAuth();
 
   useEffect(() => {
-    getLocalizedConfPage(slug as string, sub_path as string, locale).then(t => {
+    getLocalizedConfPage(slug as string, (sub_path ?? "info") as string, locale).then(t => {
       if (t.status !== 'success') {
         if (t.status === 'forbidden') setPage("forbidden");
         else if (t.status === 'not-found') return setPage("not-found");
@@ -38,7 +38,6 @@ export default function Conf() {
       }
 
       setPage(t.data);
-      // TODO setPageEnabled(t.data.enabled);
     });
   }, [user, slug, sub_path])
 
