@@ -33,10 +33,12 @@ import EditorToolbar from "./plugins/toolbar";
 
 export default function EditorMain({
   onChange,
-  placeholder
+  placeholder,
+  autoFocus = false
 }: Readonly<{
   onChange?: (text: string) => void
   placeholder: string
+  autoFocus?: boolean
 }>) {
   const locale = useCurrentLocale();
   const {historyState} = useSharedHistoryContext();
@@ -107,7 +109,7 @@ export default function EditorMain({
         <ClearEditorPlugin onClear={() => toast.info(locale ? 'Успешно очищено' : 'Successfully cleared')} />
         <ClickableLinkPlugin disabled={isEditable} />
         <HistoryPlugin externalHistoryState={historyState} />
-        <AutoFocusPlugin />
+        {autoFocus && <AutoFocusPlugin />}
         <CodeHighlightPlugin />
         <HorizontalRulePlugin />
         <LexicalAutoLinkPlugin />

@@ -49,7 +49,7 @@ export default {
   },
   confs: {
     ...confs,
-    create: {
+    info_edit: {
       title: 'Создание конференции',
       description: 'Заполните форму для создания новой конференции',
       fields: {
@@ -64,6 +64,8 @@ export default {
         enter_date: 'Выберите дату',
         required: 'Обязательное поле',
         optional: 'Необязательное поле',
+        registration: 'По умолчанию дата окончания конференции',
+        submission: 'По умолчанию дата окончания регистрации',
       },
       cancel: 'Отменить',
       submit: 'Создать конференцию',

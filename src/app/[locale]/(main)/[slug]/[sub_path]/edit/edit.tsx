@@ -27,7 +27,11 @@ const Editor = dynamic(() => import('@/components/editor'), {
 
 const capitalize = (str: string) => `${str[0]?.toUpperCase()}${str.slice(1)}`
 
-export default function EditClient() {
+export default function EditClient({
+  autoFocus = true
+}: Readonly<{
+  autoFocus?: boolean
+}>) {
   const { data, permissions, isLoading, reload } = useConfContext();
   const [text, setText] = useState<[string, string]|"error"|"forbidden"|null>(null);
   const [stateRu, setStateRu] = useState<string|null>(null);
@@ -65,7 +69,9 @@ export default function EditClient() {
       }
 
       setText([t.data.htmlContentRu ?? "", t.data.htmlContentEn ?? ""]);
-      // TODO setPageEnabled(t.data.enabled);
+      setStateRu(t.data.htmlContentRu ?? "")
+      setStateEn(t.data.htmlContentEn ?? "")
+      setPageEnabled(t.data.isEnabled);
     });
   }, [user, slug, sub_path])
 
@@ -113,6 +119,7 @@ export default function EditClient() {
           className="mt-2"
           editorState={text[0] ? parser.parseFromString(DOMPurify.sanitize(text[0]), "text/html") : null}
           onChange={setStateRu}
+          autoFocus={autoFocus}
         />
       </div>
       {data.isEnglishEnabled && (

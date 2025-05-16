@@ -157,6 +157,7 @@ export default function Editor({
   editorState = null,
   placeholder,
   className,
+  autoFocus = false,
   onChange,
   ...props
 }: Readonly<Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">> & Readonly<{
@@ -164,6 +165,7 @@ export default function Editor({
   namespace?: string
   editorState?: InitialEditorStateType | Document
   placeholder?: string
+  autoFocus?: boolean
 }>) {
   const i18n = useI18n();
 
@@ -197,6 +199,7 @@ export default function Editor({
           <EditorMain
             placeholder={placeholder ?? i18n('editor.placeholder')}
             onChange={onChange}
+            autoFocus={autoFocus}
           />
         </ToolbarContext>
       </div>

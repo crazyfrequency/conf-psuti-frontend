@@ -47,7 +47,9 @@ export default function LeftMenu({
 
   const isEdit = rest[rest.length - 1] === 'edit';
 
-  const elements = data?.pages?.map((v) => (
+  const canReadDisabledPages = isAdmin || permissions.hasAnyPermission(PermissionFlags.READ_HIDDEN_PAGES);
+
+  const elements = data?.pages?.filter?.(v => v.isEnabled || canReadDisabledPages || v.path === "info").map((v) => (
       <li key={`nav_${v.path}`}>
         <Button
           className="justify-start w-full whitespace-pre-wrap break-all h-auto"

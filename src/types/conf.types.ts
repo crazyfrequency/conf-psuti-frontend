@@ -25,6 +25,7 @@ export interface IOrganizer {
 export type TConf = {
   id: number;
   slug: string;
+  logo?: string;
   isEnabled: boolean;
   isEnglishEnabled?: boolean;
   conferenceNameRu: string;
@@ -54,6 +55,7 @@ export interface IPage {
   pageNameEn?: string;
   path: string;
   pageIndex: number;
+  isEnabled: boolean;
 }
 
 /**

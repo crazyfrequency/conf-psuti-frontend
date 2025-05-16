@@ -7,7 +7,7 @@ import { setStaticParamsLocale } from "next-international/server";
 import CreateConf from "./create";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = (await getScopedI18n('confs.create'))('title');
+  const title = (await getScopedI18n('confs.info_edit'))('title');
 
   return {
     title: {
@@ -25,7 +25,7 @@ export default async function CreateConfSsr({
   const { locale } = await params;
   setStaticParamsLocale(locale);
 
-  const t = await getScopedI18n("confs.create");
+  const t = await getScopedI18n("confs.info_edit");
   return (
     <Card className="mt-2">
       <CardHeader>

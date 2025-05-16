@@ -46,3 +46,35 @@ export const form_conference_pages = (t: any, eng: boolean) => z.object({
     return paths.length === uniquePaths.size;
   }, t('errors.duplicated_path'))
 })
+
+export const form_conference_info = (t: any, eng: boolean) => z.object({
+  slug: z.string().max(255).regex(
+    /^(?!auth$|admin$|confs$|api$|uploads$)[A-Za-z][A-Za-z0-9-_]*$/,
+    t('errors.invalid_slug', { invalids })
+  ).refine(v => !locales.includes(v as any), {
+    message: t('errors.invalid_slug', { invalids })
+  }),
+  conferenceNameRu: z.string().max(255).trim().nonempty(),
+  conferenceNameEn: z.string().max(255),
+  statusRu: z.string().max(255).nullable(),
+  statusEn: z.string().max(255).nullable(),
+  startDate: z.date(),
+  endDate: z.date(),
+  meetingPointRu: z.string().max(255).nullable(),
+  meetingPointEn: z.string().max(255).nullable(),
+  webSite: z.string().max(255).nullable(),
+  email: z.string().email().max(255).nullable(),
+  phone: z.string().max(255).nullable(),
+  closingDateForApplication: z.date().nullable(),
+  closingDateForRegistration: z.date().nullable(),
+}).superRefine((value, ctx) => {
+  if (eng && value.conferenceNameEn.trim().length === 0) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.too_small,
+      minimum: 1,
+      path: ['conferenceNameEn'],
+      type: 'string',
+      inclusive: true
+    });
+  }
+})

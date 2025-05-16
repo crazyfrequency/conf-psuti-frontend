@@ -11,6 +11,7 @@ import { useRouter } from "@bprogress/next";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
+import EditInfo from "./edit-info";
 
 const EditClient = dynamic(() => import('@/app/[locale]/(main)/[slug]/[sub_path]/edit/edit'), {
   loading: () => <LoadingComponent />,
@@ -36,10 +37,10 @@ export default function InfoEdit() {
   if (!canEditInfo && !canEditContent) return <Page403 />
 
   return (
-    <div>
-      {canEditInfo && <EditClient />}
+    <>
+      {canEditInfo && <EditInfo />}
       {canEditInfo && canEditContent && <Separator className="my-8" />}
-      {canEditContent && <EditClient />}
-    </div>
+      {canEditContent && <EditClient autoFocus={false} />}
+    </>
   )
 }
