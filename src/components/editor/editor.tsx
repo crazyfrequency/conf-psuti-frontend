@@ -25,6 +25,7 @@ import CollapsiblePlugin from './plugins/collapsible-plugin';
 import DraggableBlockPlugin from './plugins/draggable-block-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
+import ImagesPlugin from './plugins/images-plugin';
 import LinkPlugin from './plugins/link-plugin';
 import { useEnhanceLinks } from './plugins/link-plugin/bar-fix';
 import MarkdownShortcutPlugin from './plugins/markdown-shortcuts';
@@ -113,6 +114,7 @@ export default function EditorMain({
         <CodeHighlightPlugin />
         <HorizontalRulePlugin />
         <LexicalAutoLinkPlugin />
+        <ImagesPlugin />
         {onChange && <OnChangePlugin onChange={(_, editor) => editor.read(() => onChange($generateHtmlFromNodes(editor)))} ignoreSelectionChange />}
         <CollapsiblePlugin />
         {floatingAnchorElem && !isSmallWidthViewport && (

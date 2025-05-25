@@ -29,7 +29,7 @@ import { CollapsibleTitleNode } from '../plugins/collapsible-plugin/collapsible-
 import { EquationNode } from './EquationNode';
 // import {ExcalidrawNode} from './ExcalidrawNode';
 // import {FigmaNode} from './FigmaNode';
-// import {ImageNode} from './ImageNode';
+import { ImageNode } from './ImageNode';
 // import {InlineImageNode} from './InlineImageNode/InlineImageNode';
 // import {KeywordNode} from './KeywordNode';
 // import {LayoutContainerNode} from './LayoutContainerNode';
@@ -58,7 +58,7 @@ const AllNodes: Array<Klass<LexicalNode>> = [
   OverflowNode,
   // PollNode,
   // StickyNode,
-  // ImageNode,
+  ImageNode,
   // InlineImageNode,
   // MentionNode,
   // EmojiNode,

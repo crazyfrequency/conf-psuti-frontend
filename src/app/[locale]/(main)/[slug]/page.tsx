@@ -90,7 +90,7 @@ export default function Info() {
           </>
         )}
       </div>
-      <Conf />
+      <Conf className="mt-6" />
     </>
   )
 }
