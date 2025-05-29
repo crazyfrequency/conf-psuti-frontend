@@ -1,62 +1,67 @@
-"use client"
+"use client";
 
-import type { DndContextProps, UniqueIdentifier } from "@dnd-kit/core"
+import type {
+  DndContextProps,
+  DragCancelEvent,
+  DragEndEvent,
+  DragStartEvent,
+  UniqueIdentifier,
+} from "@dnd-kit/core";
 import {
-  closestCenter,
   DndContext,
   DragOverlay,
   KeyboardSensor,
   PointerSensor,
+  closestCenter,
   useSensor,
   useSensors,
-} from "@dnd-kit/core"
+} from "@dnd-kit/core";
 import {
-  horizontalListSortingStrategy,
   NewIndexGetter,
   SortableContext,
   SortableContextProps,
+  horizontalListSortingStrategy,
   sortableKeyboardCoordinates,
-  useSortable,
+  useSortable as useDndSortable,
   verticalListSortingStrategy,
-} from "@dnd-kit/sortable"
-import { CSS, Transform } from "@dnd-kit/utilities"
-import { composeEventHandlers } from "@radix-ui/primitive"
-import { composeRefs } from "@radix-ui/react-compose-refs"
-import * as PortalPrimitive from "@radix-ui/react-portal"
-import { Primitive } from "@radix-ui/react-primitive"
-import * as React from "react"
+} from "@dnd-kit/sortable";
+import { CSS, Transform } from "@dnd-kit/utilities";
+import { composeEventHandlers } from "@radix-ui/primitive";
+import { useComposedRefs } from "@radix-ui/react-compose-refs";
+import * as PortalPrimitive from "@radix-ui/react-portal";
+import { Primitive } from "@radix-ui/react-primitive";
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const SortableImplContext = React.createContext<
   Pick<SortableProps, "getNewIndex"> &
     Required<Pick<SortableProps, "getTransformStyle">> & {
-      activeId: UniqueIdentifier | null
+      activeId: UniqueIdentifier | null;
     }
 >({
   activeId: null,
   getTransformStyle: CSS.Transform.toString,
-})
+});
 
-function useSortableImplContext() {
-  const context = React.useContext(SortableImplContext)
-
+function useSortable() {
+  const context = React.useContext(SortableImplContext);
   if (!context) {
-    throw new Error("useSortableImplContext must be used within a <Sortable />")
+    throw new Error("useSortable must be used within a <Sortable />.");
   }
 
-  return context
+  return context;
 }
 
 export interface SortableProps extends DndContextProps {
-  onReorder?: (oldIndex: number, newIndex: number) => void
-  getNewIndex?: NewIndexGetter
+  onReorder?: (oldIndex: number, newIndex: number) => void;
+  getNewIndex?: NewIndexGetter;
   getTransformStyle?: (
-    transform: Transform | null
-  ) => React.CSSProperties["transform"]
+    transform: Transform | null,
+  ) => React.CSSProperties["transform"];
 }
 
-export const Sortable = ({
+function Sortable({
   onDragStart,
   onDragEnd,
   onDragCancel,
@@ -64,15 +69,14 @@ export const Sortable = ({
   collisionDetection = closestCenter,
   getTransformStyle = CSS.Transform.toString,
   ...props
-}: SortableProps) => {
-  const [activeId, setActiveId] = React.useState<UniqueIdentifier | null>(null)
-
+}: SortableProps) {
+  const [activeId, setActiveId] = React.useState<UniqueIdentifier | null>(null);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
-  )
+    }),
+  );
 
   return (
     <SortableImplContext.Provider
@@ -83,105 +87,111 @@ export const Sortable = ({
       }}
     >
       <DndContext
-        onDragStart={composeEventHandlers(onDragStart, ({ active }) =>
-          setActiveId(active.id)
-        )}
-        onDragEnd={composeEventHandlers(onDragEnd, () => setActiveId(null))}
-        onDragCancel={composeEventHandlers(onDragCancel, () =>
-          setActiveId(null)
-        )}
+        data-slot="sortable"
+        onDragStart={composeEventHandlers<
+          DragStartEvent & { defaultPrevented: boolean }
+        >(onDragStart, ({ active }) => setActiveId(active.id))}
+        onDragEnd={composeEventHandlers<
+          DragEndEvent & { defaultPrevented: boolean }
+        >(onDragEnd, () => setActiveId(null))}
+        onDragCancel={composeEventHandlers<
+          DragCancelEvent & { defaultPrevented: boolean }
+        >(onDragCancel, () => setActiveId(null))}
         collisionDetection={collisionDetection}
         sensors={sensors}
         {...props}
       />
     </SortableImplContext.Provider>
-  )
+  );
 }
 
 export interface SortableListProps
   extends Omit<SortableContextProps, "children">,
-    React.ComponentPropsWithoutRef<typeof Primitive.ul> {
-  orientation?: "vertical" | "horizontal"
+    React.ComponentProps<typeof Primitive.ul> {
+  orientation?: "vertical" | "horizontal";
 }
 
-export const SortableList = React.forwardRef<
-  React.ElementRef<typeof Primitive.ul>,
-  SortableListProps
->(
-  (
-    {
-      orientation = "vertical",
-      strategy = orientation === "vertical"
-        ? verticalListSortingStrategy
-        : horizontalListSortingStrategy,
-      items,
-      disabled,
-      id,
-      ...props
-    },
-    ref
-  ) => (
+function SortableList({
+  orientation = "vertical",
+  strategy = orientation === "vertical"
+    ? verticalListSortingStrategy
+    : horizontalListSortingStrategy,
+  items,
+  disabled,
+  id,
+  ref,
+  ...props
+}: SortableListProps) {
+  return (
     <SortableContext
       strategy={strategy}
       items={items}
       disabled={disabled}
       id={id}
     >
-      <Primitive.ul ref={ref} data-orientation={orientation} {...props} />
+      <Primitive.ul
+        data-slot="sortable-list"
+        ref={ref}
+        data-orientation={orientation}
+        {...props}
+      />
     </SortableContext>
-  )
-)
-SortableList.displayName = "SortableList"
+  );
+}
 
 export type SortableGridProps = Omit<SortableContextProps, "children"> &
-  React.ComponentPropsWithoutRef<typeof Primitive.div>
+  React.ComponentProps<typeof Primitive.div>;
 
-export const SortableGrid = React.forwardRef<
-  React.ElementRef<typeof Primitive.div>,
-  SortableGridProps
->(({ strategy, items, disabled, id, ...props }, ref) => (
-  <SortableContext
-    strategy={strategy}
-    items={items}
-    disabled={disabled}
-    id={id}
-  >
-    <Primitive.div ref={ref} {...props} />
-  </SortableContext>
-))
-SortableGrid.displayName = "SortableGrid"
+function SortableGrid({
+  strategy,
+  items,
+  disabled,
+  id,
+  ref,
+  ...props
+}: SortableGridProps) {
+  return (
+    <SortableContext
+      strategy={strategy}
+      items={items}
+      disabled={disabled}
+      id={id}
+    >
+      <Primitive.div data-slot="sortable-grid" ref={ref} {...props} />
+    </SortableContext>
+  );
+}
 
 const SortableItemContext = React.createContext<
   Pick<SortableItemProps, "id" | "disabled">
 >({
   id: "",
   disabled: false,
-})
+});
 
-function useSortableItemContext() {
-  const context = React.useContext(SortableItemContext)
-
+function useSortableItem() {
+  const context = React.useContext(SortableItemContext);
   if (!context) {
-    throw new Error(
-      "useSortableItemContext must be used within a <SortableItem />"
-    )
+    throw new Error("useSortableItem must be used within a <SortableItem />.");
   }
 
-  return context
+  return context;
 }
 
 export type SortableItemProps = Omit<
-  React.ComponentPropsWithoutRef<typeof Primitive.div>,
+  React.ComponentProps<typeof Primitive.div>,
   "id"
 > &
-  Pick<Parameters<typeof useSortable>[0], "id" | "disabled">
+  Pick<Parameters<typeof useDndSortable>[0], "id" | "disabled">;
 
-export const SortableItem = React.forwardRef<
-  React.ElementRef<typeof Primitive.div>,
-  SortableItemProps
->(({ id, disabled, style: styleProp, ...props }, ref) => {
-  const { getTransformStyle, getNewIndex } = useSortableImplContext()
-
+function SortableItem({
+  id,
+  disabled,
+  style: styleProp,
+  ref,
+  ...props
+}: SortableItemProps) {
+  const { getTransformStyle, getNewIndex } = useSortable();
   const {
     attributes,
     setNodeRef,
@@ -190,84 +200,96 @@ export const SortableItem = React.forwardRef<
     isDragging,
     isOver,
     isSorting,
-  } = useSortable({
+  } = useDndSortable({
     id,
     disabled,
     getNewIndex,
-  })
+  });
 
+  const composedRefs = useComposedRefs(
+    setNodeRef as React.RefCallback<HTMLDivElement>,
+    ref,
+  );
   const style = {
     transform: getTransformStyle(transform),
     transition,
     ...styleProp,
-  }
+  };
 
   return (
     <SortableItemContext.Provider value={{ id, disabled }}>
       <Primitive.div
-        ref={composeRefs(setNodeRef as React.RefCallback<HTMLDivElement>, ref)}
+        data-slot="sortable-item"
+        ref={composedRefs}
         style={style}
-        data-dragging={isDragging ? true : undefined}
-        data-over={isOver ? true : undefined}
-        data-sorting={isSorting ? true : undefined}
+        data-dragging={isDragging || undefined}
+        data-over={isOver || undefined}
+        data-sorting={isSorting || undefined}
         {...attributes}
         {...props}
       />
     </SortableItemContext.Provider>
-  )
-})
-SortableItem.displayName = "SortableItem"
+  );
+}
 
-export const SortableItemTrigger = React.forwardRef<
-  React.ElementRef<typeof Primitive.button>,
-  React.ComponentPropsWithoutRef<typeof Primitive.button>
->(({ className, disabled: disabledProp, ...props }, ref) => {
-  const { getNewIndex } = useSortableImplContext()
-
-  const { id, disabled } = useSortableItemContext()
-
+function SortableItemTrigger({
+  className,
+  disabled: disabledProp,
+  ref,
+  ...props
+}: React.ComponentProps<typeof Primitive.button>) {
+  const { getNewIndex } = useSortable();
+  const { id, disabled } = useSortableItem();
   const { listeners, setActivatorNodeRef, isDragging, isOver, isSorting } =
-    useSortable({
+    useDndSortable({
       id,
       disabled: disabledProp || disabled,
       getNewIndex,
-    })
+    });
+
+  const composedRefs = useComposedRefs(
+    setActivatorNodeRef as React.RefCallback<HTMLButtonElement>,
+    ref,
+  );
 
   return (
     <Primitive.button
-      ref={composeRefs(
-        setActivatorNodeRef as React.RefCallback<HTMLButtonElement>,
-        ref
-      )}
-      data-dragging={isDragging ? true : undefined}
-      data-over={isOver ? true : undefined}
-      data-sorting={isSorting ? true : undefined}
+      data-slot="sortable-item-trigger"
+      ref={composedRefs}
+      data-dragging={isDragging || undefined}
+      data-over={isOver || undefined}
+      data-sorting={isSorting || undefined}
       disabled={disabledProp}
       className={cn("touch-none", className)}
       {...listeners}
       {...props}
     />
-  )
-})
-SortableItemTrigger.displayName = "SortableItemTrigger"
-
-export interface SortableOverlayProps
-  extends Omit<React.ComponentPropsWithoutRef<typeof DragOverlay>, "children"> {
-  children?: React.ReactNode | ((id: UniqueIdentifier) => React.ReactNode)
+  );
 }
 
-export const SortableOverlay = ({
-  children,
-  ...props
-}: SortableOverlayProps) => {
-  const { activeId } = useSortableImplContext()
+export interface SortableOverlayProps
+  extends Omit<React.ComponentProps<typeof DragOverlay>, "children"> {
+  children?: React.ReactNode | ((id: UniqueIdentifier) => React.ReactNode);
+}
+
+function SortableOverlay({ children, ...props }: SortableOverlayProps) {
+  const { activeId } = useSortable();
 
   return (
     <PortalPrimitive.Root>
-      <DragOverlay {...props}>
+      <DragOverlay data-slot="sortable-overlay" {...props}>
         {activeId &&
           (typeof children === "function" ? children(activeId) : children)}
       </DragOverlay>
     </PortalPrimitive.Root>
-  )
+  );
 }
+
+export {
+  Sortable,
+  SortableList,
+  SortableGrid,
+  SortableItem,
+  SortableItemTrigger,
+  SortableOverlay,
+};
