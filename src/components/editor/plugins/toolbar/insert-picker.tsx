@@ -10,6 +10,7 @@ import { ChevronDown, ChevronRight, Image, Plus, Rows2 } from 'lucide-react';
 import { useState } from 'react';
 import { INSERT_COLLAPSIBLE_COMMAND } from '../collapsible-plugin';
 import { InsertImageDialog } from '../images-plugin';
+import { InsertInlineImageDialog } from '../inline-image-plugin';
 
 export default function InsertPicker({
   editor,
@@ -23,6 +24,7 @@ export default function InsertPicker({
   const locale = useCurrentLocale();
   const insert = editor_headers[locale].insert;
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
+  const [inlineImageDialogOpen, setInlineImageDialogOpen] = useState(false);
   return (
     <>
       <Separator orientation="vertical" />
@@ -60,6 +62,9 @@ export default function InsertPicker({
             <DropdownMenuItem onClick={() => setImageDialogOpen(true)}>
               <Image />{" "+insert.image}
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setInlineImageDialogOpen(true)}>
+              <Image />{" "+insert.inline_image}
+            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -70,6 +75,16 @@ export default function InsertPicker({
           </DialogHeader>
           <div className="grid gap-4 pt-4">
             <InsertImageDialog activeEditor={activeEditor} />
+          </div>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={inlineImageDialogOpen} onOpenChange={setInlineImageDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{insert.inline_image}</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 pt-4">
+            <InsertInlineImageDialog activeEditor={activeEditor} />
           </div>
         </DialogContent>
       </Dialog>

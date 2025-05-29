@@ -35,12 +35,16 @@ import * as React from 'react';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import useModal from '../../hooks/useModal';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import ContentEditable from '@/components/ui/editor/content-editable';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useCurrentLocale } from '@/locales/client';
+import { editor_headers } from '@/locales/editor';
+import { InsertInlineImageDialog } from '../../plugins/inline-image-plugin';
 import LinkPlugin from '../../plugins/link-plugin';
-import ContentEditable from '../../ui/ContentEditable';
-import { DialogActions } from '../../ui/Dialog';
-import Select from '../../ui/Select';
-import TextInput from '../../ui/TextInput';
 import { InlineImageNode } from './InlineImageNode';
 
 const imageCache = new Set();
@@ -110,10 +114,6 @@ export function UpdateInlineImageDialog({
   const [showCaption, setShowCaption] = useState(node.getShowCaption());
   const [position, setPosition] = useState<Position>(node.getPosition());
 
-  const handleShowCaptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShowCaption(e.target.checked);
-  };
-
   const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPosition(e.target.value as Position);
   };
@@ -130,45 +130,40 @@ export function UpdateInlineImageDialog({
 
   return (
     <>
-      <div style={{marginBottom: '1em'}}>
-        <TextInput
-          label="Alt Text"
-          placeholder="Descriptive alternative text"
-          onChange={setAltText}
-          value={altText}
-          data-test-id="image-modal-alt-text-input"
-        />
-      </div>
+      <Input
+        placeholder="Descriptive alternative text"
+        onChange={e => setAltText(e.target.value)}
+        value={altText}
+        data-test-id="image-modal-alt-text-input"
+      />
 
-      <Select
-        style={{marginBottom: '1em', width: '208px'}}
-        value={position}
-        label="Position"
-        name="position"
-        id="position-select"
-        onChange={handlePositionChange}>
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-        <option value="full">Full Width</option>
+      <Select>
+        <SelectTrigger className="w-52">
+          <SelectValue placeholder="Position" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="left">Left</SelectItem>
+          <SelectItem value="right">Right</SelectItem>
+          <SelectItem value="full">Full Width</SelectItem>
+        </SelectContent>
       </Select>
 
-      <div className="Input__wrapper">
-        <input
+      <div className="flex items-center space-x-2">
+        <Checkbox
           id="caption"
-          type="checkbox"
           checked={showCaption}
-          onChange={handleShowCaptionChange}
+          onCheckedChange={v => setShowCaption(v !== "indeterminate" ? v : false)}
         />
-        <label htmlFor="caption">Show Caption</label>
+        <Label htmlFor="caption">Show Caption</Label>
       </div>
 
-      <DialogActions>
+      <DialogClose asChild>
         <Button
           data-test-id="image-modal-file-upload-btn"
           onClick={() => handleOnConfirm()}>
           Confirm
         </Button>
-      </DialogActions>
+      </DialogClose>
     </>
   );
 }
@@ -192,7 +187,6 @@ export default function InlineImageComponent({
   width: 'inherit' | number;
   position: Position;
 }): JSX.Element {
-  const [modal, showModal] = useModal();
   const imageRef = useRef<null | HTMLImageElement>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isSelected, setSelected, clearSelection] =
@@ -320,6 +314,11 @@ export default function InlineImageComponent({
     setSelected,
   ]);
 
+  const [inlineImageDialogOpen, setInlineImageDialogOpen] = useState(false);
+  const locale = useCurrentLocale();
+
+  const insert = editor_headers[locale].insert;
+
   const draggable = isSelected && $isNodeSelection(selection);
   const isFocused = isSelected && isEditable;
   return (
@@ -330,15 +329,7 @@ export default function InlineImageComponent({
             <button
               className="image-edit-button"
               ref={buttonRef}
-              onClick={() => {
-                showModal('Update Inline Image', (onClose) => (
-                  <UpdateInlineImageDialog
-                    activeEditor={editor}
-                    nodeKey={nodeKey}
-                    onClose={onClose}
-                  />
-                ));
-              }}>
+              onClick={() => setInlineImageDialogOpen(true)}>
               Edit
             </button>
           )}
@@ -375,7 +366,16 @@ export default function InlineImageComponent({
           </span>
         )}
       </>
-      {modal}
+      <Dialog open={inlineImageDialogOpen} onOpenChange={setInlineImageDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{insert.inline_image}</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 pt-4">
+            <InsertInlineImageDialog activeEditor={editor} />
+          </div>
+        </DialogContent>
+      </Dialog>
     </Suspense>
   );
 }

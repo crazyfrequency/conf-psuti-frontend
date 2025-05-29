@@ -10,6 +10,7 @@ import { ListItemNode } from '@lexical/list';
 import { $createParagraphNode, $getRoot, $insertNodes, $isTextNode, DOMConversionMap, DOMExportOutput, DOMExportOutputMap, Klass, LexicalEditor, LexicalNode, LineBreakNode, TextNode } from 'lexical';
 import { toast } from 'sonner';
 import { parseAllowedColor } from '../ui/editor/color-picker';
+import { SharedHistoryContext } from './context/history-context';
 import { ToolbarContext } from './context/toolbar-context';
 import EditorMain from './editor';
 import './editor.css';
@@ -196,11 +197,13 @@ export default function Editor({
         {...props}
       >
         <ToolbarContext>
-          <EditorMain
-            placeholder={placeholder ?? i18n('editor.placeholder')}
-            onChange={onChange}
-            autoFocus={autoFocus}
-          />
+          <SharedHistoryContext>
+            <EditorMain
+              placeholder={placeholder ?? i18n('editor.placeholder')}
+              onChange={onChange}
+              autoFocus={autoFocus}
+            />
+          </SharedHistoryContext>
         </ToolbarContext>
       </div>
     </LexicalComposer>

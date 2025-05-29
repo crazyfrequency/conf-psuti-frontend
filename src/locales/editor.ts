@@ -44,7 +44,8 @@ const header_ru = {
     default: 'Вставка',
     horizontal: 'Горизонтальная линия',
     collapsible: 'Сворачивающийся контейнер',
-    image: 'Вставить изображение'
+    image: 'Вставить изображение',
+    inline_image: 'Вставить встроенное изображение'
   }
 } as const;
 
@@ -94,7 +95,8 @@ const header_en = {
     default: 'Insert',
     horizontal: 'Horizontal line',
     collapsible: 'Collapsible container',
-    image: 'Insert image'
+    image: 'Insert image',
+    inline_image: 'Insert inline image'
   }
 } as const;
 

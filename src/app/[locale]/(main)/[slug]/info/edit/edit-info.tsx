@@ -13,7 +13,9 @@ import { CONF_PAGES } from '@/constants/pages.constants';
 import { useLocale } from '@/hooks/date-locale.hook';
 import { cn } from '@/lib/utils';
 import { makeZodI18nMap } from '@/lib/zod-i18n';
-import { useScopedI18n } from '@/locales/client';
+import { useCurrentLocale, useScopedI18n } from '@/locales/client';
+import { updateConfInfo } from '@/services/confs.client.service';
+import { useRouter } from '@bprogress/next';
 import { tz } from '@date-fns/tz';
 import { utc } from '@date-fns/utc';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,18 +25,22 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const tzDate = tz(TIME_ZONE);
 
 export default function EditInfo() {
+  const locale = useCurrentLocale();
+  const router = useRouter();
   const { slug, sub_path } = useParams();
   const { dateLocale } = useLocale();
-  const { data } = useConfContext();
+  const { data, reload } = useConfContext();
   
   const t_edit = useScopedI18n("confs.info_edit");
   const t_info = useScopedI18n("confs.info");
   const t_zod = useScopedI18n("zod");
+  const t_loading = useScopedI18n("loading");
   const t = useScopedI18n("confs");
 
   const isEnglishEnabled = typeof data === "object" ? data?.isEnglishEnabled ?? false : false;
@@ -58,9 +64,38 @@ export default function EditInfo() {
     defaultValues: defaultData
   });
 
+  const submitInfo = (form_data: z.infer<typeof form_schema>) => {
+    toast.promise(updateConfInfo((slug ?? "") as string, {
+      slug: form_data.slug,
+      conferenceNameRu: form_data.conferenceNameRu,
+      conferenceNameEn: form_data.conferenceNameEn,
+      statusRu: form_data.statusRu ?? undefined,
+      statusEn: form_data.statusEn ?? undefined,
+      startDate: format(form_data.startDate, 'yyyy-MM-dd', {in: utc }),
+      endDate: format(form_data.endDate, 'yyyy-MM-dd', {in: utc }),
+      closingDateForApplications: form_data.closingDateForApplication 
+        ? form_data.closingDateForApplication.toISOString()
+        : undefined,
+      closingDateForRegistrations: form_data.closingDateForRegistration
+        ? form_data.closingDateForRegistration.toISOString()
+        : undefined
+    }).then(v => {
+      if (v.status !== "success") throw v.message[locale];
+      if (form_data.slug !== slug) {
+        router.replace(`/${form_data.slug}/${sub_path ?? "info"}/edit`);
+      } else {
+        reload();
+      }
+    }), {
+      loading: t_loading('fetch'),
+      success: t('saved'),
+      error: (error) => error
+    })
+  }
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(console.log)}>
+      <form onSubmit={form.handleSubmit(submitInfo)}>
         <div className="grid gap-6">
           <FormField
             control={form.control}

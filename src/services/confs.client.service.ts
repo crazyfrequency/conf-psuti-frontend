@@ -34,3 +34,7 @@ export async function updateConfPages(slug: string, pages: TConfPageForm[]) {
 export async function updateConfPage(slug: string, path: string|undefined, page: TConfPageContentForm) {
   return checkErrorsClient(await axiosWithAuth.put<IPage>(`${base_url}/slug/${slug}/subPage/${path??"info"}`, page))
 }
+
+export async function updateConfInfo(slug: string, info: Partial<TConf>) {
+  return checkErrorsClient(await axiosWithAuth.put<string>(`${base_url}/slug/${slug}/info`, info))
+}

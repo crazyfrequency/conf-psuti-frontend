@@ -26,7 +26,7 @@ import { TConfPageForm } from "@/types/conf.types";
 import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowDown, ArrowUp, Download, FileJson, GripVertical, Plus, Trash2, Upload } from "lucide-react";
-import { HTMLAttributes, useMemo, useState } from "react";
+import { HTMLAttributes, useEffect, useMemo, useState } from "react";
 import { Control, useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -261,6 +261,10 @@ export default function page() {
     name: "pages",
     keyName: "id"
   })
+
+  useEffect(() => {
+    form.reset({ pages });
+  }, [pages])
 
   if (user === "loading" || isLoading) return (
     <div className="relative text-center space-y-2">

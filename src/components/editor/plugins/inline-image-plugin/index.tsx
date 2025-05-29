@@ -36,14 +36,20 @@ import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { DialogClose } from '@/components/ui/dialog';
+import { Dropzone, DropzoneGroup, DropzoneInput, DropzoneTitle, DropzoneUploadIcon, DropzoneZone } from '@/components/ui/dropzone';
+import { FileList, FileListDescription, FileListHeader, FileListIcon, FileListInfo, FileListItem, FileListName, FileListSize } from '@/components/ui/file-list';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { FileImage } from 'lucide-react';
 import {
   $createInlineImageNode,
   $isInlineImageNode,
   InlineImageNode,
   InlineImagePayload,
 } from '../../nodes/InlineImageNode/InlineImageNode';
-import FileInput from '../../ui/FileInput';
-import TextInput from '../../ui/TextInput';
 
 export type InsertInlineImagePayload = Readonly<InlineImagePayload>;
 
@@ -51,14 +57,13 @@ export const INSERT_INLINE_IMAGE_COMMAND: LexicalCommand<InlineImagePayload> =
   createCommand('INSERT_INLINE_IMAGE_COMMAND');
 
 export function InsertInlineImageDialog({
-  activeEditor,
-  onClose,
+  activeEditor
 }: {
   activeEditor: LexicalEditor;
-  onClose: () => void;
 }): JSX.Element {
   const hasModifier = useRef(false);
 
+  const [file, setFile] = useState<File | null>(null);
   const [src, setSrc] = useState('');
   const [altText, setAltText] = useState('');
   const [showCaption, setShowCaption] = useState(false);
@@ -74,16 +79,17 @@ export function InsertInlineImageDialog({
     setPosition(e.target.value as Position);
   };
 
-  const loadImage = (files: FileList | null) => {
+  const loadImage = (file: File | null) => {
     const reader = new FileReader();
     reader.onload = function () {
       if (typeof reader.result === 'string') {
         setSrc(reader.result);
+        setFile(file);
       }
       return '';
     };
-    if (files !== null) {
-      reader.readAsDataURL(files[0]);
+    if (file !== null) {
+      reader.readAsDataURL(file);
     }
   };
 
@@ -101,59 +107,80 @@ export function InsertInlineImageDialog({
   const handleOnClick = () => {
     const payload = {altText, position, showCaption, src};
     activeEditor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, payload);
-    onClose();
   };
 
   return (
     <>
-      <div style={{marginBottom: '1em'}}>
-        <FileInput
-          label="Image Upload"
-          onChange={loadImage}
-          accept="image/*"
-          data-test-id="image-modal-file-upload"
-        />
-      </div>
-      <div style={{marginBottom: '1em'}}>
-        <TextInput
-          label="Alt Text"
-          placeholder="Descriptive alternative text"
-          onChange={setAltText}
-          value={altText}
-          data-test-id="image-modal-alt-text-input"
-        />
-      </div>
+      <Dropzone
+        accept={{ "image/*": [] }}
+        onDropAccepted={v => loadImage(v[0] ?? null)}
+        preventDropOnDocument
+        maxFiles={1}
+      >
+        <div className="grid gap-4">
+          <DropzoneZone>
+            <DropzoneInput />
+            <DropzoneGroup className="gap-4">
+              <DropzoneUploadIcon />
+              <DropzoneGroup>
+                <DropzoneTitle>Drag and drop image here</DropzoneTitle>
+              </DropzoneGroup>
+            </DropzoneGroup>
+          </DropzoneZone>
+          <FileList>
+            {file && (
+              <FileListItem>
+                <FileListHeader>
+                  <FileListIcon className="overflow-hidden">
+                    {src ? <img src={src} className="size-full" /> : <FileImage />}
+                  </FileListIcon>
+                  <FileListInfo>
+                    <FileListName>{file.name}</FileListName>
+                    <FileListDescription>
+                      <FileListSize>{file.size}</FileListSize>
+                    </FileListDescription>
+                  </FileListInfo>
+                </FileListHeader>
+              </FileListItem>
+            )}
+          </FileList>
+        </div>
+      </Dropzone>
+      <Input
+        placeholder="Descriptive alternative text"
+        onChange={e => setAltText(e.target.value)}
+        value={altText}
+        data-test-id="image-modal-alt-text-input"
+      />
 
-      <Select
-        style={{marginBottom: '1em', width: '290px'}}
-        label="Position"
-        name="position"
-        id="position-select"
-        onChange={handlePositionChange}>
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-        <option value="full">Full Width</option>
+      <Select>
+        <SelectTrigger>
+          <SelectValue placeholder="Position" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="left">Left</SelectItem>
+          <SelectItem value="right">Right</SelectItem>
+          <SelectItem value="full">Full Width</SelectItem>
+        </SelectContent>
       </Select>
 
-      <div className="Input__wrapper">
-        <input
+      <div className="flex items-center space-x-2">
+        <Checkbox
           id="caption"
-          className="InlineImageNode_Checkbox"
-          type="checkbox"
           checked={showCaption}
-          onChange={handleShowCaptionChange}
+          onCheckedChange={v => setShowCaption(v !== "indeterminate" ? v : false)}
         />
-        <label htmlFor="caption">Show Caption</label>
+        <Label htmlFor="caption">Show Caption</Label>
       </div>
 
-      <DialogActions>
+      <DialogClose asChild>
         <Button
           data-test-id="image-modal-file-upload-btn"
           disabled={isDisabled}
           onClick={() => handleOnClick()}>
           Confirm
         </Button>
-      </DialogActions>
+      </DialogClose>
     </>
   );
 }

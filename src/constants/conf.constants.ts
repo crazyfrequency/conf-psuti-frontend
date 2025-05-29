@@ -65,8 +65,8 @@ export const form_conference_info = (t: any, eng: boolean) => z.object({
   webSite: z.string().max(255).nullable(),
   email: z.string().email().max(255).nullable(),
   phone: z.string().max(255).nullable(),
-  closingDateForApplication: z.date().nullable(),
-  closingDateForRegistration: z.date().nullable(),
+  closingDateForApplication: z.date().optional(),
+  closingDateForRegistration: z.date().optional(),
 }).superRefine((value, ctx) => {
   if (eng && value.conferenceNameEn.trim().length === 0) {
     ctx.addIssue({

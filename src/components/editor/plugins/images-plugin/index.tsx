@@ -63,14 +63,12 @@ export function InsertImageUriDialogBody({
   return (
     <>
       <Input
-        label="Image URL"
         placeholder="i.e. https://source.unsplash.com/random"
         onChange={e => setSrc(e.target.value)}
         value={src}
         data-test-id="image-modal-url-input"
       />
       <Input
-        label="Alt Text"
         placeholder="Random unsplash image"
         onChange={e => setAltText(e.target.value)}
         value={altText}
@@ -151,7 +149,6 @@ export function InsertImageUploadedDialogBody({
         </div>
       </Dropzone>
       <Input
-        label="Alt Text"
         placeholder="Descriptive alternative text"
         onChange={e => setAltText(e.target.value)}
         value={altText}
