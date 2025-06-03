@@ -1,5 +1,6 @@
-import { locales } from '@/constants/i18n.constants';
+import { type BigLocales, locales } from '@/constants/i18n.constants';
 import { IUser } from "@/types/auth.types";
+import { IAdminUser } from '@/types/user.types';
 
 export interface INames {
   firstName: string;
@@ -7,9 +8,7 @@ export interface INames {
   middleName?: string;
 }
 
-type Locale = Uppercase<typeof locales[number]>;
-
-const undefinedNames: Record<Locale, INames> = {
+const undefinedNames: Record<BigLocales, INames> = {
   RU: {
     firstName: 'Неизвестный',
     lastName: 'Неизвестный'
@@ -20,8 +19,8 @@ const undefinedNames: Record<Locale, INames> = {
   }
 }
 
-export function getUserNames(user?: IUser|null, locale?: typeof locales[number]|Locale): INames {
-  locale = (locale || 'en').toUpperCase() as Locale;
+export function getUserNames(user?: IUser|null, locale?: typeof locales[number]|BigLocales): INames {
+  locale = (locale || 'en').toUpperCase() as BigLocales;
   
   if (!user) return undefinedNames[locale];
   
@@ -35,6 +34,22 @@ export function getUserNames(user?: IUser|null, locale?: typeof locales[number]|
   if (!lastName) lastName = user.names?.[defaultLocale]?.lastName;
   if (!middleName) middleName = user.names?.[defaultLocale]?.middleName;
 
+  return {
+    firstName: firstName || undefinedNames[locale].firstName,
+    lastName: lastName || undefinedNames[locale].lastName,
+    middleName: middleName
+  }
+}
+
+export function getAdminNames(user?: IAdminUser|null, locale?: typeof locales[number]|BigLocales): INames {
+  locale = (locale || 'en').toUpperCase() as BigLocales;
+  
+  if (!user) return undefinedNames[locale];
+  
+  let firstName = user.names?.[locale]?.firstName;
+  let lastName = user.names?.[locale]?.lastName;
+  let middleName = user.names?.[locale]?.middleName;
+  
   return {
     firstName: firstName || undefinedNames[locale].firstName,
     lastName: lastName || undefinedNames[locale].lastName,

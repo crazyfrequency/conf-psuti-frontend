@@ -15,7 +15,7 @@ import { InputBase, InputBaseAdornment, InputBaseControl, InputBaseInput } from 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sortable, SortableItem, SortableItemTrigger, SortableList } from "@/components/ui/sortable";
 import { SITE_DOMAIN_FRONT } from "@/constants/app.constants";
-import { form_conference_pages } from "@/constants/conf.constants";
+import { form_conference_pages, form_conference_pages_import } from "@/constants/conf.constants";
 import { PermissionFlags } from "@/lib/user-permissions";
 import { cn } from "@/lib/utils";
 import { makeZodI18nMap } from "@/lib/zod-i18n";
@@ -319,7 +319,7 @@ export default function page() {
     const reader = new FileReader();
     reader.onload = () => {
       const data = JSON.parse(reader.result as string);
-      if (!form_schema.safeParse(data).success)
+      if (!form_conference_pages_import.safeParse(data).success)
         return toast.error(t('import.invalid'));
 
       form.reset(data);

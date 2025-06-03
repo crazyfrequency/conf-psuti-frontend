@@ -47,6 +47,19 @@ export const form_conference_pages = (t: any, eng: boolean) => z.object({
   }, t('errors.duplicated_path'))
 })
 
+export const form_conference_pages_import = z.object({
+  conf_id: z.number(),
+  conf_slug: z.string(),
+  pages: z.array(z.object({
+    id: z.number(),
+    old_id: z.number().nullable(),
+    editable: z.boolean(),
+    pageNameRu: z.string().trim().nonempty(),
+    pageNameEn: z.string().trim().nonempty(),
+    path: z.string().max(255)
+  }))
+}).passthrough()
+
 export const form_conference_info = (t: any, eng: boolean) => z.object({
   slug: z.string().max(255).regex(
     /^(?!auth$|admin$|confs$|api$|uploads$)[A-Za-z][A-Za-z0-9-_]*$/,

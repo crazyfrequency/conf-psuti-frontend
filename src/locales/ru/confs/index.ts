@@ -1,5 +1,7 @@
+import admins from './admins';
 import pages from './pages';
 
 export default {
-  pages
+  pages,
+  admins
 } as const

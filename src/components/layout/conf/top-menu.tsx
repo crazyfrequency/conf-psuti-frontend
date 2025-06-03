@@ -11,7 +11,7 @@ import { useParams, usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { useConfContext } from "./conf-context";
 
-const regex = /^(\/(?:ru|en)?)?\/[^\/]+\/(?:[^\/]+\/edit|admin(?:\/.*)?)$/;
+const regex = /^(\/(?:ru|en)?)?\/[^\/]+\/(?:[^\/]+\/edit|admin(?:\/.*)?|application(?:\/.*)?)$/;
 
 export default function TopMenu() {
   const { data, permissions, isLoading } = useConfContext();
@@ -23,10 +23,15 @@ export default function TopMenu() {
     return permissions.hasAnyRole(
       'ADMIN'
     ) || permissions.hasAnyPermission(
-      PermissionFlags.WRITE_PAGES,
-      PermissionFlags.WRITE
+      PermissionFlags.ADMIN,
+      PermissionFlags.WRITE_PAGES
+    )
+    || (
+      permissions.hasAnyPermission(
+        PermissionFlags.WRITE
+      ) && (sub_path ?? 'info' === 'info')
     );
-  }, [permissions]);
+  }, [permissions, sub_path]);
 
   if (isLoading) return (
     <div className="relative text-center *:mx-auto space-y-2">
