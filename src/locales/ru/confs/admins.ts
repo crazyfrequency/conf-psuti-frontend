@@ -1,6 +1,7 @@
 export default {
   add: 'Добавить администратора',
   add_description: 'Укажите данные для добавления администратора',
+  edit: 'Редактировать права администратора',
   email: 'Email',
   permissions: 'Права',
   permission: {

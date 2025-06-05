@@ -13,7 +13,7 @@ import { CONF_PAGES } from '@/constants/pages.constants';
 import { useLocale } from '@/hooks/date-locale.hook';
 import { cn } from '@/lib/utils';
 import { makeZodI18nMap } from '@/lib/zod-i18n';
-import { useCurrentLocale, useScopedI18n } from '@/locales/client';
+import { useScopedI18n } from '@/locales/client';
 import { updateConfInfo } from '@/services/confs.client.service';
 import { useRouter } from '@bprogress/next';
 import { tz } from '@date-fns/tz';
@@ -31,10 +31,9 @@ import { z } from 'zod';
 const tzDate = tz(TIME_ZONE);
 
 export default function EditInfo() {
-  const locale = useCurrentLocale();
   const router = useRouter();
   const { slug, sub_path } = useParams();
-  const { dateLocale } = useLocale();
+  const { locale, dateLocale } = useLocale();
   const { data, reload } = useConfContext();
   
   const t_edit = useScopedI18n("confs.info_edit");
@@ -68,7 +67,7 @@ export default function EditInfo() {
     toast.promise(updateConfInfo((slug ?? "") as string, {
       slug: form_data.slug,
       conferenceNameRu: form_data.conferenceNameRu,
-      conferenceNameEn: form_data.conferenceNameEn,
+      conferenceNameEn: form_data.conferenceNameEn ?? undefined,
       statusRu: form_data.statusRu ?? undefined,
       statusEn: form_data.statusEn ?? undefined,
       startDate: format(form_data.startDate, 'yyyy-MM-dd', {in: utc }),
@@ -213,7 +212,7 @@ export default function EditInfo() {
                 <FormItem className="flex flex-col">
                   <FormLabel>{t_info('registration')}</FormLabel>
                   <Popover>
-                    <div className="flex">
+                    <div className="grid grid-cols-[1fr_auto]">
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
@@ -243,6 +242,7 @@ export default function EditInfo() {
                         mode="single"
                         timeZone={TIME_ZONE}
                         locale={dateLocale}
+                        className="pb-0"
                         selected={field.value ? tzDate(field.value) : undefined}
                         onSelect={v => field.onChange(v ? tzDate(v) : undefined)}
                         defaultMonth={field.value ? tzDate(field.value) : undefined}
@@ -270,7 +270,7 @@ export default function EditInfo() {
                 <FormItem className="flex flex-col">
                   <FormLabel>{t_info('submission')}</FormLabel>
                   <Popover>
-                    <div className="flex">
+                    <div className="grid grid-cols-[1fr_auto]">
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
@@ -300,6 +300,7 @@ export default function EditInfo() {
                         mode="single"
                         timeZone={TIME_ZONE}
                         locale={dateLocale}
+                        className='pb-0'
                         selected={field.value ? tzDate(field.value) : undefined}
                         onSelect={v => field.onChange(v ? tzDate(v) : undefined)}
                         defaultMonth={field.value ? tzDate(field.value) : undefined}
@@ -350,7 +351,7 @@ export default function EditInfo() {
               render={({ field }) => (
                 <FormItem className={isEnglishEnabled ? 'flex flex-col' : 'hidden'}>
                   <FormLabel>{t_edit('fields.title_en')}</FormLabel>
-                  <Input {...field} placeholder={t_edit('fields.required')} />
+                  <Input {...field} value={field.value ?? ""} placeholder={t_edit('fields.required')} />
                   <FormMessage />
                 </FormItem>
               )}

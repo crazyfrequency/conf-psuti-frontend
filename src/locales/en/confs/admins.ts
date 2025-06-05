@@ -1,6 +1,7 @@
 export default {
   add: 'Add admin',
   add_description: 'Enter data to add an admin',
+  edit: 'Edit admin permissions',
   email: 'Email',
   permissions: 'Permissions',
   permission: {

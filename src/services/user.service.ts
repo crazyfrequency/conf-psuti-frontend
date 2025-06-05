@@ -13,3 +13,7 @@ export async function getAdmins(slug: string) {
 export async function saveAdmin(slug: string, admin: { email: string, permissions: number }) {
   return checkErrorsClient(await axiosWithAuth.put(`/conferences/${slug}/admins`, admin))
 }
+
+export async function deleteAdmin(slug: string, id: string) {
+  return checkErrorsClient(await axiosWithAuth.delete(`/conferences/${slug}/admins/${id}`))
+}

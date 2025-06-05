@@ -3,7 +3,6 @@
 import Page403 from "@/components/auth/403";
 import { useConfContext } from "@/components/layout/conf/conf-context";
 import { default_pages } from "@/components/layout/conf/left-menu";
-import { useAuth } from "@/components/layout/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { ControlGroup, ControlGroupItem } from "@/components/ui/control-group";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -108,7 +107,7 @@ function Item({
                   <ControlGroup>
                     <ControlGroupItem>
                       <InputBase disabled={disabled}>
-                        <InputBaseAdornment className="break-all">
+                        <InputBaseAdornment className="wrap-anywhere">
                           {SITE_DOMAIN_FRONT}/{slug}/
                         </InputBaseAdornment>
                       </InputBase>
@@ -219,7 +218,6 @@ export default function page() {
   const t_zod = useScopedI18n('zod');
   const locale = useCurrentLocale();
   const t = useScopedI18n('confs');
-  const { user } = useAuth();
 
   const pages = useMemo(() => {
     if (typeof data !== "object") return undefined;
@@ -266,7 +264,7 @@ export default function page() {
     form.reset({ pages });
   }, [pages])
 
-  if (user === "loading" || isLoading) return (
+  if (isLoading) return (
     <div className="relative text-center space-y-2">
       {Array.from({ length: 3 }, (_, i) => (
         <Skeleton key={i} className="h-32" />

@@ -3,7 +3,6 @@
 import Page403 from "@/components/auth/403";
 import Page500 from "@/components/auth/500";
 import { useConfContext } from "@/components/layout/conf/conf-context";
-import { useAuth } from "@/components/layout/providers/auth-provider";
 import LoadingComponent from "@/components/loading-component";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +17,7 @@ import { getAdminNames } from "@/lib/localalization-tools";
 import { PermissionFlags } from "@/lib/user-permissions";
 import { makeZodI18nMap } from "@/lib/zod-i18n";
 import { useCurrentLocale, useI18n, useScopedI18n } from "@/locales/client";
-import { saveAdmin } from "@/services/user.service";
+import { deleteAdmin, saveAdmin } from "@/services/user.service";
 import type { IAdminUser } from "@/types/user.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { UUID } from "crypto";
@@ -96,6 +95,7 @@ function DialogForm({
                 <Checkbox
                   {...field}
                   value={~~field.value}
+                  checked={field.value}
                   onChange={undefined}
                   onCheckedChange={field.onChange}
                 />
@@ -114,6 +114,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={field.disabled || isAdmin}
                     onChange={undefined}
                     onCheckedChange={field.onChange}
@@ -132,6 +133,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={field.disabled || isAdmin}
                     onChange={undefined}
                     onCheckedChange={field.onChange}
@@ -151,6 +153,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={field.disabled || isAdmin}
                     onChange={undefined}
                     onCheckedChange={field.onChange}
@@ -169,6 +172,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={
                       field.disabled ||
                       isAdmin ||
@@ -192,6 +196,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={field.disabled || isAdmin}
                     onChange={undefined}
                     onCheckedChange={field.onChange}
@@ -210,6 +215,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={field.disabled || isAdmin || !isReadConfApp}
                     onChange={undefined}
                     onCheckedChange={field.onChange}
@@ -228,6 +234,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={field.disabled || isAdmin || !isReadConfApp}
                     onChange={undefined}
                     onCheckedChange={field.onChange}
@@ -246,6 +253,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={field.disabled || isAdmin || !isReadConfApp || !isReadDateConfApp}
                     onChange={undefined}
                     onCheckedChange={field.onChange}
@@ -264,6 +272,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={field.disabled || isAdmin || !isReadConfApp}
                     onChange={undefined}
                     onCheckedChange={field.onChange}
@@ -282,6 +291,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={field.disabled || isAdmin || !isReadConfApp || !isReadContentConfApp}
                     onChange={undefined}
                     onCheckedChange={field.onChange}
@@ -300,6 +310,7 @@ function DialogForm({
                   <Checkbox
                     {...field}
                     value={~~field.value}
+                    checked={field.value}
                     disabled={
                       field.disabled ||
                       isAdmin ||
@@ -386,7 +397,10 @@ function Permissions({
       </div>
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
-          <DialogForm isEdit admin={admin} onSubmit={onEdit} />
+          <DialogHeader>
+            <DialogTitle>{t('confs.admins.edit')}</DialogTitle>
+          </DialogHeader>
+          <DialogForm isEdit admin={admin} onSubmit={v => {onEdit(v); setDialogOpen(false)}} />
         </DialogContent>
       </Dialog>
     </Card>
@@ -398,11 +412,10 @@ export default function page() {
   const t = useI18n();
   const { slug } = useParams();
   const locale = useCurrentLocale();
-  const { user } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
   const { isLoading: isLoadingAdmins, admins, reload: reloadAdmins } = useConfAdminsHook(slug as string);
 
-  if (user === "loading" || isLoading || isLoadingAdmins) return <LoadingComponent />
+  if (isLoading || isLoadingAdmins) return <LoadingComponent />
 
   if (!permissions.hasAnyRole("ADMIN") && !permissions.hasAnyPermission(PermissionFlags.ADMIN) || admins === "forbidden") 
     return <Page403 />
@@ -438,6 +451,20 @@ export default function page() {
     )
   }
 
+  const removeAdmin = (id: UUID) => {
+    toast.promise(
+      deleteAdmin(slug as string, id).then(v => {
+        if (v.status !== "success") throw v.message[locale];
+        reloadAdmins();
+      }),
+      {
+        loading: t('loading.fetch'),
+        success: t('confs.saved'),
+        error: (error) => error
+      }
+    )
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
@@ -454,7 +481,7 @@ export default function page() {
           </DialogContent>
         </Dialog>
       </div>
-      {admins.map(admin => <Permissions key={admin.id} admin={admin} onEdit={submitAdmin} />)}
+      {admins.map(admin => <Permissions key={admin.id} admin={admin} onEdit={submitAdmin} onDelete={removeAdmin} />)}
     </div>
   )
 }

@@ -29,7 +29,7 @@ export default function TopMenu() {
     || (
       permissions.hasAnyPermission(
         PermissionFlags.WRITE
-      ) && (sub_path ?? 'info' === 'info')
+      ) && ((sub_path ?? 'info') === 'info')
     );
   }, [permissions, sub_path]);
 

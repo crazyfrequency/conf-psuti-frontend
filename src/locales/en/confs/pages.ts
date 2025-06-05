@@ -3,6 +3,7 @@ export default {
     info: 'General information',
     committee: 'Organizing committee',
     program: 'Conference program',
+    application: 'Conference application',
     proceedings: 'Conference proceedings',
     report: 'Conference report',
     contacts: 'Contacts',

@@ -30,7 +30,7 @@ export default function Info() {
   return (
     <>
       {data.logo && (<Image className="w-full max-h-36 object-contain lg:float-right lg:max-w-1/3" src={data.logo} alt="Logo" />)}
-      <div className="grid grid-cols-[auto_1fr] px-4 gap-3">
+      <div className="grid grid-cols-[auto_1fr] px-3 gap-3">
         <DataLabel>{t('dates')}</DataLabel>
         <DataText className="flex items-center text-sm font-normal gap-1.5 max-lg:gap-1">
           <time dateTime={start.toISOString()}>

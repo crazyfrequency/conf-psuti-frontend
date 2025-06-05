@@ -94,6 +94,7 @@ export default {
     add_page: 'Add page',
     save: 'Save',
     cancel: 'Cancel',
+    reset: 'Reset',
     page_enabled: {
       title: 'Enable page',
     },
@@ -159,6 +160,7 @@ export default {
   },
   loading: {
     fetch: 'Executing request',
+    code_confirmed: 'Email confirmed'
   },
   errors: {
     fetch: 'An error occurred while executing the request',

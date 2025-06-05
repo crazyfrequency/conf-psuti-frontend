@@ -94,6 +94,7 @@ export default {
     add_page: 'Добавить страницу',
     save: 'Сохранить',
     cancel: 'Отменить',
+    reset: 'Сбросить',
     page_enabled: {
       title: 'Включить страницу',
     },
@@ -159,6 +160,7 @@ export default {
   },
   loading: {
     fetch: 'Выполняется запрос',
+    code_confirmed: 'Почта подтверждена'
   },
   errors: {
     fetch: 'Произошла ошибка при выполнении запроса',

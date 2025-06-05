@@ -3,7 +3,7 @@
 import { checkErrorsClient } from "@/api/error";
 import { axiosWithAuth } from "@/api/interceptors";
 import { Locales } from "@/constants/i18n.constants";
-import { IPage, TConf, TConfForm, TConfPage, TConfPageContentForm, TConfPageForm, TLocalizedConfPage } from "@/types/conf.types";
+import { IPage, ISection, TConf, TConfForm, TConfPage, TConfPageContentForm, TConfPageForm, TLocalizedConfPage } from "@/types/conf.types";
 
 const base_url = `/conferences`
 
@@ -37,4 +37,12 @@ export async function updateConfPage(slug: string, path: string|undefined, page:
 
 export async function updateConfInfo(slug: string, info: Partial<TConf>) {
   return checkErrorsClient(await axiosWithAuth.put<string>(`${base_url}/slug/${slug}/info`, info))
+}
+
+export async function updateConfSettings(slug: string, settings: Partial<TConf>) {
+  return checkErrorsClient(await axiosWithAuth.put<string>(`${base_url}/slug/${slug}/settings`, settings))
+}
+
+export async function updateConfSections(slug: string, sections: Partial<ISection>[]) {
+  return checkErrorsClient(await axiosWithAuth.patch<string>(`${base_url}/slug/${slug}/sections`, sections))
 }

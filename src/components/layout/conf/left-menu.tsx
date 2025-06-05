@@ -17,7 +17,7 @@ import { HTMLAttributes, useMemo } from "react";
 import { useAuth } from "../providers/auth-provider";
 import { useConfContext } from "./conf-context";
 
-export const default_pages = ["info", "committee", "program", "proceedings", "report", "contacts"] as const;
+export const default_pages = ["info", "committee", "program", "application", "proceedings", "report", "contacts"] as const;
 
 export default function LeftMenu({
   className,
@@ -52,7 +52,7 @@ export default function LeftMenu({
   const elements = data?.pages?.filter?.(v => v.isEnabled || canReadDisabledPages || v.path === "info").map((v) => (
       <li key={`nav_${v.path}`}>
         <Button
-          className="justify-start w-full whitespace-pre-wrap break-all h-auto"
+          className="justify-start w-full whitespace-normal wrap-anywhere h-auto"
           variant={ sub_path === v.path || (!sub_path && v.path === 'info') ? 'default' : 'ghost'}
           asChild
         >
