@@ -22,9 +22,12 @@ import { useSharedHistoryContext } from './context/history-context';
 import LexicalAutoLinkPlugin from './plugins/auto-link-plugin';
 import CodeHighlightPlugin from './plugins/code-highlight-plugin';
 import CollapsiblePlugin from './plugins/collapsible-plugin';
+import DragDropPaste from './plugins/drag-drop-paste-plugin';
 import DraggableBlockPlugin from './plugins/draggable-block-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
+import ImagesPlugin from './plugins/images-plugin';
+import InlineImagePlugin from './plugins/inline-image-plugin';
 import LinkPlugin from './plugins/link-plugin';
 import { useEnhanceLinks } from './plugins/link-plugin/bar-fix';
 import MarkdownShortcutPlugin from './plugins/markdown-shortcuts';
@@ -33,10 +36,12 @@ import EditorToolbar from "./plugins/toolbar";
 
 export default function EditorMain({
   onChange,
-  placeholder
+  placeholder,
+  autoFocus = false
 }: Readonly<{
   onChange?: (text: string) => void
   placeholder: string
+  autoFocus?: boolean
 }>) {
   const locale = useCurrentLocale();
   const {historyState} = useSharedHistoryContext();
@@ -107,10 +112,13 @@ export default function EditorMain({
         <ClearEditorPlugin onClear={() => toast.info(locale ? 'Успешно очищено' : 'Successfully cleared')} />
         <ClickableLinkPlugin disabled={isEditable} />
         <HistoryPlugin externalHistoryState={historyState} />
-        <AutoFocusPlugin />
+        {autoFocus && <AutoFocusPlugin />}
         <CodeHighlightPlugin />
         <HorizontalRulePlugin />
         <LexicalAutoLinkPlugin />
+        <ImagesPlugin />
+        <InlineImagePlugin />
+        <DragDropPaste />
         {onChange && <OnChangePlugin onChange={(_, editor) => editor.read(() => onChange($generateHtmlFromNodes(editor)))} ignoreSelectionChange />}
         <CollapsiblePlugin />
         {floatingAnchorElem && !isSmallWidthViewport && (

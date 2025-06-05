@@ -1,184 +1,196 @@
-"use client"
+"use client";
 
-import { composeEventHandlers } from "@radix-ui/primitive"
-import { composeRefs } from "@radix-ui/react-compose-refs"
-import { Primitive } from "@radix-ui/react-primitive"
-import { Slot } from "@radix-ui/react-slot"
-import * as React from "react"
+import { composeEventHandlers } from "@radix-ui/primitive";
+import { useComposedRefs } from "@radix-ui/react-compose-refs";
+import { Primitive } from "@radix-ui/react-primitive";
+import { Slot } from "@radix-ui/react-slot";
+import * as React from "react";
 
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export type InputBaseContextProps = Pick<
   InputBaseProps,
   "autoFocus" | "disabled"
 > & {
-  controlRef: React.RefObject<HTMLElement>
-  onFocusedChange: (focused: boolean) => void
-}
+  controlRef: React.RefObject<HTMLElement | null>;
+  onFocusedChange: (focused: boolean) => void;
+};
 
 const InputBaseContext = React.createContext<InputBaseContextProps>({
   autoFocus: false,
-  // @ts-expect-error
   controlRef: { current: null },
   disabled: false,
   onFocusedChange: () => {},
-})
+});
 
-const useInputBaseContext = () => React.useContext(InputBaseContext)
+function useInputBase() {
+  const context = React.useContext(InputBaseContext);
+  if (!context) {
+    throw new Error("useInputBase must be used within a <InputBase />.");
+  }
 
-export interface InputBaseProps
-  extends React.ComponentPropsWithoutRef<typeof Primitive.div> {
-  autoFocus?: boolean
-  disabled?: boolean
+  return context;
 }
 
-export const InputBase = React.forwardRef<
-  React.ElementRef<typeof Primitive.div>,
-  InputBaseProps
->(({ autoFocus, disabled, className, onClick, ...props }, ref) => {
-  const [focused, setFocused] = React.useState(false)
+export interface InputBaseProps
+  extends React.ComponentProps<typeof Primitive.div> {
+  autoFocus?: boolean;
+  disabled?: boolean;
+  error?: boolean;
+}
 
-  const controlRef = React.useRef<HTMLElement>(null)
+function InputBase({
+  autoFocus,
+  disabled,
+  className,
+  onClick,
+  error,
+  ...props
+}: InputBaseProps) {
+  const [focused, setFocused] = React.useState(false);
+  const controlRef = React.useRef<HTMLElement>(null);
 
   return (
     <InputBaseContext.Provider
       value={{
         autoFocus,
-        // @ts-expect-error
         controlRef,
         disabled,
         onFocusedChange: setFocused,
       }}
     >
       <Primitive.div
-        ref={ref}
+        data-slot="input-base"
+        // Based on MUI's <InputBase /> implementation.
+        // https://github.com/mui/material-ui/blob/master/packages/mui-material/src/InputBase/InputBase.js#L458~L460
         onClick={composeEventHandlers(onClick, (event) => {
-          // Based on MUI's <InputBase /> implementation.
-          // https://github.com/mui/material-ui/blob/master/packages/mui-material/src/InputBase/InputBase.js#L458~L460
           if (controlRef.current && event.currentTarget === event.target) {
-            controlRef.current.focus()
+            controlRef.current.focus();
           }
         })}
         className={cn(
-          "flex min-h-10 cursor-text items-center gap-2 rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background",
-          disabled && "cursor-not-allowed opacity-50",
-          focused && "outline-none ring-2 ring-ring ring-offset-2",
-          className
+          "border-input selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex min-h-9 cursor-text items-center gap-2 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm",
+          disabled && "pointer-events-none cursor-not-allowed opacity-50",
+          focused && "border-ring ring-ring/50 ring-[3px]",
+          error &&
+            "ring-destructive/20 dark:ring-destructive/40 border-destructive",
+          className,
         )}
         {...props}
       />
     </InputBaseContext.Provider>
-  )
-})
-InputBase.displayName = "InputBase"
+  );
+}
 
-export const InputBaseFlexWrapper = React.forwardRef<
-  React.ElementRef<typeof Primitive.div>,
-  React.ComponentPropsWithoutRef<typeof Primitive.div>
->(({ className, ...props }, ref) => (
-  <Primitive.div
-    ref={ref}
-    className={cn("flex flex-1 flex-wrap", className)}
-    {...props}
-  />
-))
-InputBaseFlexWrapper.displayName = "InputBaseFlexWrapper"
+function InputBaseFlexWrapper({
+  className,
+  ...props
+}: React.ComponentProps<typeof Primitive.div>) {
+  return (
+    <Primitive.div
+      data-slot="input-base-flex-wrapper"
+      className={cn("flex flex-1 flex-wrap", className)}
+      {...props}
+    />
+  );
+}
 
-export const InputBaseControl = React.forwardRef<
-  React.ElementRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>
->(({ onFocus, onBlur, ...props }, ref) => {
-  const { controlRef, autoFocus, disabled, onFocusedChange } =
-    useInputBaseContext()
+function InputBaseControl({
+  ref,
+  onFocus,
+  onBlur,
+  ...props
+}: React.ComponentProps<typeof Slot>) {
+  const { controlRef, autoFocus, disabled, onFocusedChange } = useInputBase();
+
+  const composedRefs = useComposedRefs(controlRef, ref);
 
   return (
     <Slot
-      ref={composeRefs(controlRef, ref)}
+      data-slot="input-base-control"
+      ref={composedRefs}
       autoFocus={autoFocus}
       onFocus={composeEventHandlers(onFocus, () => onFocusedChange(true))}
       onBlur={composeEventHandlers(onBlur, () => onFocusedChange(false))}
       {...{ disabled }}
       {...props}
     />
-  )
-})
-InputBaseControl.displayName = "InputBaseControl"
-
-export interface InputBaseAdornmentProps
-  extends React.ComponentPropsWithoutRef<"div"> {
-  asChild?: boolean
-  disablePointerEvents?: boolean
+  );
 }
 
-export const InputBaseAdornment = React.forwardRef<
-  React.ElementRef<"div">,
-  InputBaseAdornmentProps
->(({ className, disablePointerEvents, asChild, children, ...props }, ref) => {
-  const Comp = asChild ? Slot : typeof children === "string" ? "p" : "div"
+export interface InputBaseAdornmentProps extends React.ComponentProps<"div"> {
+  asChild?: boolean;
+}
 
-  const isAction =
-    React.isValidElement(children) && children.type === InputBaseAdornmentButton
+function InputBaseAdornment({
+  className,
+  asChild,
+  children,
+  ...props
+}: InputBaseAdornmentProps) {
+  const Comp = asChild ? Slot : typeof children === "string" ? "p" : "div";
 
   return (
     <Comp
-      ref={ref}
+      data-slot="input-base-adornment"
       className={cn(
-        "flex items-center text-muted-foreground [&_svg]:size-4",
-        (!isAction || disablePointerEvents) && "pointer-events-none",
-        className
+        "text-muted-foreground flex items-center [&_svg:not([class*='size-'])]:size-4",
+        "[&:not(:has(button))]:pointer-events-none",
+        className,
       )}
       {...props}
     >
       {children}
     </Comp>
-  )
-})
-InputBaseAdornment.displayName = "InputBaseAdornment"
+  );
+}
 
-export const InputBaseAdornmentButton = React.forwardRef<
-  React.ElementRef<typeof Button>,
-  React.ComponentPropsWithoutRef<typeof Button>
->(
-  (
-    {
-      type = "button",
-      variant = "ghost",
-      size = "icon",
-      disabled: disabledProp,
-      className,
-      ...props
-    },
-    ref
-  ) => {
-    const { disabled } = useInputBaseContext()
+function InputBaseAdornmentButton({
+  type = "button",
+  variant = "ghost",
+  size = "icon",
+  disabled: disabledProp,
+  className,
+  ...props
+}: React.ComponentProps<typeof Button>) {
+  const { disabled } = useInputBase();
 
-    return (
-      <Button
-        ref={ref}
-        type={type}
-        variant={variant}
-        size={size}
-        disabled={disabled || disabledProp}
-        className={cn("size-6", className)}
-        {...props}
-      />
-    )
-  }
-)
-InputBaseAdornmentButton.displayName = "InputBaseAdornmentButton"
+  return (
+    <Button
+      data-slot="input-base-adornment-button"
+      type={type}
+      variant={variant}
+      size={size}
+      disabled={disabled || disabledProp}
+      className={cn("size-6", className)}
+      {...props}
+    />
+  );
+}
 
-export const InputBaseInput = React.forwardRef<
-  React.ElementRef<typeof Primitive.input>,
-  React.ComponentPropsWithoutRef<typeof Primitive.input>
->(({ className, ...props }, ref) => (
-  <Primitive.input
-    ref={ref}
-    className={cn(
-      "w-full flex-1 bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-none disabled:pointer-events-none",
-      className
-    )}
-    {...props}
-  />
-))
-InputBaseInput.displayName = "InputBaseInput"
+function InputBaseInput({
+  className,
+  ...props
+}: React.ComponentProps<typeof Primitive.input>) {
+  return (
+    <Primitive.input
+      data-slot="input-base-input"
+      className={cn(
+        "placeholder:text-muted-foreground file:text-foreground w-full flex-1 bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium focus:outline-none disabled:pointer-events-none",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export {
+  InputBase,
+  InputBaseFlexWrapper,
+  InputBaseControl,
+  InputBaseAdornment,
+  InputBaseAdornmentButton,
+  InputBaseInput,
+  useInputBase,
+};

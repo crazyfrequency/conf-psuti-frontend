@@ -27,7 +27,7 @@ import { z } from "zod"
 
 export default function CreateConf() {
   const { locale, dateLocale } = useLocale();
-  const t = useScopedI18n('confs.create')
+  const t = useScopedI18n('confs.info_edit')
   const t_errors = useScopedI18n('errors')
   const t_zod = useScopedI18n('zod')
   const router = useRouter();

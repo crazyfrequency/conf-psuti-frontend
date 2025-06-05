@@ -335,13 +335,13 @@ export default function EditorToolbar({
       ) : (
         <>
           <FontPicker
-            editor={editor}
+            editor={activeEditor}
             value={toolbarState.fontFamily}
             disabled={!isEditable}
           />
           <Separator orientation="vertical" />
           <FontSize
-            editor={editor}
+            editor={activeEditor}
             selectionFontSize={toolbarState.fontSize.slice(0, -2)}
             disabled={!isEditable}
           />

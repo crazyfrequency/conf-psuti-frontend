@@ -1,15 +1,16 @@
 'use client'
 
-import { Button, ButtonProps } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useChangeLocale, useCurrentLocale, useScopedI18n } from '@/locales/client';
 import { Languages } from 'lucide-react';
+import { ComponentProps } from 'react';
 
 export default function LocalePicker({
   variant = 'ghost',
   ...props
-}: ButtonProps) {
+}: ComponentProps<typeof Button>) {
   const currentLocale = useCurrentLocale();
   const t = useScopedI18n('main_header');
   const changeLocale = useChangeLocale({

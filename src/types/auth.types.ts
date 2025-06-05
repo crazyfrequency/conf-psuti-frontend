@@ -1,4 +1,4 @@
-import { locales } from "@/constants/i18n.constants";
+import type { BigLocales } from "@/constants/i18n.constants";
 import type { UUID } from "crypto";
 
 /**
@@ -8,12 +8,6 @@ export interface IAuthForm {
   email: string
   password: string
 }
-
-/**
- * Тип, представляющий возможные локали.
- * Основан на значениях массива `locales` из констант.
- */
-type Locales = Uppercase<typeof locales[number]>;
 
 /**
  * Интерфейс для представления имени пользователя.
@@ -49,7 +43,7 @@ export interface IUser {
   id: UUID
   email: string
   role: TRole,
-  preferredLocale: Locales,
+  preferredLocale: BigLocales,
   phone: string,
   country: string,
   city: string,
@@ -60,7 +54,7 @@ export interface IUser {
   academicDegree: string,
   academicTitle: string,
   supervisor: string,
-  names: Partial<Record<Locales, INames>>,
+  names: Partial<Record<BigLocales, INames>>,
   conferences: IConfPermissions[]
 }
 

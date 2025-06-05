@@ -32,10 +32,20 @@ const header_ru = {
     outdent: 'Уменьшить отступ',
     indent: 'Увеличить отступ'
   },
+  image: {
+    menu: {
+      url: 'URL',
+      file: 'Файл',
+    },
+    url: 'URL изображения',
+    alt: 'Текст альтернативного изображения',
+  },
   insert: {
     default: 'Вставка',
     horizontal: 'Горизонтальная линия',
-    collapsible: 'Сворачивающийся контейнер'
+    collapsible: 'Сворачивающийся контейнер',
+    image: 'Вставить изображение',
+    inline_image: 'Вставить встроенное изображение'
   }
 } as const;
 
@@ -73,10 +83,20 @@ const header_en = {
     outdent: 'Outdent',
     indent: 'Indent'
   },
+  image: {
+    menu: {
+      url: 'URL',
+      file: 'File',
+    },
+    url: 'Image URL',
+    alt: 'Image alt text',
+  },
   insert: {
     default: 'Insert',
     horizontal: 'Horizontal line',
-    collapsible: 'Collapsible container'
+    collapsible: 'Collapsible container',
+    image: 'Insert image',
+    inline_image: 'Insert inline image'
   }
 } as const;
 

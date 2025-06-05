@@ -5,7 +5,12 @@ export interface ISection {
   id: number;
   sectionNameRu: string;
   sectionNameEn?: string;
+  placeRu?: string;
+  placeEn?: string;
+  isDefault: boolean;
 }
+
+export type TSectionForm = Partial<ISection>;
 
 /**
  * Структура организаторов конференции
@@ -25,8 +30,13 @@ export interface IOrganizer {
 export type TConf = {
   id: number;
   slug: string;
+  logo?: string;
   isEnabled: boolean;
   isEnglishEnabled?: boolean;
+  isEnabledForRegistration?: boolean;
+  supportedFileFormats?: string;
+  applicationEditingOption?: number;
+  participationTypes?: number;
   conferenceNameRu: string;
   statusRu?: string;
   statusEn?: string;
@@ -54,6 +64,7 @@ export interface IPage {
   pageNameEn?: string;
   path: string;
   pageIndex: number;
+  isEnabled: boolean;
 }
 
 /**

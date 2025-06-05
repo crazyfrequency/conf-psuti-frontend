@@ -4,6 +4,7 @@ import Page403 from "@/components/auth/403";
 import Page500 from "@/components/auth/500";
 import { useAuth } from "@/components/layout/providers/auth-provider";
 import LoadingComponent from "@/components/loading-component";
+import { cn } from "@/lib/utils";
 import { useCurrentLocale, useScopedI18n } from "@/locales/client";
 import { getLocalizedConfPage } from "@/services/confs.client.service";
 import { TLocalizedConfPage } from "@/types/conf.types";
@@ -12,7 +13,11 @@ import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export default function Conf() {
+export default function Conf({
+  className,
+}: Readonly<{
+  className?: string
+}>) {
   const [page, setPage] = useState<TLocalizedConfPage|"error"|"forbidden"|"not-found"|null>(null);
   const t_error = useScopedI18n("errors");
   const { slug, sub_path } = useParams();
@@ -20,7 +25,7 @@ export default function Conf() {
   const { user } = useAuth();
 
   useEffect(() => {
-    getLocalizedConfPage(slug as string, sub_path as string, locale).then(t => {
+    getLocalizedConfPage(slug as string, (sub_path ?? "info") as string, locale).then(t => {
       if (t.status !== 'success') {
         if (t.status === 'forbidden') setPage("forbidden");
         else if (t.status === 'not-found') return setPage("not-found");
@@ -38,7 +43,6 @@ export default function Conf() {
       }
 
       setPage(t.data);
-      // TODO setPageEnabled(t.data.enabled);
     });
   }, [user, slug, sub_path])
 
@@ -51,6 +55,9 @@ export default function Conf() {
   if (page === "forbidden") return <Page403 />
 
   return (
-    <div className="relative w-full px-3 MainEditorTheme" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(page?.htmlContent || "") }} />
+    <div
+      className={cn("relative w-full px-3 MainEditorTheme", className)}
+      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(page?.htmlContent || "") }}
+    />
   );
 }

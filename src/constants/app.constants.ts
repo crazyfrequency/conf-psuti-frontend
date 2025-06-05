@@ -21,6 +21,8 @@ export const SITE_DOMAIN_FRONT = process.env.NEXT_PUBLIC_DOMAIN_FRONT || 'http:/
  */
 export const COOKIES_ACCESS_TOKEN = 'access_token';
 
+export const TIME_ZONE = process.env.NEXT_PUBLIC_TIME_ZONE || 'UTC+04'
+
 /**
  * Почта службы поддержки
  */

@@ -1,16 +1,17 @@
 'use client'
 
-import { Button, ButtonProps } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useScopedI18n } from '@/locales/client';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { ComponentProps } from 'react';
 
 export default function ThemePicker({
   variant = 'ghost',
   ...props
-}: ButtonProps) {
+}: ComponentProps<typeof Button>) {
   const { theme, setTheme } = useTheme();
   const t = useScopedI18n('main_header.themes');
   return (

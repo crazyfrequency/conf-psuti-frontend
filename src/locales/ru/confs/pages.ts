@@ -3,6 +3,7 @@ export default {
     info: 'Общая информация',
     committee: 'Оргкомитет',
     program: 'Программа конференции',
+    application: 'Заявка на участие',
     proceedings: 'Труды конференции',
     report: 'Отчет о конференции',
     contacts: 'Контакты',

@@ -3,7 +3,6 @@
 import Page403 from "@/components/auth/403";
 import { useConfContext } from "@/components/layout/conf/conf-context";
 import { default_pages } from "@/components/layout/conf/left-menu";
-import { useAuth } from "@/components/layout/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { ControlGroup, ControlGroupItem } from "@/components/ui/control-group";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -15,7 +14,7 @@ import { InputBase, InputBaseAdornment, InputBaseControl, InputBaseInput } from 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sortable, SortableItem, SortableItemTrigger, SortableList } from "@/components/ui/sortable";
 import { SITE_DOMAIN_FRONT } from "@/constants/app.constants";
-import { form_conference_pages } from "@/constants/conf.constants";
+import { form_conference_pages, form_conference_pages_import } from "@/constants/conf.constants";
 import { PermissionFlags } from "@/lib/user-permissions";
 import { cn } from "@/lib/utils";
 import { makeZodI18nMap } from "@/lib/zod-i18n";
@@ -26,7 +25,7 @@ import { TConfPageForm } from "@/types/conf.types";
 import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowDown, ArrowUp, Download, FileJson, GripVertical, Plus, Trash2, Upload } from "lucide-react";
-import { HTMLAttributes, useMemo, useState } from "react";
+import { HTMLAttributes, useEffect, useMemo, useState } from "react";
 import { Control, useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -107,14 +106,14 @@ function Item({
                 <FormLabel>{t('pages.path')}</FormLabel>
                   <ControlGroup>
                     <ControlGroupItem>
-                      <InputBase>
-                        <InputBaseAdornment className="break-all">
+                      <InputBase disabled={disabled}>
+                        <InputBaseAdornment className="wrap-anywhere">
                           {SITE_DOMAIN_FRONT}/{slug}/
                         </InputBaseAdornment>
                       </InputBase>
                     </ControlGroupItem>
                     <ControlGroupItem>
-                      <InputBase asChild>
+                      <InputBase disabled={disabled} asChild>
                         <InputBaseControl>
                           <FormControl className="min-w-20">
                             <InputBaseInput {...field} disabled={disabled || field.disabled} />
@@ -129,10 +128,10 @@ function Item({
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Button size="icon" variant="outline" type="button" onClick={prev} disabled={!prev || disabled}>
+          <Button size="icon" variant="outline" type="button" onClick={prev} disabled={!prev}>
             <ArrowUp />
           </Button>
-          <Button size="icon" variant="outline" type="button" onClick={next} disabled={!next || disabled}>
+          <Button size="icon" variant="outline" type="button" onClick={next} disabled={!next}>
             <ArrowDown />
           </Button>
           <Button size="icon" variant="destructive" type="button" onClick={remove} disabled={disabled}>
@@ -219,7 +218,6 @@ export default function page() {
   const t_zod = useScopedI18n('zod');
   const locale = useCurrentLocale();
   const t = useScopedI18n('confs');
-  const { user } = useAuth();
 
   const pages = useMemo(() => {
     if (typeof data !== "object") return undefined;
@@ -262,7 +260,11 @@ export default function page() {
     keyName: "id"
   })
 
-  if (user === "loading" || isLoading) return (
+  useEffect(() => {
+    form.reset({ pages });
+  }, [pages])
+
+  if (isLoading) return (
     <div className="relative text-center space-y-2">
       {Array.from({ length: 3 }, (_, i) => (
         <Skeleton key={i} className="h-32" />
@@ -315,7 +317,7 @@ export default function page() {
     const reader = new FileReader();
     reader.onload = () => {
       const data = JSON.parse(reader.result as string);
-      if (!form_schema.safeParse(data).success)
+      if (!form_conference_pages_import.safeParse(data).success)
         return toast.error(t('import.invalid'));
 
       form.reset(data);
@@ -358,7 +360,7 @@ export default function page() {
                   className="flex flex-col gap-2"
                 >
                   {fields.map((field, index, all) => (
-                    <SortableItem key={field.id} id={field.id} disabled={!field.editable} asChild>
+                    <SortableItem key={field.id} id={field.id} asChild>
                       <Item
                         index={index}
                         control={form.control}

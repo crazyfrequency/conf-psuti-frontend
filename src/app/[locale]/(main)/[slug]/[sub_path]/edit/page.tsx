@@ -6,7 +6,6 @@ import EditClient from "./edit"
 // TODO: Сделать локализацию
 export async function generateMetadata() {
   return {
-    title: 'Страница редактирования конференции',
     ...NO_INDEX_PAGE
   }
 }

@@ -9,6 +9,7 @@ import { AUTH_PAGES, CONF_PAGES } from "@/constants/pages.constants";
 import { PermissionFlags } from "@/lib/user-permissions";
 import { cn } from "@/lib/utils";
 import { useCurrentLocale, useScopedI18n } from "@/locales/client";
+import { getStaticConfPageName } from "@/locales/pages";
 import { useRouter } from "@bprogress/next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,7 +17,7 @@ import { HTMLAttributes, useMemo } from "react";
 import { useAuth } from "../providers/auth-provider";
 import { useConfContext } from "./conf-context";
 
-export const default_pages = ["info", "committee", "program", "proceedings", "report", "contacts"] as const;
+export const default_pages = ["info", "committee", "program", "application", "proceedings", "report", "contacts"] as const;
 
 export default function LeftMenu({
   className,
@@ -46,15 +47,23 @@ export default function LeftMenu({
 
   const isEdit = rest[rest.length - 1] === 'edit';
 
-  const elements = data?.pages?.map((v) => (
+  const canReadDisabledPages = isAdmin || permissions.hasAnyPermission(PermissionFlags.READ_HIDDEN_PAGES);
+
+  const elements = data?.pages?.filter?.(v => v.isEnabled || canReadDisabledPages || v.path === "info").map((v) => (
       <li key={`nav_${v.path}`}>
         <Button
-          className="justify-start w-full whitespace-pre-wrap break-all h-auto"
-          variant={ sub_path === v.path ? 'default' : 'ghost'}
+          className="justify-start w-full whitespace-normal wrap-anywhere h-auto"
+          variant={ sub_path === v.path || (!sub_path && v.path === 'info') ? 'default' : 'ghost'}
           asChild
         >
           <Link href={CONF_PAGES.CONF_PAGE(slug, v.path, isEdit)}>
-            {locale === 'en' ? v.pageNameEn || v.pageNameRu : v.pageNameRu}
+            {
+              default_pages.includes(v.path as any)
+                ? getStaticConfPageName(v.path as any)[locale]
+                : locale === 'en'
+                  ? v.pageNameEn || v.pageNameRu
+                  : v.pageNameRu
+            }
           </Link>
         </Button>
       </li>
@@ -72,17 +81,6 @@ export default function LeftMenu({
   return (
     <nav className={cn("py-2 h-fit lg:max-w-52", className)} {...props}>
       <ul className="grid gap-2 px-1">
-        <li key='nav_info'>
-          <Button
-            className="justify-start w-full h-auto"
-            variant={ !sub_path || sub_path === 'info' ? 'default' : 'ghost'}
-            asChild
-          >
-            <Link href={CONF_PAGES.INFO_PAGE(slug, isEdit)}>
-              {t('pages.info')}
-            </Link>
-          </Button>
-        </li>
         {elements}
       </ul>
       {(isAdmin || permissions.hasAnyPermission(

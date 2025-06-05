@@ -49,7 +49,7 @@ export default {
   },
   confs: {
     ...confs,
-    create: {
+    info_edit: {
       title: 'Create conference',
       description: 'Fill in the form to create a new conference',
       fields: {
@@ -63,7 +63,9 @@ export default {
         end_date: 'End date',
         enter_date: 'Pick a date',
         required: 'Required field',
-        optional: 'Optional field'
+        optional: 'Optional field',
+        registration: 'Default date for conference closing',
+        submission: 'Default date for registration closing',
       },
       cancel: 'Cancel',
       submit: 'Create conference',
@@ -92,6 +94,7 @@ export default {
     add_page: 'Add page',
     save: 'Save',
     cancel: 'Cancel',
+    reset: 'Reset',
     page_enabled: {
       title: 'Enable page',
     },
@@ -157,6 +160,7 @@ export default {
   },
   loading: {
     fetch: 'Executing request',
+    code_confirmed: 'Email confirmed'
   },
   errors: {
     fetch: 'An error occurred while executing the request',

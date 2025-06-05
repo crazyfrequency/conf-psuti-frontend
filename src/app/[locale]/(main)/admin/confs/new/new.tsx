@@ -1,7 +1,6 @@
 'use client'
 
 import Confs from "@/components/confs/confs";
-import { useAuth } from "@/components/layout/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ADMIN_PAGES } from "@/constants/pages.constants";
@@ -14,7 +13,6 @@ import Link from "next/link";
 export default function NewConfs() {
   const { confsResponse, isLoading, reload } = useNewConfs();
   const t = useScopedI18n('confs.new');
-  const { user } = useAuth();
 
   const elements = confsResponse === null ? (
       <div className="grid gap-4 mt-4">

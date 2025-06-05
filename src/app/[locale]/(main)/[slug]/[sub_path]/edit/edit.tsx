@@ -25,7 +25,13 @@ const Editor = dynamic(() => import('@/components/editor'), {
   loading: () => <LoadingComponent />,
 });
 
-export default function EditClient() {
+const capitalize = (str: string) => `${str[0]?.toUpperCase()}${str.slice(1)}`
+
+export default function EditClient({
+  autoFocus = true
+}: Readonly<{
+  autoFocus?: boolean
+}>) {
   const { data, permissions, isLoading, reload } = useConfContext();
   const [text, setText] = useState<[string, string]|"error"|"forbidden"|null>(null);
   const [stateRu, setStateRu] = useState<string|null>(null);
@@ -36,6 +42,7 @@ export default function EditClient() {
   const { slug, sub_path } = useParams();
   const locale = useCurrentLocale();
   const t = useScopedI18n("confs");
+  const t_lang = useScopedI18n("languages.context")
   const router = useRouter();
   const { user } = useAuth();
 
@@ -62,7 +69,9 @@ export default function EditClient() {
       }
 
       setText([t.data.htmlContentRu ?? "", t.data.htmlContentEn ?? ""]);
-      // TODO setPageEnabled(t.data.enabled);
+      setStateRu(t.data.htmlContentRu ?? "")
+      setStateEn(t.data.htmlContentEn ?? "")
+      setPageEnabled(t.data.isEnabled);
     });
   }, [user, slug, sub_path])
 
@@ -104,17 +113,24 @@ export default function EditClient() {
           onCheckedChange={setPageEnabled}
         />
       </div>
-      <Editor
-        className="mt-4"
-        editorState={text[0] ? parser.parseFromString(DOMPurify.sanitize(text[0]), "text/html") : null}
-        onChange={setStateRu}
-      />
-      {data.isEnglishEnabled && (
+      <div className="mt-6">
+        <Label className="text-lg ml-4">{capitalize(t_lang("ru"))}:</Label>
         <Editor
-          className="mt-4"
-          editorState={text[1] ? parser.parseFromString(DOMPurify.sanitize(text[1]), "text/html") : null}
-          onChange={setStateEn}
+          className="mt-2"
+          editorState={text[0] ? parser.parseFromString(DOMPurify.sanitize(text[0]), "text/html") : null}
+          onChange={setStateRu}
+          autoFocus={autoFocus}
         />
+      </div>
+      {data.isEnglishEnabled && (
+        <div className="mt-6">
+          <Label className="text-lg ml-4">{capitalize(t_lang("en"))}:</Label>
+          <Editor
+            className="mt-2"
+            editorState={text[1] ? parser.parseFromString(DOMPurify.sanitize(text[1]), "text/html") : null}
+            onChange={setStateEn}
+          />
+        </div>
       )}
       <div className="flex gap-2 mt-4 justify-end">
         <Button variant="secondary" asChild>

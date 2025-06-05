@@ -82,8 +82,8 @@ export default function Years({
   years.sort((a, b) => b - a);
 
   return (
-    <div className="flex gap-1 relative w-full from-background to-transparent from-50%">
-      <div ref={left_button} className="invisible pointer-events-none absolute py-2 left-0 pr-12 bg-linear-to-r">
+    <div className="flex gap-1 relative w-full">
+      <div ref={left_button} className="invisible pointer-events-none absolute py-2 left-0 pr-14 bg-linear-to-r from-background to-transparent from-50%">
         <Button className="pointer-events-auto" variant="outline" size="icon" onClick={()=>{
           scrollArea.current?.scroll({
             left: scrollArea.current?.scrollLeft - scrollArea.current?.clientWidth/2,
@@ -95,7 +95,7 @@ export default function Years({
       </div>
       <nav
         ref={scrollArea}
-        className="flex gap-2 px-1 w-full overflow-x-auto scrollbar-hide py-2"
+        className="flex gap-2 px-1 w-full overflow-x-auto scrollbar-none py-2"
         onScroll={computeSize}
       >
         {
@@ -119,7 +119,7 @@ export default function Years({
           ))
         }
       </nav>
-      <div ref={right_button} className="invisible pointer-events-none absolute py-2 right-0 pl-12 bg-linear-to-l">
+      <div ref={right_button} className="invisible pointer-events-none absolute py-2 right-0 pl-14 bg-linear-to-l from-background to-transparent from-50%">
         <Button className="pointer-events-auto" variant="outline" size="icon" onClick={()=>{
           scrollArea.current?.scroll({
             left: scrollArea.current?.scrollLeft + scrollArea.current?.clientWidth/2,

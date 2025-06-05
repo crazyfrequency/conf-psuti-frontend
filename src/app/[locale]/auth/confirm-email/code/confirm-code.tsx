@@ -1,14 +1,18 @@
 'use client'
 
+import Page500 from "@/components/auth/500";
 import LoadingComponent from "@/components/loading-component";
-import { MAIN_PAGES } from "@/constants/pages.constants";
+import { useCurrentLocale, useScopedI18n } from "@/locales/client";
 import { confirmEmail } from "@/services/auth.service";
 import { useRouter } from "@bprogress/next";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function ConfirmCode() {
-  const [confirmed, setConfirmed] = useState(false);
+  const [confirmed, setConfirmed] = useState<"loading" | "success" | "error">("loading");
+  const t_loading = useScopedI18n('loading');
+  const locale = useCurrentLocale();
   const params = useSearchParams();
   const router = useRouter();
 
@@ -16,17 +20,23 @@ export default function ConfirmCode() {
     const type = params.get('type')
 
     if (type === "new") {
-      const response = confirmEmail(params.get('code')+"-"+params.get('exp'));
+      toast.promise(
+        confirmEmail(params.get('code')+"-"+params.get('exp')).then(v => {
+          if (v.status !== "success") throw v.message[locale];
+          setConfirmed("success");
+        }),
+        {
+          loading: t_loading('fetch'),
+          success: t_loading('code_confirmed'),
+          error: (error) => error
+        }
+      )
+
     }
   }, [])
-  
-  if (!confirmed) {
-    return <LoadingComponent />
-  }
 
-  router.replace(MAIN_PAGES.PROFILE);
+  if (confirmed === "error")
+    return <Page500 />
 
-  return (
-    <div>Пока реализовано не до конца...</div>
-  )
+  return <LoadingComponent />
 }
