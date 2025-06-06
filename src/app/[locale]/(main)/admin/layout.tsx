@@ -3,6 +3,7 @@
 import { NO_INDEX_PAGE } from "@/constants/seo.constants";
 import { getScopedI18n, getStaticParams } from "@/locales/server";
 import { Metadata } from "next";
+import { setStaticParamsLocale } from "next-international/server";
 
 export async function generateStaticParams() {
   return getStaticParams();
@@ -21,9 +22,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AdminLayout({
-  children
+  children,
+  params
 }: Readonly<{
   children: React.ReactNode
+  params: Promise<{ locale: string }>
 }>) {
+  const { locale } = await params;
+  setStaticParamsLocale(locale);
+
   return children
 }
