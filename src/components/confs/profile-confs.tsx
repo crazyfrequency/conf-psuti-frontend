@@ -10,7 +10,8 @@ import { utc, UTCDate } from "@date-fns/utc";
 import { format } from "date-fns";
 import Link from "next/link";
 import LoadingComponent from "../loading-component";
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Separator } from "../ui/separator";
 
 function ProfileConf({
   conf,
@@ -34,22 +35,25 @@ function ProfileConf({
 
   return (
     <Link href={MAIN_PAGES.CONF(conf.slug)} className="rounded-lg" key={"conf_"+conf.slug} prefetch={prefetch}>
-      <Card className="md:grid grid-cols-[1fr_auto] w-full hover:bg-accent/70">
-        <CardHeader>
-          <CardTitle className="text-xl">{title}</CardTitle>
-          {status && <CardDescription>{status}</CardDescription>}
-        </CardHeader>
-        <div className="p-6 space-y-1.5 max-md:pt-0">
-          <div className="flex justify-center items-center gap-2 max-md:text-sm text-muted-foreground">
-            <time dateTime={start.toISOString()}>{format(start, "PPP", { locale: dateLocale, in: utc })}</time>
-            {end && "-"}
-            {end && <time dateTime={end.toISOString()}>{format(end, "PPP", { locale: dateLocale, in: utc })}</time>}
-          </div>
-          <div className="flex gap-2 md:justify-center">
-            <label className="font-bold">{t('permissions')}:</label>
-            <span className="text-muted-foreground self-center">{permissions || "-"}</span>
+      <Card className="w-full hover:bg-accent/70">
+        <div className="md:grid grid-cols-[1fr_auto] w-full *:p-4">
+          <CardHeader>
+            <CardTitle className="text-xl">{title}</CardTitle>
+            {status && <CardDescription>{status}</CardDescription>}
+          </CardHeader>
+          <div className="p-6 space-y-1.5 max-md:pt-0">
+            <div className="flex justify-center items-center gap-2 max-md:text-sm text-muted-foreground">
+              <time dateTime={start.toISOString()}>{format(start, "PPP", { locale: dateLocale, in: utc })}</time>
+              {end && "-"}
+              {end && <time dateTime={end.toISOString()}>{format(end, "PPP", { locale: dateLocale, in: utc })}</time>}
+            </div>
           </div>
         </div>
+        <Separator />
+        <CardContent className="flex gap-2 p-4">
+          <label className="font-bold">{t('permissions')}:</label>
+          <span className="text-muted-foreground self-center">{permissions || "-"}</span>
+        </CardContent>
       </Card>
     </Link>
   )

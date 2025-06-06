@@ -49,6 +49,7 @@ export default function page() {
     <UserProfile
       user={user}
       confsPath={ADMIN_PAGES.USER_CONFS(id as UUID)}
+      editPath={ADMIN_PAGES.USER_EDIT(id as UUID)}
     />
   )
 }

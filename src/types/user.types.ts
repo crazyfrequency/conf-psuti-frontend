@@ -24,6 +24,7 @@ export interface IUserConf {
 }
 
 export type TUserProfile = Omit<IUser, 'conferences'> & {
+  emailVerified: boolean
   phone: string,
   country: string,
   city: string,
@@ -34,5 +35,6 @@ export type TUserProfile = Omit<IUser, 'conferences'> & {
   academicDegree: string,
   academicTitle: string,
   supervisor: string,
+  createdAt: string|number,
   conferences: IUserConf[]
 }

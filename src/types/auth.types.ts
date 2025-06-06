@@ -43,6 +43,7 @@ export interface IUser {
   id: UUID
   email: string
   role: TRole,
+  image?: string
   psutiUsername: string,
   preferredLocale: BigLocales,
   names: Partial<Record<BigLocales, INames>>,

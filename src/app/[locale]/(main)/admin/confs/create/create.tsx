@@ -117,20 +117,15 @@ export default function CreateConf() {
           control={form.control}
           name="isEnglishEnabled"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 px-4 *:mb-0">
-              <FormLabel htmlFor={field.name}>{t('fields.english_enabled')}</FormLabel>
-              <FormControl>
-                <Switch
-                  id={field.name}
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  {...{
-                    ...field,
-                    value: undefined,
-                    onChange: undefined,
-                  }}
-                />
-              </FormControl>
+            <FormItem>
+              <FormLabel className="hover:bg-accent/50 flex items-center justify-between gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
+                <p className="text-sm leading-none font-medium">
+                  {t('fields.english_enabled')}
+                </p>
+                <FormControl>
+                  <Switch {...field} value={~~field.value} checked={field.value} onCheckedChange={field.onChange} onChange={undefined} />
+                </FormControl>
+              </FormLabel>
             </FormItem>
           )}
         />

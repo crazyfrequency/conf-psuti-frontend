@@ -5,14 +5,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { DataLabel, DataText } from "@/components/ui/data-info";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TIME_ZONE } from "@/constants/app.constants";
 import { Locales } from "@/constants/i18n.constants";
 import { useLocale } from "@/hooks/date-locale.hook";
 import { getUserNames } from "@/lib/localalization-tools";
 import { useScopedI18n } from "@/locales/client";
 import type { TUserProfile } from "@/types/user.types";
+import { tz } from "@date-fns/tz";
+import { format } from "date-fns";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
+import { useMemo } from "react";
 import ProfileConfs from "../confs/profile-confs";
+import { useAuth } from "../layout/providers/auth-provider";
+
+const tzDate = tz(TIME_ZONE);
 
 export default function UserProfile({
   user,
@@ -25,7 +32,13 @@ export default function UserProfile({
 }>) {
   const t_languages = useScopedI18n('languages.names');
   const { locale, dateLocale } = useLocale();
+  const { user: authUser } = useAuth();
   const t = useScopedI18n('profile');
+
+  const admin = useMemo(() => {
+    if (typeof authUser !== 'object') return false;
+    return authUser?.role === 'ADMIN';
+  }, [authUser]);
 
   if (user === "loading") return (
     <Card className="mt-2">
@@ -65,7 +78,23 @@ export default function UserProfile({
           </Button>
         </div>
       </div>
-      <CardContent className="grid gap-4 pb-3">
+      <CardContent className="pb-3">
+        {(admin || user.image) && (
+          <div className="lg:float-right lg:max-w-1/3">
+            {admin && (
+              <div className="grid grid-cols-[auto_1fr] max-md:grid-cols-[auto_auto] gap-y-2 gap-x-1.5 p-4 bg-accent rounded-md">
+                <DataLabel>{t('registration')}:</DataLabel>
+                <div>
+                  <DataText>{format(tzDate(user.createdAt), 'PPPP', { in: tzDate, locale: dateLocale })}</DataText>
+                  <DataText>{format(tzDate(user.createdAt), 'ppp', { in: tzDate, locale: dateLocale })}</DataText>
+                </div>
+                <DataLabel>{t('role')}:</DataLabel>
+                <DataText>{user.role ? t(`roles.${user.role}`) : t('not_specified')}</DataText>
+                <DataLabel className="col-span-2 justify-center">{t(`confirmed.${user.emailVerified ?? false}`)}</DataLabel>
+              </div>
+            )}
+          </div>
+        )}
         <div className="grid grid-cols-[auto_1fr] max-md:grid-cols-[auto_auto] gap-y-2 gap-x-1.5 md:gap-x-3">
           <DataLabel>{t('email')}</DataLabel>
           <DataText>{user.email}</DataText>

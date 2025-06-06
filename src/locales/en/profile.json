@@ -15,5 +15,15 @@
     "academic_title": "Academic title",
     "supervisor": "Supervisor",
     "not_specified": "Not specified",
-    "conferences": "Conferences with elevated access"
+    "conferences": "Conferences with elevated access",
+    "role": "Role",
+    "registration": "Registration date",
+    "confirmed": {
+        "true": "Email confirmed",
+        "false": "Email not confirmed"
+    },
+    "roles": {
+        "USER": "User",
+        "ADMIN": "Administrator"
+    }
 }

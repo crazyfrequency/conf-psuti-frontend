@@ -38,6 +38,7 @@ class AdminPages {
   CREATE_CONF = `${this.root}/confs/create`
   USERS = (id?: UUID) => `${this.root}/users` + (id ? `/${id}` : '')
   USER_CONFS = (id: UUID) => `${this.root}/users/${id}/conferences`
+  USER_EDIT = (id: UUID) => `${this.root}/users/${id}/edit`
 }
 
 export const ADMIN_PAGES = new AdminPages()
