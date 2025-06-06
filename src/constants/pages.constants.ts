@@ -1,10 +1,16 @@
+import { UUID } from "crypto";
+
 class MainPages {
   private root = "";
 
   HOME = `${this.root}/`
   PROFILE = `${this.root}/profile`
+  PROFILE_EDIT = `${this.root}/profile/edit`
+  PROFILE_CONFS = `${this.root}/profile/conferences`
   YEAR = (year: number) => `${this.root}/confs/${year}`
   CONF = (slug: string) => `${this.root}/${slug}`
+  PROFILE_CHANGE_EMAIL = `${this.root}/profile/change-email`
+  PROFILE_CHANGE_PASSWORD = `${this.root}/profile/change-password`
 }
 
 export const MAIN_PAGES = new MainPages()
@@ -30,7 +36,8 @@ class AdminPages {
 
   NEW_CONFS = `${this.root}/confs/new`
   CREATE_CONF = `${this.root}/confs/create`
-  USERS = `${this.root}/users`
+  USERS = (id?: UUID) => `${this.root}/users` + (id ? `/${id}` : '')
+  USER_CONFS = (id: UUID) => `${this.root}/users/${id}/conferences`
 }
 
 export const ADMIN_PAGES = new AdminPages()

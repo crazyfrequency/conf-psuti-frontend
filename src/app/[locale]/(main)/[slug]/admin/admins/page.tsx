@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { form_admin } from "@/constants/users.constants";
 import useConfAdminsHook from "@/hooks/conf-admins-hook";
+import useUserPermissions from "@/hooks/user-permissions-hook";
 import { getAdminNames } from "@/lib/localalization-tools";
 import { PermissionFlags } from "@/lib/user-permissions";
 import { makeZodI18nMap } from "@/lib/zod-i18n";
@@ -336,10 +337,6 @@ function DialogForm({
   )
 }
 
-function hasPermission(permission: number, flag: PermissionFlags) {
-  return Boolean(permission & (1 << flag));
-}
-
 function Permissions({
   admin,
   onEdit = () => {},
@@ -351,27 +348,11 @@ function Permissions({
 }>) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const locale = useCurrentLocale();
-  const t = useI18n();
+  const t = useScopedI18n("confs.admins");
 
   const names = getAdminNames(admin, locale);
 
-  const isAdmin = hasPermission(admin.permissions, PermissionFlags.ADMIN);
-
-  let permissions = "";
-  permissions += isAdmin ? t('confs.admins.permission.admin') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.READ) ? t('confs.admins.permission.read') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.WRITE) ? t('confs.admins.permission.write') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.READ_HIDDEN_PAGES) ? t('confs.admins.permission.read_hidden_pages') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.WRITE_PAGES) ? t('confs.admins.permission.write_pages') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.READ_CONF_APP) ? t('confs.admins.permission.read_conf_app') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.ACCEPT_CONF_APP) ? t('confs.admins.permission.accept_conf_app') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.CREATE_CONF_APP) ? t('confs.admins.permission.create_conf_app') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.READ_DATE_CONF_APP) ? t('confs.admins.permission.read_date_conf_app') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.EDIT_DATE_CONF_APP) ? t('confs.admins.permission.edit_date_conf_app') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.READ_CONTENT_CONF_APP) ? t('confs.admins.permission.read_content_conf_app') + ", " : "";
-  permissions += !isAdmin && hasPermission(admin.permissions, PermissionFlags.EDIT_CONTENT_CONF_APP) ? t('confs.admins.permission.edit_content_conf_app') + ", " : "";
-  permissions = permissions.slice(0, -2);
-  
+  const permissions = useUserPermissions(admin.permissions);
 
   return (
     <Card key={admin.id} className="grid grid-cols-[1fr_auto] gap-2">
@@ -382,7 +363,7 @@ function Permissions({
         </CardHeader>
         <CardContent className="grid grid-cols-[1fr_auto] gap-2">
           <div className="flex gap-2">
-            <label className="font-bold">{t('confs.admins.permissions')}:</label>
+            <label className="font-bold">{t('permissions')}:</label>
             <span className="text-muted-foreground self-center">{permissions || "-"}</span>
           </div>
         </CardContent>
@@ -398,7 +379,7 @@ function Permissions({
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t('confs.admins.edit')}</DialogTitle>
+            <DialogTitle>{t('edit')}</DialogTitle>
           </DialogHeader>
           <DialogForm isEdit admin={admin} onSubmit={v => {onEdit(v); setDialogOpen(false)}} />
         </DialogContent>
@@ -467,6 +448,7 @@ export default function page() {
 
   return (
     <div className="flex flex-col gap-4">
+      {admins.map(admin => <Permissions key={admin.id} admin={admin} onEdit={submitAdmin} onDelete={removeAdmin} />)}
       <div className="flex justify-end">
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
@@ -481,7 +463,6 @@ export default function page() {
           </DialogContent>
         </Dialog>
       </div>
-      {admins.map(admin => <Permissions key={admin.id} admin={admin} onEdit={submitAdmin} onDelete={removeAdmin} />)}
     </div>
   )
 }

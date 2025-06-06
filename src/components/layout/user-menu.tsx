@@ -39,7 +39,7 @@ export default function UserMenu() {
   useKeyBind({
     keyBind: 'Alt+KeyU',
     callback: () => typeof user === "object" && user?.role === 'ADMIN' && !pathname.match(/(\/en|)\/admin\/users/)
-      ? router.push(ADMIN_PAGES.USERS)
+      ? router.push(ADMIN_PAGES.USERS())
       : null
   })
   useKeyBind({ keyBind: 'Ctrl+Shift+KeyQ', callback: logout })
@@ -80,7 +80,7 @@ export default function UserMenu() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer" asChild>
-          <Link href={ADMIN_PAGES.USERS}>
+          <Link href={ADMIN_PAGES.USERS()}>
             {t('users')}
             <DropdownMenuShortcut>ALT+U</DropdownMenuShortcut>
           </Link>

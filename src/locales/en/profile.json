@@ -14,5 +14,6 @@
     "academic_degree": "Academic degree",
     "academic_title": "Academic title",
     "supervisor": "Supervisor",
-    "not_specified": "Not specified"
+    "not_specified": "Not specified",
+    "conferences": "Conferences with elevated access"
 }
