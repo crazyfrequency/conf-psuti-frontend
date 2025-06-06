@@ -1,33 +1,31 @@
 'use client'
 
-import Page500 from "@/components/auth/500";
-import { useAuth } from "@/components/layout/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataLabel, DataText } from "@/components/ui/data-info";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Locales } from "@/constants/i18n.constants";
-import { AUTH_PAGES } from "@/constants/pages.constants";
 import { useLocale } from "@/hooks/date-locale.hook";
 import { getUserNames } from "@/lib/localalization-tools";
 import { useScopedI18n } from "@/locales/client";
-import { useRouter } from "@bprogress/next";
+import type { TUserProfile } from "@/types/user.types";
 import { Pencil } from "lucide-react";
-import { usePathname } from "next/navigation";
+import Link from "next/link";
+import ProfileConfs from "../confs/profile-confs";
 
-export default function Profile() {
+export default function UserProfile({
+  user,
+  editPath,
+  confsPath
+}: Readonly<{
+  user: TUserProfile|"loading"
+  editPath?: string
+  confsPath?: string
+}>) {
+  const t_languages = useScopedI18n('languages.names');
   const { locale, dateLocale } = useLocale();
-  const t_languages = useScopedI18n('languages');
   const t = useScopedI18n('profile');
-  const pathname = usePathname();
-  const router = useRouter();
-  const { user } = useAuth();
-
-  if (user === "unauthorized") {
-    router.push(AUTH_PAGES.LOGIN(pathname));
-    return null
-  }
 
   if (user === "loading") return (
     <Card className="mt-2">
@@ -46,25 +44,27 @@ export default function Profile() {
     </Card>
   )
 
-  if (user === "error") return <Page500 />
-
   const names = getUserNames(user, locale);
   const title = `${names.lastName} ${names.firstName}`
     + (names.middleName ? ` ${names.middleName}` : '');
 
   return (
     <Card className="mt-2">
-      <CardHeader className="relative">
-        <CardTitle className="w-full mr-4 truncate whitespace-normal">
-          {title}
-        </CardTitle>
-        <CardDescription>
-          {t('preferred_locale')}: {t_languages(`names.${user.preferredLocale.toLowerCase() as Locales}`)}
-        </CardDescription>
-        <Button className="absolute right-6 top-1/2 -translate-y-1/2" variant="ghost" size="icon">
-          <Pencil />
-        </Button>
-      </CardHeader>
+      <div className="grid grid-cols-[1fr_auto]">
+        <CardHeader className="pr-2">
+          <CardTitle className="w-full truncate whitespace-normal">
+            {title}
+          </CardTitle>
+          <CardDescription>
+            {t('preferred_locale')}: {t_languages(`${user.preferredLocale.toLowerCase() as Locales}`)}
+          </CardDescription>
+        </CardHeader>
+        <div className="flex flex-col justify-center p-4 pl-0">
+          <Button variant="ghost" size="icon" asChild>
+            {editPath && <Link href={editPath}><Pencil /></Link>}
+          </Button>
+        </div>
+      </div>
       <CardContent className="grid gap-4 pb-3">
         <div className="grid grid-cols-[auto_1fr] max-md:grid-cols-[auto_auto] gap-y-2 gap-x-1.5 md:gap-x-3">
           <DataLabel>{t('email')}</DataLabel>
@@ -91,10 +91,20 @@ export default function Profile() {
           <DataText>{user.supervisor || t('not_specified')}</DataText>
         </div>
       </CardContent>
-      <Separator />
-      <CardContent className="grid gap-4 pt-3">
-        
-      </CardContent>  
+      {user.conferences?.length !== 0 && confsPath && (
+        <>
+          <Separator />
+          <CardHeader>
+            <CardTitle>{t('conferences')}</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4 pt-0">
+            <ProfileConfs conferences={user.conferences?.slice?.(0, 3)} prefetch={true} />
+            <Button className="w-full" variant="secondary" asChild>
+              <Link href={confsPath}>•••</Link>
+            </Button>
+          </CardContent>
+        </>
+      )}
     </Card>
   )
 }

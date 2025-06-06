@@ -43,17 +43,8 @@ export interface IUser {
   id: UUID
   email: string
   role: TRole,
+  psutiUsername: string,
   preferredLocale: BigLocales,
-  phone: string,
-  country: string,
-  city: string,
-  homeAddress: string,
-  organization: string,
-  organizationAddress: string,
-  organizationPosition: string,
-  academicDegree: string,
-  academicTitle: string,
-  supervisor: string,
   names: Partial<Record<BigLocales, INames>>,
   conferences: IConfPermissions[]
 }

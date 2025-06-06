@@ -1,31 +1,49 @@
-'use server'
+'use client'
 
-import { getScopedI18n, getStaticParams } from "@/locales/server";
-import { Metadata } from "next";
-import { setStaticParamsLocale } from "next-international/server";
-import Profile from "./profile";
+import Page500 from "@/components/auth/500";
+import { useAuth } from "@/components/layout/providers/auth-provider";
+import UserProfile from "@/components/users/profile";
+import { AUTH_PAGES, MAIN_PAGES } from "@/constants/pages.constants";
+import { useCurrentLocale, useScopedI18n } from "@/locales/client";
+import { getMyProfile } from "@/services/user.service";
+import { TUserProfile } from "@/types/user.types";
+import { useRouter } from "@bprogress/next";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-export async function generateStaticParams() {
-  return getStaticParams();
-}
+export default function page() {
+  const [user, setUser] = useState<TUserProfile|"unauthorized"|"error"|"loading">("loading");
+  const { user: authUser } = useAuth();
+  const locale = useCurrentLocale();
+  const t = useScopedI18n("errors");
+  const pathname = usePathname();
+  const router = useRouter();
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = (await getScopedI18n('profile'))('title');
+  useEffect(() => {
+    getMyProfile().then(res => {
+      if (res.status === "success")
+        return setUser(res.data);
+      if (res.status === "unauthorized") setUser("unauthorized");
+      else setUser("error");
+      toast.error(t('fetch'), {
+        description: res.message[locale]
+      })
+    })
+  }, [authUser]);
 
-  return {
-    title: {
-      template: `%s | ${title}`,
-      default: title
-    }
+  if (user === "unauthorized") {
+    router.push(AUTH_PAGES.LOGIN(pathname));
+    return null
   }
-}
+  
+  if (user === "error") return <Page500 />
 
-export default async function page({
-  params
-}: Readonly<{
-  params: Promise<{ locale: string }>
-}>) {
-  const { locale } = await params;
-  setStaticParamsLocale(locale);
-  return <Profile />
+  return (
+    <UserProfile
+      user={user}
+      editPath={MAIN_PAGES.PROFILE_EDIT}
+      confsPath={MAIN_PAGES.PROFILE_CONFS}
+    />
+  )
 }

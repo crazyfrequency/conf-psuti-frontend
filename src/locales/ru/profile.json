@@ -14,5 +14,6 @@
     "academic_degree": "Ученая степень",
     "academic_title": "Ученое звание",
     "supervisor": "Руководитель",
-    "not_specified": "Не указано"
+    "not_specified": "Не указано",
+    "conferences": "Конференции с повышенным уровнем доступа"
 }
