@@ -143,7 +143,7 @@ export default function CreateConf() {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "justify-start text-left font-normal",
+                          "justify-start text-left font-normal min-h-10",
                           !field.value && "text-muted-foreground"
                         )}
                       >
@@ -183,7 +183,7 @@ export default function CreateConf() {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "justify-start text-left font-normal",
+                          "justify-start text-left font-normal min-h-10",
                           !field.value && "text-muted-foreground"
                         )}
                       >
