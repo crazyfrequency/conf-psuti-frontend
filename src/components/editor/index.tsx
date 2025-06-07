@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { $generateNodesFromDOM } from '@lexical/html';
+import { LinkNode } from '@lexical/link';
 import { ListItemNode } from '@lexical/list';
 import { $createParagraphNode, $getRoot, $insertNodes, $isTextNode, DOMConversionMap, DOMExportOutput, DOMExportOutputMap, Klass, LexicalEditor, LexicalNode, LineBreakNode, TextNode } from 'lexical';
 import { toast } from 'sonner';
@@ -130,6 +131,20 @@ function buildExportMap(): DOMExportOutputMap {
           if (listItemNode.getChildrenSize() === 0) {
             element.appendChild(document.createElement("br"));
           }
+        }
+
+        return { element, after };
+      },
+    ],
+    [
+      LinkNode,
+      (editor: LexicalEditor, node: LexicalNode) => {
+        const linkNode = node as LinkNode;
+        const { element, after } = linkNode.exportDOM(editor);
+
+        if (element instanceof HTMLElement) {
+          element.setAttribute("data-prevent-nprogress", "true");
+          element.setAttribute("data-prevent-progress", "true");
         }
 
         return { element, after };
