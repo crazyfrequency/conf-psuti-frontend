@@ -70,12 +70,12 @@ function InputBase({
           }
         })}
         className={cn(
-          "border-input selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex min-h-9 cursor-text items-center gap-2 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm",
-          disabled && "pointer-events-none cursor-not-allowed opacity-50",
-          focused && "border-ring ring-ring/50 ring-[3px]",
+          "flex min-h-10 cursor-text items-center gap-2 rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background",
+          disabled && "cursor-not-allowed opacity-50",
+          focused && "outline-none ring-2 ring-ring ring-offset-2",
           error &&
             "ring-destructive/20 dark:ring-destructive/40 border-destructive",
-          className,
+          className
         )}
         {...props}
       />
@@ -177,8 +177,8 @@ function InputBaseInput({
     <Primitive.input
       data-slot="input-base-input"
       className={cn(
-        "placeholder:text-muted-foreground file:text-foreground w-full flex-1 bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium focus:outline-none disabled:pointer-events-none",
-        className,
+        "w-full flex-1 bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-none disabled:pointer-events-none",
+        className
       )}
       {...props}
     />
@@ -186,11 +186,8 @@ function InputBaseInput({
 }
 
 export {
-  InputBase,
-  InputBaseFlexWrapper,
-  InputBaseControl,
-  InputBaseAdornment,
-  InputBaseAdornmentButton,
-  InputBaseInput,
-  useInputBase,
+  InputBase, InputBaseAdornment,
+  InputBaseAdornmentButton, InputBaseControl, InputBaseFlexWrapper, InputBaseInput,
+  useInputBase
 };
+

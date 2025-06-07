@@ -104,8 +104,6 @@ function PasswordInputIndicator({
 }
 
 export {
-  PasswordInput as Root,
-  PasswordInputInput as Input,
-  PasswordInputToggle as Toggle,
-  PasswordInputIndicator as Indicator,
+  PasswordInputIndicator as Indicator, PasswordInputInput as Input, PasswordInput as Root, PasswordInputToggle as Toggle
 };
+

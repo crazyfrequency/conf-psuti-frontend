@@ -105,14 +105,16 @@ export default function EditClient({
 
   return (
     <div>
-      <div className="flex flex-row items-center justify-between rounded-lg border p-3 px-4 *:mb-0">
-        <Label>{t("page_enabled.title")}</Label>
+      <Label htmlFor="page_enabled" className="hover:bg-accent/50 flex items-center justify-between gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
+        <p className="text-sm leading-none font-medium">
+          {t("page_enabled.title")}
+        </p>
         <Switch
           id="page_enabled"
           checked={pageEnabled}
           onCheckedChange={setPageEnabled}
         />
-      </div>
+      </Label>
       <div className="mt-6">
         <Label className="text-lg ml-4">{capitalize(t_lang("ru"))}:</Label>
         <Editor

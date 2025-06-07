@@ -217,7 +217,9 @@ export default {
   },
   zod: {
     auth: auth_errors,
-    ...zod
+    ...zod,
+    duplicated_path: 'Путь должен быть уникальным',
+    invalid_path: 'Некорректный путь'
   },
   profile,
   languages

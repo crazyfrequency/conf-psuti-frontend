@@ -123,7 +123,7 @@ export default function EditInfo() {
             )}
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 xl:gap-6">
             <FormField
               control={form.control}
               name="startDate"
@@ -136,7 +136,7 @@ export default function EditInfo() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "justify-start text-left font-normal",
+                            "justify-start text-left font-normal min-h-10",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -176,7 +176,7 @@ export default function EditInfo() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "justify-start text-left font-normal",
+                            "justify-start text-left font-normal min-h-10",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -218,7 +218,7 @@ export default function EditInfo() {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "justify-start text-left font-normal w-full rounded-r-none",
+                              "justify-start text-left font-normal min-h-10 w-full rounded-r-none",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -231,7 +231,7 @@ export default function EditInfo() {
                         variant="outline"
                         size="icon"
                         type="button"
-                        className="border-l-0 rounded-l-none"
+                        className="border-l-0 rounded-l-none min-h-10 min-w-10"
                         onClick={() => field.onChange(undefined)}
                       >
                         <X className="size-4" />
@@ -276,7 +276,7 @@ export default function EditInfo() {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "justify-start text-left font-normal w-full rounded-r-none",
+                              "justify-start text-left font-normal min-h-10 w-full rounded-r-none",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -289,7 +289,7 @@ export default function EditInfo() {
                         variant="outline"
                         size="icon"
                         type="button"
-                        className="border-l-0 rounded-l-none"
+                        className="border-l-0 rounded-l-none min-h-10 min-w-10"
                         onClick={() => field.onChange(undefined)}
                       >
                         <X className="size-4" />

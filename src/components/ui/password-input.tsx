@@ -1,7 +1,6 @@
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
 import {
   InputBase,
   InputBaseAdornment,
@@ -10,6 +9,7 @@ import {
   InputBaseInput,
 } from "@/components/ui/input-base";
 import * as PasswordInputPrimitive from "@/components/ui/password-input-primitive";
+import { cn } from "@/lib/utils";
 
 type PasswordInputProps = React.ComponentProps<
   typeof PasswordInputPrimitive.Root
@@ -72,7 +72,7 @@ function PasswordInputAdornmentToggle({
 }: React.ComponentProps<typeof PasswordInputPrimitive.Toggle>) {
   return (
     <InputBaseAdornment>
-      <InputBaseAdornmentButton asChild>
+      <InputBaseAdornmentButton className="size-4" asChild>
         <PasswordInputPrimitive.Toggle
           data-slot="password-input-adornment-toggle"
           className={cn("group", className)}
@@ -89,7 +89,6 @@ function PasswordInputAdornmentToggle({
 export {
   PasswordInput,
   PasswordInputAdornment,
-  PasswordInputAdornmentButton,
-  PasswordInputInput,
-  PasswordInputAdornmentToggle,
+  PasswordInputAdornmentButton, PasswordInputAdornmentToggle, PasswordInputInput
 };
+

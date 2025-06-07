@@ -38,13 +38,13 @@ export const form_conference_pages = (t: any, eng: boolean) => z.object({
     pageNameEn: eng ? z.string().trim().nonempty() : z.string().nullable(),
     path: z.string().max(255).regex(
       /^(?!admin$)[A-Za-z][A-Za-z0-9-_]*$/,
-      t('errors.invalid_path')
+      t('invalid_path')
     )
   })).refine(pages => {
     const paths = pages.map(page => page.path);
     const uniquePaths = new Set(paths);
     return paths.length === uniquePaths.size;
-  }, t('errors.duplicated_path'))
+  }, t('duplicated_path'))
 })
 
 export const form_conference_pages_import = z.object({

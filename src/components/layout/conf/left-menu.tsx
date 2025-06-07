@@ -56,7 +56,7 @@ export default function LeftMenu({
           variant={ sub_path === v.path || (!sub_path && v.path === 'info') ? 'default' : 'ghost'}
           asChild
         >
-          <Link href={CONF_PAGES.CONF_PAGE(slug, v.path, isEdit)}>
+          <Link href={CONF_PAGES.CONF_PAGE(slug, v.path, isEdit && v.path !== 'application')}>
             {
               default_pages.includes(v.path as any)
                 ? getStaticConfPageName(v.path as any)[locale]
