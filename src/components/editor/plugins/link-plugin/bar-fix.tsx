@@ -15,6 +15,9 @@ export function useEnhanceLinks() {
         if (!link.hasAttribute("data-prevent-nprogress")) {
           link.setAttribute("data-prevent-nprogress", "true");
         }
+        if (!link.hasAttribute("data-prevent-progress")) {
+          link.setAttribute("data-prevent-progress", "true");
+        }
       });
     };
 
