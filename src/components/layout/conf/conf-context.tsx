@@ -8,6 +8,7 @@ import { UserConferencePermissions } from '@/lib/user-permissions';
 import { cn } from '@/lib/utils';
 import { TConf } from '@/types/conf.types';
 import React, { createContext } from 'react';
+import ConfApplicationsContext from './applications-context';
 import LeftMenu from './left-menu';
 import Path from './path';
 import TopMenu from './top-menu';
@@ -54,22 +55,24 @@ export default function ConfContext({
       ...context,
       reload: fetchConf
     }}>
-      <Path />
-      <div className="grid relative grid-rows-1 grid-cols-1 lg:grid-cols-[auto_auto_1fr] gap-2 w-full">
-        <LeftMenu
-          className={cn(
-            "max-lg:overflow-y-auto max-lg:max-h-72 max-lg:p-4",
-            "max-lg:border max-lg:rounded-lg max-lg:bg-card",
-            "max-lg:w-full max-lg:shadow-xs"
-          )}
-        />
-        <Separator className="max-lg:hidden" orientation="vertical" />
-        <main className='min-w-0 w-full max-lg:pt-3'>
-          <TopMenu />
-          <Separator className="my-4" />
-          {children}
-        </main>
-      </div>
+      <ConfApplicationsContext slug={slug}>
+        <Path />
+        <div className="grid relative grid-rows-1 grid-cols-1 lg:grid-cols-[auto_auto_1fr] gap-2 w-full">
+          <LeftMenu
+            className={cn(
+              "max-lg:overflow-y-auto max-lg:max-h-72 max-lg:p-4",
+              "max-lg:border max-lg:rounded-lg max-lg:bg-card",
+              "max-lg:w-full max-lg:shadow-xs"
+            )}
+          />
+          <Separator className="max-lg:hidden" orientation="vertical" />
+          <main className='min-w-0 w-full max-lg:pt-3'>
+            <TopMenu />
+            <Separator className="my-4" />
+            {children}
+          </main>
+        </div>
+      </ConfApplicationsContext>
     </DataContext.Provider>
   )
 }
