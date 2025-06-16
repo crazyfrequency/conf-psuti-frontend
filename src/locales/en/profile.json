@@ -17,6 +17,11 @@
     "not_specified": "Not specified",
     "conferences": "Conferences with elevated access",
     "role": "Role",
+    "edit": "Edit",
+    "change": {
+        "password": "Change password",
+        "email": "Change email"
+    },
     "registration": "Registration date",
     "confirmed": {
         "true": "Email confirmed",
