@@ -6,12 +6,12 @@ import { createContext, useContext } from "react";
 
 export type TConfApplicationsContext = {
   isLoading: false;
-  data: IApplication[]|null;
+  data: IApplication[]|null|"error";
   pageActive: boolean;
   reload: () => Promise<void>|void;
 } | {
   isLoading: true;
-  data: null|"forbidden";
+  data: null;
   pageActive: boolean;
   reload: () => Promise<void>|void;
 };
