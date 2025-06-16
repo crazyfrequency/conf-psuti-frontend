@@ -15,6 +15,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HTMLAttributes, useMemo } from "react";
 import { useAuth } from "../providers/auth-provider";
+import { useConfApplicationsContext } from "./applications-context";
 import { useConfContext } from "./conf-context";
 
 export const default_pages = ["info", "committee", "program", "application", "proceedings", "report", "contacts"] as const;
@@ -28,6 +29,7 @@ export default function LeftMenu({
   const path = usePathname();
   const segments = path.split('/').filter(Boolean);
   const { data, permissions, isLoading } = useConfContext();
+  const { pageActive } = useConfApplicationsContext();
   const locale = useCurrentLocale();
   const t = useScopedI18n('confs');
   const router = useRouter();
@@ -49,7 +51,7 @@ export default function LeftMenu({
 
   const canReadDisabledPages = isAdmin || permissions.hasAnyPermission(PermissionFlags.READ_HIDDEN_PAGES);
 
-  const elements = data?.pages?.filter?.(v => v.isEnabled || canReadDisabledPages || v.path === "info").map((v) => (
+  const elements = data?.pages?.filter?.(v => (v.isEnabled || canReadDisabledPages || v.path === "info") && (v.path !== "application" || pageActive)).map((v) => (
       <li key={`nav_${v.path}`}>
         <Button
           className="justify-start w-full whitespace-normal wrap-anywhere h-auto"

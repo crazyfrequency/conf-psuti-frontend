@@ -1,12 +1,12 @@
 'use client'
 
-import { TResponseResult } from "@/api/error";
-import { TConfContext } from "@/components/layout/conf/conf-context";
+import type { TResponseResult } from "@/api/error";
+import type { TConfContext } from "@/components/layout/conf/conf-context";
 import { useAuth } from "@/components/layout/providers/auth-provider";
 import { AUTH_PAGES } from "@/constants/pages.constants";
 import { UserConferencePermissions } from "@/lib/user-permissions";
 import { getConf } from "@/services/confs.client.service";
-import { TConf } from "@/types/conf.types";
+import type { TConf } from "@/types/conf.types";
 import { useRouter } from "@bprogress/next";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";

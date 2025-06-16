@@ -14,6 +14,7 @@ import { useRouter } from "@bprogress/next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -22,7 +23,7 @@ export default function Login() {
   const locale = useCurrentLocale();
   const params = useSearchParams();
   const router = useRouter();
-  const { reloadAuth } = useAuth();
+  const { user, reloadAuth } = useAuth();
   const t = useI18n();
 
   z.setErrorMap((issue, ctx) => {
@@ -40,6 +41,11 @@ export default function Login() {
       message: ctx.defaultError
     }
   })
+
+  useEffect(() => {
+    if (typeof user === "object" && user !== null)
+      router.replace(params.get('next') ?? MAIN_PAGES.PROFILE)
+  }, [user])
 
   const form = useForm<z.infer<typeof form_login_schema>>({
     resolver: zodResolver(form_login_schema),

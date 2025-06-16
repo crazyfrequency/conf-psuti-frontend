@@ -49,6 +49,7 @@ class ConfPages {
   INFO_PAGE = (slug: string, edit?: boolean) => `${this.root}/${slug}` + (edit ? '/info/edit' : '')
   CONF_PAGE = (slug: string, sub_path: string|undefined, edit?: boolean) => `${this.root}/${slug}/${sub_path??"info"}` + (edit ? '/edit' : '')
   CONF_ADMIN_PAGE = (slug: string, sub_path: string) => `${this.root}/${slug}/admin/${sub_path}`
+  CONF_APPLICATIONS_PAGE = (slug: string, type?: "submit"|"report") => `${this.root}/${slug}/application` + (type ? `/${type}` : '')
 }
 
 export const CONF_PAGES = new ConfPages()

@@ -70,7 +70,7 @@ export default function SignUp() {
     const response = await register({
       email: data.email,
       password: data.password,
-      preferredLocale: locale.toUpperCase() as BigLocales,
+      preferredLocale: data.preferredLocale,
       names
     } as any, locale);
 
@@ -161,18 +161,14 @@ export default function SignUp() {
                   <FormControl>
                     <RadioCardGroup className="grid-cols-2" value={field.value} onValueChange={field.onChange}>
                       <FormItem>
-                        <FormControl>
-                          <RadioGroupItem value="RU">
-                            {t_locales('names.ru')}
-                          </RadioGroupItem>
-                        </FormControl>
+                        <RadioGroupItem value="RU">
+                          {t_locales('names.ru')}
+                        </RadioGroupItem>
                       </FormItem>
                       <FormItem>
-                        <FormControl>
-                          <RadioGroupItem value="EN">
-                            {t_locales('names.en')}
-                          </RadioGroupItem>
-                        </FormControl>
+                        <RadioGroupItem value="EN">
+                          {t_locales('names.en')}
+                        </RadioGroupItem>
                       </FormItem>
                     </RadioCardGroup>
                   </FormControl>

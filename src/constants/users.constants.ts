@@ -17,3 +17,31 @@ export const form_admin = z.object({
     edit_content_conf_app: z.boolean(),
   })
 })
+
+export const form_edit_schema = z.object({
+  preferredLocale: z.enum(["RU", "EN"]),
+  role: z.enum(["USER", "ADMIN"]).nullable().optional(),
+  emailVerified: z.boolean().nullable().optional(),
+  names: z.object({
+    RU: z.object({
+      firstName: z.string(),
+      middleName: z.string(),
+      lastName: z.string()
+    }),
+    EN: z.object({
+      firstName: z.string(),
+      middleName: z.string(),
+      lastName: z.string()
+    })
+  }),
+  phone: z.string().nullable().optional(),
+  country: z.string().nullable().optional(),
+  city: z.string().nullable().optional(),
+  homeAddress: z.string().nullable().optional(),
+  organization: z.string().nullable().optional(),
+  organizationAddress: z.string().nullable().optional(),
+  organizationPosition: z.string().nullable().optional(),
+  academicDegree: z.string().nullable().optional(),
+  academicTitle: z.string().nullable().optional(),
+  supervisor: z.string().nullable().optional(),
+})

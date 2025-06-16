@@ -18,6 +18,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import ProfileConfs from "../confs/profile-confs";
 import { useAuth } from "../layout/providers/auth-provider";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 
 const tzDate = tz(TIME_ZONE);
 
@@ -80,22 +81,22 @@ export default function UserProfile({
       </div>
       <CardContent className="pb-3">
         {(admin || user.image) && (
-          <div className="lg:float-right lg:max-w-1/3">
+          <div className="lg:float-right lg:max-w-2/5 max-lg:mb-2">
             {admin && (
-              <div className="grid grid-cols-[auto_1fr] max-md:grid-cols-[auto_auto] gap-y-2 gap-x-1.5 p-4 bg-accent rounded-md">
+              <div className="grid grid-cols-[auto_1fr] gap-y-2 gap-x-1.5 p-4 bg-accent rounded-md">
                 <DataLabel>{t('registration')}:</DataLabel>
                 <div>
-                  <DataText>{format(tzDate(user.createdAt), 'PPPP', { in: tzDate, locale: dateLocale })}</DataText>
+                  <DataText>{format(tzDate(user.createdAt), 'PPP', { in: tzDate, locale: dateLocale })}</DataText>
                   <DataText>{format(tzDate(user.createdAt), 'ppp', { in: tzDate, locale: dateLocale })}</DataText>
                 </div>
                 <DataLabel>{t('role')}:</DataLabel>
                 <DataText>{user.role ? t(`roles.${user.role}`) : t('not_specified')}</DataText>
-                <DataLabel className="col-span-2 justify-center">{t(`confirmed.${user.emailVerified ?? false}`)}</DataLabel>
+                <DataLabel className="col-span-2 max-md:max-w-none justify-start lg:justify-center">{t(`confirmed.${user.emailVerified ?? false}`)}</DataLabel>
               </div>
             )}
           </div>
         )}
-        <div className="grid grid-cols-[auto_1fr] max-md:grid-cols-[auto_auto] gap-y-2 gap-x-1.5 md:gap-x-3">
+        <div className="grid grid-cols-[auto_1fr] gap-y-2 gap-x-1.5 md:gap-x-3">
           <DataLabel>{t('email')}</DataLabel>
           <DataText>{user.email}</DataText>
           <DataLabel>{t('phone')}</DataLabel>
@@ -118,6 +119,28 @@ export default function UserProfile({
           <DataText>{user.academicTitle || t('not_specified')}</DataText>
           <DataLabel>{t('supervisor')}</DataLabel>
           <DataText>{user.supervisor || t('not_specified')}</DataText>
+        </div>
+        <div className="flex w-full gap-2 mt-4">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="secondary">
+                {t('change.email')}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              
+            </DialogContent>
+          </Dialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="secondary">
+                {t('change.password')}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              
+            </DialogContent>
+          </Dialog>
         </div>
       </CardContent>
       {user.conferences?.length !== 0 && confsPath && (

@@ -23,7 +23,7 @@ function DataText({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center text-sm font-normal",
+        "flex flex-wrap items-center text-sm font-normal wrap-anywhere",
         className
       )}
       {...props}

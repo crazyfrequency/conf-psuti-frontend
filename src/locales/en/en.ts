@@ -107,6 +107,21 @@ export default {
     },
     export: 'Export',
     saved: 'Successfully saved',
+    application: {
+      title: 'Application',
+      description: 'Apply to conference',
+      submit: 'Apply',
+      success: 'Successfully applied',
+      error: 'Failed to apply',
+      types: {
+        submit: 'With a paper',
+        report: 'Without a paper',
+      },
+      my: {
+        title: 'My applications',
+        no: 'No applications',
+      }
+    }
   },
   login: {
     title: 'Login',
